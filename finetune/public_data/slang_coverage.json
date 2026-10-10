@@ -1,0 +1,202 @@
+{
+ "udh": {
+  "lexicon_formal": [
+   "sudah"
+  ],
+  "in_STIF_test": true
+ },
+ "sdh": {
+  "lexicon_formal": [
+   "sudah"
+  ],
+  "in_STIF_test": true
+ },
+ "udah": {
+  "lexicon_formal": [
+   "sudah"
+  ],
+  "in_STIF_test": true
+ },
+ "blm": {
+  "lexicon_formal": [
+   "belum"
+  ],
+  "in_STIF_test": true
+ },
+ "gk": {
+  "lexicon_formal": [
+   "enggak"
+  ],
+  "in_STIF_test": true
+ },
+ "ga": {
+  "lexicon_formal": [
+   "enggak"
+  ],
+  "in_STIF_test": true
+ },
+ "gak": {
+  "lexicon_formal": [
+   "enggak"
+  ],
+  "in_STIF_test": true
+ },
+ "nggak": {
+  "lexicon_formal": [
+   "enggak"
+  ],
+  "in_STIF_test": true
+ },
+ "brp": {
+  "lexicon_formal": [
+   "berapa"
+  ],
+  "in_STIF_test": true
+ },
+ "sy": {
+  "lexicon_formal": [
+   "saya"
+  ],
+  "in_STIF_test": true
+ },
+ "lg": {
+  "lexicon_formal": [
+   "lagi"
+  ],
+  "in_STIF_test": true
+ },
+ "mnt": {
+  "lexicon_formal": [
+   "minta"
+  ],
+  "in_STIF_test": false
+ },
+ "aja": {
+  "lexicon_formal": [
+   "saja"
+  ],
+  "in_STIF_test": true
+ },
+ "bgt": {
+  "lexicon_formal": [
+   "banget"
+  ],
+  "in_STIF_test": true
+ },
+ "makasih": {
+  "lexicon_formal": [
+   "terima kasih"
+  ],
+  "in_STIF_test": true
+ },
+ "mksh": {
+  "lexicon_formal": [
+   "terima kasih"
+  ],
+  "in_STIF_test": false
+ },
+ "lok": {
+  "lexicon_formal": [],
+  "in_STIF_test": false
+ },
+ "bs": {
+  "lexicon_formal": [
+   "bisa"
+  ],
+  "in_STIF_test": true
+ },
+ "yg": {
+  "lexicon_formal": [
+   "yang"
+  ],
+  "in_STIF_test": true
+ },
+ "dgn": {
+  "lexicon_formal": [
+   "dengan"
+  ],
+  "in_STIF_test": true
+ },
+ "bntr": {
+  "lexicon_formal": [
+   "bentar"
+  ],
+  "in_STIF_test": false
+ },
+ "jln": {
+  "lexicon_formal": [
+   "jalan"
+  ],
+  "in_STIF_test": false
+ },
+ "dl": {
+  "lexicon_formal": [
+   "dulu"
+  ],
+  "in_STIF_test": false
+ },
+ "kalo": {
+  "lexicon_formal": [],
+  "in_STIF_test": true
+ },
+ "klo": {
+  "lexicon_formal": [
+   "kalo"
+  ],
+  "in_STIF_test": true
+ },
+ "sampe": {
+  "lexicon_formal": [
+   "sampai"
+  ],
+  "in_STIF_test": true
+ },
+ "gmn": {
+  "lexicon_formal": [
+   "bagaimana"
+  ],
+  "in_STIF_test": true
+ },
+ "otw": {
+  "lexicon_formal": [],
+  "in_STIF_test": false
+ },
+ "gpp": {
+  "lexicon_formal": [
+   "enggak apa-apa"
+  ],
+  "in_STIF_test": false
+ },
+ "rb": {
+  "lexicon_formal": [
+   "ribu"
+  ],
+  "in_STIF_test": true
+ },
+ "jt": {
+  "lexicon_formal": [
+   "juta"
+  ],
+  "in_STIF_test": false
+ },
+ "tggu": {
+  "lexicon_formal": [],
+  "in_STIF_test": false
+ },
+ "dong": {
+  "lexicon_formal": [],
+  "in_STIF_test": true
+ },
+ "kak": {
+  "lexicon_formal": [],
+  "in_STIF_test": true
+ },
+ "ongkir": {
+  "lexicon_formal": [],
+  "in_STIF_test": true
+ },
+ "cod": {
+  "lexicon_formal": [],
+  "in_STIF_test": false
+ }
+}

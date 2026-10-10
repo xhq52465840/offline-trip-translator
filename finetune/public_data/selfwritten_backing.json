@@ -1,0 +1,382 @@
+[
+ {
+  "case": "01",
+  "src": "50rb belum termasuk ongkos",
+  "public_slang": [
+   "rb"
+  ]
+ },
+ {
+  "case": "02",
+  "src": "yang tadi 40 saja",
+  "public_slang": []
+ },
+ {
+  "case": "03",
+  "src": "brp lama lagi pak?",
+  "public_slang": [
+   "brp"
+  ]
+ },
+ {
+  "case": "04",
+  "src": "udh di depan lobby ya",
+  "public_slang": [
+   "udh"
+  ]
+ },
+ {
+  "case": "05",
+  "src": "gk bisa kurang lagi kak",
+  "public_slang": [
+   "gk"
+  ]
+ },
+ {
+  "case": "06",
+  "src": "total 1,5jt sudah termasuk tips",
+  "public_slang": [
+   "jt"
+  ]
+ },
+ {
+  "case": "07",
+  "src": "harganya 250 ribu per orang",
+  "public_slang": []
+ },
+ {
+  "case": "08",
+  "src": "saya sudah sampai, mobil avanza putih B 1234 XYZ",
+  "public_slang": []
+ },
+ {
+  "case": "09",
+  "src": "tunggu sebentar ya, macet",
+  "public_slang": []
+ },
+ {
+  "case": "10",
+  "src": "oke saya ke situ",
+  "public_slang": []
+ },
+ {
+  "case": "11",
+  "src": "ini 100rb, itu 75rb",
+  "public_slang": [
+   "rb"
+  ]
+ },
+ {
+  "case": "12",
+  "src": "yang mahal bisa 85",
+  "public_slang": []
+ },
+ {
+  "case": "13",
+  "src": "maaf kak, udah habis",
+  "public_slang": [
+   "udah"
+  ]
+ },
+ {
+  "case": "14",
+  "src": "alamatnya di jl. sunset road no 88",
+  "public_slang": []
+ },
+ {
+  "case": "15",
+  "src": "mantap, gas!",
+  "public_slang": []
+ },
+ {
+  "case": "16",
+  "src": "nggak apa-apa, santai aja",
+  "public_slang": [
+   "aja",
+   "nggak"
+  ]
+ },
+ {
+  "case": "17",
+  "src": "jam berapa pesawatnya?",
+  "public_slang": []
+ },
+ {
+  "case": "18",
+  "src": "175 deal ya",
+  "public_slang": []
+ },
+ {
+  "case": "19",
+  "src": "bisa tunggu 5 menit?",
+  "public_slang": []
+ },
+ {
+  "case": "20",
+  "src": "it's 50k for the ride, cash only",
+  "public_slang": [
+   "it",
+   "k",
+   "s"
+  ]
+ },
+ {
+  "case": "21",
+  "src": "same price",
+  "public_slang": []
+ },
+ {
+  "case": "22",
+  "src": "sy otw kak, 10 mnt lg",
+  "public_slang": [
+   "lg",
+   "mnt",
+   "sy"
+  ]
+ },
+ {
+  "case": "23",
+  "src": "oke yang biasa ya",
+  "public_slang": []
+ },
+ {
+  "case": "24",
+  "src": "belum bayar, kurang 20rb",
+  "public_slang": [
+   "rb"
+  ]
+ },
+ {
+  "case": "25",
+  "src": "terima kasih",
+  "public_slang": []
+ },
+ {
+  "case": "26",
+  "src": "selamat pagi",
+  "public_slang": []
+ },
+ {
+  "case": "27",
+  "src": "tiga 120rb aja",
+  "public_slang": [
+   "aja",
+   "rb"
+  ]
+ },
+ {
+  "case": "28",
+  "src": "oke ke sana 80rb",
+  "public_slang": [
+   "rb"
+  ]
+ },
+ {
+  "case": "29",
+  "src": "bs bayar pake qris?",
+  "public_slang": [
+   "bs",
+   "pake"
+  ]
+ },
+ {
+  "case": "30",
+  "src": "pls wait, i'm omw",
+  "public_slang": [
+   "m"
+  ]
+ },
+ {
+  "case": "31",
+  "src": "sy udh di P2 lantai dasar, mobil hitam",
+  "public_slang": [
+   "sy",
+   "udh"
+  ]
+ },
+ {
+  "case": "32",
+  "src": "keluar pintu kedatangan, jalan ke parkiran ya kak",
+  "public_slang": []
+ },
+ {
+  "case": "33",
+  "src": "share lok aja kak, alamatnya gk ketemu",
+  "public_slang": [
+   "aja",
+   "gk"
+  ]
+ },
+ {
+  "case": "34",
+  "src": "macet bgt kak, mungkin 20 mnt lg",
+  "public_slang": [
+   "bgt",
+   "lg",
+   "mnt"
+  ]
+ },
+ {
+  "case": "35",
+  "src": "tambah 50 ya, jalannya jauh",
+  "public_slang": []
+ },
+ {
+  "case": "36",
+  "src": "di sini gk boleh jemput, jalan dikit ke depan ya",
+  "public_slang": [
+   "gk"
+  ]
+ },
+ {
+  "case": "37",
+  "src": "pesanan sdh sy ambil, otw ya kak",
+  "public_slang": [
+   "sdh",
+   "sy"
+  ]
+ },
+ {
+  "case": "38",
+  "src": "kak menu ayam geprek habis, mau ganti apa?",
+  "public_slang": []
+ },
+ {
+  "case": "39",
+  "src": "bayar cash ya kak, totalnya 87rb",
+  "public_slang": [
+   "rb"
+  ]
+ },
+ {
+  "case": "40",
+  "src": "mau level pedas berapa? 0 sampai 5",
+  "public_slang": []
+ },
+ {
+  "case": "41",
+  "src": "harga belum termasuk pajak 10% dan service 5%",
+  "public_slang": []
+ },
+ {
+  "case": "42",
+  "src": "ada kak, saus kacang",
+  "public_slang": []
+ },
+ {
+  "case": "43",
+  "src": "check in jam 2 siang, sekarang kamarnya blm siap",
+  "public_slang": [
+   "blm",
+   "in"
+  ]
+ },
+ {
+  "case": "44",
+  "src": "deposit 500rb, nanti dikembalikan pas check out",
+  "public_slang": [
+   "rb"
+  ]
+ },
+ {
+  "case": "45",
+  "src": "air panasnya harus tunggu 15 menit dulu ya",
+  "public_slang": []
+ },
+ {
+  "case": "46",
+  "src": "rate hari ini 2.600 per yuan, minimal tukar 1jt",
+  "public_slang": [
+   "jt"
+  ]
+ },
+ {
+  "case": "47",
+  "src": "uangnya dihitung lagi ya kak di sini",
+  "public_slang": []
+ },
+ {
+  "case": "48",
+  "src": "bisa QRIS atau cash, kartu gk bisa",
+  "public_slang": [
+   "gk"
+  ]
+ },
+ {
+  "case": "49",
+  "src": "kembaliannya gk ada, uang pas aja",
+  "public_slang": [
+   "aja",
+   "gk"
+  ]
+ },
+ {
+  "case": "50",
+  "src": "paket 30 hari 25GB 150rb, perlu paspor",
+  "public_slang": [
+   "rb"
+  ]
+ },
+ {
+  "case": "51",
+  "src": "tolong tunjukkan QR e-CD dan tiket pulang",
+  "public_slang": [
+   "cd"
+  ]
+ },
+ {
+  "case": "52",
+  "src": "VOA 500rb, bisa bayar kartu",
+  "public_slang": [
+   "rb"
+  ]
+ },
+ {
+  "case": "53",
+  "src": "diminum 3x sehari sesudah makan",
+  "public_slang": [
+   "x"
+  ]
+ },
+ {
+  "case": "54",
+  "src": "ini obat diare, kalau demam harus ke dokter",
+  "public_slang": []
+ },
+ {
+  "case": "55",
+  "src": "sudah lapor polisi? perlu surat kehilangan",
+  "public_slang": []
+ },
+ {
+  "case": "56",
+  "src": "lurus aja, nanti di perempatan belok kiri",
+  "public_slang": [
+   "aja"
+  ]
+ },
+ {
+  "case": "57",
+  "src": "sewa mobil 10 jam 700rb sudah termasuk bensin",
+  "public_slang": [
+   "rb"
+  ]
+ },
+ {
+  "case": "58",
+  "src": "kapal ke Gili jam 9, harus di pelabuhan jam 8.30",
+  "public_slang": []
+ },
+ {
+  "case": "59",
+  "src": "pijat 60 menit 150rb, tipnya terserah",
+  "public_slang": [
+   "rb"
+  ]
+ },
+ {
+  "case": "60",
+  "src": "dari mana kak? pertama kali ke Bali?",
+  "public_slang": []
+ }
+]
