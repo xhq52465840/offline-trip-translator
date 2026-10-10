@@ -129,7 +129,7 @@ struct ConversationView: View {
             }
             TranscriptList(viewer: .me, onPresent: { presenting = $0 })
             clipboardBar
-            if let s = model.scene { PhraseStrip(scene: s) }
+            PhraseStrip(scene: model.scene ?? .chat)   // 通用对话也给几句寒暄短语，少一步
             inputBar
         }
         .navigationTitle(model.scene?.title ?? "对话")
@@ -251,10 +251,17 @@ struct PhraseStrip: View {
             HStack(spacing: 8) {
                 ForEach(scene.phrases) { p in
                     Button { state.conversation.sendPhrase(p); Haptics.play(.sent) } label: {
-                        Text(p.zh).font(.callout).padding(.horizontal, 12).padding(.vertical, 8)
-                            .background(Color.accentColor.opacity(0.12), in: Capsule())
+                        HStack(spacing: 4) {
+                            Text(p.zh).font(.callout)
+                            if p.needsNativeReview {
+                                // 新短语尚未经母语者审校（docs/社区真实语料.md）；上线前审校后去掉标记
+                                Text("待校对").font(.caption2.weight(.semibold)).foregroundStyle(.orange)
+                            }
+                        }
+                        .padding(.horizontal, 12).padding(.vertical, 8)
+                        .background(Color.accentColor.opacity(0.12), in: Capsule())
                     }
-                    .accessibilityHint("发给对方：\(p.foreign(state.conversation.theirLanguage))")
+                    .accessibilityHint("发给对方：\(p.foreign(state.conversation.theirLanguage))\(p.needsNativeReview ? "（译文待母语者校对）" : "")")
                 }
             }
             .padding(.horizontal).padding(.vertical, 6)
@@ -376,12 +383,18 @@ struct FlowChips: View {
 }
 
 struct ChipView: View {
+    @EnvironmentObject var state: AppState
     let chip: AmountChip
+    /// 仍是内置示例汇率时，人民币换算后标「示例」，避免用户把它当真实汇率
+    private var sampleRate: Bool { state.rate == ExchangeRate.default }
     var body: some View {
         HStack(spacing: 4) {
             Text(chip.rupiah).font(.callout.monospacedDigit().weight(.semibold))
             Text(chip.chinese).font(.caption)
-            if let c = chip.cny { Text(c).font(.caption.weight(.semibold)).foregroundStyle(.orange) }
+            if let c = chip.cny {
+                Text(c).font(.caption.weight(.semibold)).foregroundStyle(.orange)
+                if sampleRate { Text("示例汇率").font(.caption2).foregroundStyle(.secondary) }
+            }
         }
         .padding(.horizontal, 8).padding(.vertical, 4)
         .background(Color.orange.opacity(0.12), in: Capsule())
