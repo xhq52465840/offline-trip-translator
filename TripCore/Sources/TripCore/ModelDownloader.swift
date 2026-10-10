@@ -28,19 +28,28 @@ public final class ModelDownloader {
     private let transport: DownloadTransport
     private let env: DownloadEnvironment
     private let hasher: (URL) throws -> String
-    private var resumeData: Data?
+    public private(set) var mirrors: MirrorSelector
+    private let now: () -> Date
+    /// 主动暂停（用户暂停 / 慢速切换）时 transport 也会回调 onFailed，用它区分真正的网络失败
+    private var pauseIntent: PauseIntent?
+    private enum PauseIntent { case user, slowSwitch }
     private let fm = FileManager.default
+    /// 当前线路（UI 可显示「线路：国内」）
+    public var currentMirror: ModelMirror { mirrors.current }
 
     public var modelURL: URL { directory.appendingPathComponent("model.gguf") }
     var recordURL: URL { directory.appendingPathComponent("installed.json") }
     var stagingURL: URL { directory.appendingPathComponent("model.gguf.part") }
 
     public init(entry: ModelManifestEntry, directory: URL, transport: DownloadTransport, environment: DownloadEnvironment,
-                hasher: @escaping (URL) throws -> String = { try SHA256Hasher.hex(fileAt: $0) }) {
+                hasher: @escaping (URL) throws -> String = { try SHA256Hasher.hex(fileAt: $0) },
+                mirrorPolicy: MirrorSelector.Policy = .init(), now: @escaping () -> Date = Date.init) {
         self.entry = entry; self.directory = directory; self.transport = transport; self.env = environment; self.hasher = hasher
         self.machine = DownloadMachine(entry: entry)
-        transport.onProgress = { [weak self] in self?.apply(.progress(received: $0)) }
-        transport.onFailed = { [weak self] data in self?.resumeData = data; self?.apply(.interrupted(hasResumeData: data != nil)) }
+        self.mirrors = MirrorSelector(mirrors: entry.orderedMirrors, policy: mirrorPolicy)
+        self.now = now
+        transport.onProgress = { [weak self] in self?.progress($0) }
+        transport.onFailed = { [weak self] data in self?.failed(data) }
         transport.onFinished = { [weak self] tmp in self?.finished(tmp) }
         if installedRecordMatches() { machine = DownloadMachine.installed(entry: entry) }
     }
@@ -62,8 +71,44 @@ public final class ModelDownloader {
         apply(.start(network: env.network, freeBytes: env.freeBytes(at: directory)))
     }
     public func confirmCellular() { apply(.confirmCellular) }
-    public func pause() { transport.pause() }
-    public func resume() { apply(.resume(network: env.network)) }
+    public func pause() { pauseIntent = .user; transport.pause() }
+    public func resume() {
+        if mirrors.roundExhausted { mirrors.newRound() }   // 用户重试 = 新一轮，从首选镜像开始
+        apply(.resume(network: env.network))
+    }
+
+    private func progress(_ bytes: Int64) {
+        apply(.progress(received: bytes))
+        guard case .downloading = machine.state, pauseIntent == nil else { return }
+        if mirrors.noteProgress(bytes: bytes, at: now()) {
+            pauseIntent = .slowSwitch
+            transport.pause()                                    // 回调 failed(data)，在那里换镜像
+        }
+    }
+
+    private func failed(_ data: Data?) {
+        let intent = pauseIntent; pauseIntent = nil
+        switch intent {
+        case .user:
+            mirrors.store(resumeData: data)
+            apply(.interrupted(hasResumeData: data != nil))
+        case .slowSwitch:
+            mirrors.store(resumeData: data)                       // 留给原镜像，以后切回可续
+            _ = mirrors.switchForSlowness()
+            restartOnCurrentMirror()
+        case nil:
+            let retry = mirrors.noteFailure(resumeData: data)
+            if retry { restartOnCurrentMirror() }
+            else { apply(.interrupted(hasResumeData: mirrors.currentResumeData != nil)) }   // 一轮用尽：停下等用户
+        }
+    }
+
+    /// 在（可能已切换的）当前镜像上重新开始：有它自己的 resume data 就续，否则从 0。
+    private func restartOnCurrentMirror() {
+        let hasResume = mirrors.currentResumeData != nil
+        apply(.interrupted(hasResumeData: hasResume))
+        apply(.resume(network: env.network))
+    }
 
     /// 删除模型（例如阻断后重下或清单版本变化）。
     public func remove() {
@@ -80,7 +125,9 @@ public final class ModelDownloader {
             switch before {
             case .downloading: break
             default:
-                transport.start(url: URL(string: entry.url)!, resumeData: resumeData, allowsCellular: machine.policy.cellularConfirmed)
+                mirrors.didStart(at: now())
+                transport.start(url: URL(string: mirrors.current.url)!, resumeData: mirrors.currentResumeData,
+                                allowsCellular: machine.policy.cellularConfirmed)
             }
         }
         if before != after { onChange?(after) }
@@ -89,10 +136,12 @@ public final class ModelDownloader {
     private func finished(_ tmp: URL) {
         try? fm.removeItem(at: stagingURL)
         do { try fm.moveItem(at: tmp, to: stagingURL) } catch { apply(.interrupted(hasResumeData: false)); return }
-        resumeData = nil
+        mirrors.store(resumeData: nil)
         apply(.finished)
         let hash = (try? hasher(stagingURL)) ?? ""
         let sizeOK = ((try? fm.attributesOfItem(atPath: stagingURL.path))?[.size] as? NSNumber)?.int64Value == entry.bytes
+        let good = sizeOK && hash.lowercased() == entry.sha256.lowercased()
+        if !good { _ = mirrors.noteBadHash() }                   // 校验失败：怀疑该镜像，自动重下会走下一个镜像
         apply(.verified(sha256: sizeOK ? hash : "size-mismatch"))
         switch machine.state {
         case .installed:
@@ -183,7 +232,7 @@ public final class URLSessionTransport: NSObject, DownloadTransport, URLSessionD
     public func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
         guard let error else { return }
         let data = (error as NSError).userInfo[NSURLSessionDownloadTaskResumeData] as? Data
-        if (error as NSError).code == NSURLErrorCancelled && data == nil { return }   // pause 已经回调过
+        if (error as NSError).code == NSURLErrorCancelled { return }   // 主动 pause 已经通过 cancel(byProducingResumeData:) 回调过
         onFailed?(data)
     }
 

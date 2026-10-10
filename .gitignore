@@ -11,3 +11,7 @@ App/TripUnderstand.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/
 *.bin
 *.safetensors
 models/
+
+# 微调产物（权重/适配器/GGUF）不进仓库；结果摘要复制到 finetune/results/
+finetune/runs/
+__pycache__/

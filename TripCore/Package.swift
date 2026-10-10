@@ -14,6 +14,8 @@ var targets: [Target] = [
     .testTarget(name: "TripCoreTests", dependencies: ["TripCore"]),
     .target(name: "TripAppModel", dependencies: ["TripCore"]),
     .testTarget(name: "TripAppModelTests", dependencies: ["TripAppModel", "TripCore"]),
+    // 微调数据工具：用 App 同一份 PromptBuilder / AmountNormalizer / OutputValidator 渲染与校验训练样本
+    .executableTarget(name: "trip-prompt", dependencies: ["TripCore"]),
 ]
 var tripLLMDeps: [Target.Dependency] = ["TripCore"]
 var products: [Product] = [

@@ -1,19 +1,54 @@
 {
-  "version": 2,
+  "version": 3,
   "models": [
     {
       "tier": "a8GB",
       "id": "qwen2.5-1.5b-instruct-q4_k_m",
       "url": "https://huggingface.co/Qwen/Qwen2.5-1.5B-Instruct-GGUF/resolve/91cad51170dc346986eccefdc2dd33a9da36ead9/qwen2.5-1.5b-instruct-q4_k_m.gguf",
       "bytes": 1117320736,
-      "sha256": "6a1a2eb6d15622bf3c96857206351ba97e1af16c30d7a74ee38970e434e9407e"
+      "sha256": "6a1a2eb6d15622bf3c96857206351ba97e1af16c30d7a74ee38970e434e9407e",
+      "mirrors": [
+        {
+          "id": "cn",
+          "region": "cn",
+          "url": "https://models-cn.example.com/models/qwen2.5-1.5b-instruct/q4_k_m/6a1a2eb6/qwen2.5-1.5b-instruct-q4_k_m.gguf"
+        },
+        {
+          "id": "global",
+          "region": "global",
+          "url": "https://models.example.com/models/qwen2.5-1.5b-instruct/q4_k_m/6a1a2eb6/qwen2.5-1.5b-instruct-q4_k_m.gguf"
+        },
+        {
+          "id": "hf",
+          "region": "placeholder",
+          "url": "https://huggingface.co/Qwen/Qwen2.5-1.5B-Instruct-GGUF/resolve/91cad51170dc346986eccefdc2dd33a9da36ead9/qwen2.5-1.5b-instruct-q4_k_m.gguf"
+        }
+      ]
     },
     {
       "tier": "b6GB",
       "id": "qwen2.5-1.5b-instruct-q4_k_m",
       "url": "https://huggingface.co/Qwen/Qwen2.5-1.5B-Instruct-GGUF/resolve/91cad51170dc346986eccefdc2dd33a9da36ead9/qwen2.5-1.5b-instruct-q4_k_m.gguf",
       "bytes": 1117320736,
-      "sha256": "6a1a2eb6d15622bf3c96857206351ba97e1af16c30d7a74ee38970e434e9407e"
+      "sha256": "6a1a2eb6d15622bf3c96857206351ba97e1af16c30d7a74ee38970e434e9407e",
+      "mirrors": [
+        {
+          "id": "cn",
+          "region": "cn",
+          "url": "https://models-cn.example.com/models/qwen2.5-1.5b-instruct/q4_k_m/6a1a2eb6/qwen2.5-1.5b-instruct-q4_k_m.gguf"
+        },
+        {
+          "id": "global",
+          "region": "global",
+          "url": "https://models.example.com/models/qwen2.5-1.5b-instruct/q4_k_m/6a1a2eb6/qwen2.5-1.5b-instruct-q4_k_m.gguf"
+        },
+        {
+          "id": "hf",
+          "region": "placeholder",
+          "url": "https://huggingface.co/Qwen/Qwen2.5-1.5B-Instruct-GGUF/resolve/91cad51170dc346986eccefdc2dd33a9da36ead9/qwen2.5-1.5b-instruct-q4_k_m.gguf"
+        }
+      ]
     }
-  ]
+  ],
+  "_comment": "mirrors 按顺序尝试，同一 sha256。cn/global 为占位域名（自建 OSS/COS + CDN、Cloudflare R2，见技术设计 v2 §13.5），上线前替换为真实地址；HF 为当前唯一真实可下的占位镜像。对象路径带版本且不可变。"
 }

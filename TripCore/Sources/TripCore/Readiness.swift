@@ -81,10 +81,27 @@ public struct DownloadPolicy: Equatable, Sendable {
     public init(cellularConfirmed: Bool = false) { self.cellularConfirmed = cellularConfirmed }
 }
 
+/// 下载镜像（技术设计 v2 §13.5）：同一文件、同一 sha256，按顺序尝试。
+public struct ModelMirror: Codable, Equatable, Sendable {
+    public var id: String
+    public var url: String
+    /// 仅作说明/统计（cn / global / placeholder）
+    public var region: String?
+    public init(id: String, url: String, region: String? = nil) { self.id = id; self.url = url; self.region = region }
+}
+
 public struct ModelManifestEntry: Codable, Equatable, Sendable {
     public var tier: String, id: String, url: String, bytes: Int64, sha256: String
-    public init(tier: String, id: String, url: String, bytes: Int64, sha256: String) {
-        self.tier = tier; self.id = id; self.url = url; self.bytes = bytes; self.sha256 = sha256
+    /// 有序镜像；缺省时只用 url（兼容旧清单）
+    public var mirrors: [ModelMirror]?
+    public init(tier: String, id: String, url: String, bytes: Int64, sha256: String, mirrors: [ModelMirror]? = nil) {
+        self.tier = tier; self.id = id; self.url = url; self.bytes = bytes; self.sha256 = sha256; self.mirrors = mirrors
+    }
+    /// 实际使用的有序镜像列表（去重；空列表时退回 url）
+    public var orderedMirrors: [ModelMirror] {
+        var out: [ModelMirror] = []
+        for m in mirrors ?? [] where !out.contains(where: { $0.url == m.url }) && URL(string: m.url) != nil { out.append(m) }
+        return out.isEmpty ? [ModelMirror(id: "primary", url: url)] : out
     }
 }
 

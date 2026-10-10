@@ -2,13 +2,13 @@ import Foundation
 
 public extension PromptBuilder {
     /// 固定少样本（来自 model_eval/run.py）。
-    static let fewShot: [(user: String, assistant: String)] = [
+    public static let fewShot: [(user: String, assistant: String)] = [
         ("这场对话（时间顺序）：\n对方：harga 30rb ／ 中文：价格3万\n我：太贵了\n\n金额：无\n词：无\n\n对方原文：yang tadi 25 aja\n字面：\n刚才的25就行", "刚才那个价格2.5万就行"),
         ("这场对话（时间顺序）：\n（无）\n\n金额：无\n词：无\n\n对方原文：udh sampe blm?\n字面：\nudh sampe blm？", "已经到了吗？"),
     ]
 
     /// 可缓存的前缀：system + 少样本。
-    var prefixMessages: [ChatMessage] {
+    public var prefixMessages: [ChatMessage] {
         [ChatMessage(.system, system)] + Self.fewShot.flatMap { [ChatMessage(.user, $0.user), ChatMessage(.assistant, $0.assistant)] }
     }
 

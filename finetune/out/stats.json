@@ -1,0 +1,55 @@
+{
+ "drafts": 3211,
+ "dropped_near_eval": 436,
+ "rejected": {
+  "unchanged": 8
+ },
+ "kept": 2767,
+ "split": {
+  "train": 2244,
+  "valid": 118,
+  "test": 405
+ },
+ "test_templates": [
+  "ar3",
+  "ch4",
+  "dl4",
+  "dr2",
+  "em3",
+  "ht4",
+  "lc3",
+  "md2",
+  "me7",
+  "me8",
+  "pk2",
+  "py1",
+  "rd9",
+  "rs2",
+  "sh1",
+  "sm1",
+  "tr2"
+ ],
+ "by_scene": {
+  "arrival": 162,
+  "pickup": 95,
+  "ride": 393,
+  "location": 126,
+  "delivery": 256,
+  "restaurant": 234,
+  "shopping": 281,
+  "money": 105,
+  "payment": 91,
+  "sim": 177,
+  "hotel": 242,
+  "tour": 133,
+  "spa": 95,
+  "health": 95,
+  "emergency": 92,
+  "directions": 92,
+  "chat": 98
+ },
+ "by_dir": {
+  "them": 2495,
+  "me": 272
+ }
+}
