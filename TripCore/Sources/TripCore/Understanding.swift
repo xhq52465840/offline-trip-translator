@@ -6,7 +6,11 @@ public struct ContextTurn: Equatable, Sendable {
     public var role: Role
     public var source: String
     public var zhDisplay: String?
-    public init(role: Role, source: String, zhDisplay: String? = nil) { self.role = role; self.source = source; self.zhDisplay = zhDisplay }
+    /// 我的话翻成对方语言后的文本（多轮上下文里两种语言都给模型看）
+    public var foreign: String?
+    public init(role: Role, source: String, zhDisplay: String? = nil, foreign: String? = nil) {
+        self.role = role; self.source = source; self.zhDisplay = zhDisplay; self.foreign = foreign
+    }
 }
 
 public struct GlossaryHit: Equatable, Sendable {
@@ -18,8 +22,10 @@ public struct GlossaryHit: Equatable, Sendable {
 public struct PromptBuilder: Sendable {
     public var theirLanguageName: String
     public var maxContextTurns: Int
-    public init(theirLanguageName: String = "印尼语", maxContextTurns: Int = 16) {
-        self.theirLanguageName = theirLanguageName; self.maxContextTurns = maxContextTurns
+    /// 场景（打车 / 砍价 / 点餐 / 酒店 / 问价），写进上下文帮助消歧
+    public var scene: String?
+    public init(theirLanguageName: String = "印尼语", maxContextTurns: Int = 16, scene: String? = nil) {
+        self.theirLanguageName = theirLanguageName; self.maxContextTurns = maxContextTurns; self.scene = scene
     }
 
     public var system: String {
@@ -36,8 +42,13 @@ public struct PromptBuilder: Sendable {
     }
 
     public func user(context: [ContextTurn], source: String, literal: String, glossary: [GlossaryHit]) -> String {
-        let lines = trimmed(context).map { t -> String in
-            t.role == .them ? "对方：\(t.source) ／ 中文：\(t.zhDisplay ?? "")" : "我：\(t.source)"
+        let win = ContextWindow(maxTurns: maxContextTurns).build(context)
+        var lines: [String] = []
+        if let sc = scene { lines.append("场景：\(sc)") }
+        if let sum = win.summary { lines.append("前情摘要：\(sum)") }
+        lines += win.recent.map { t -> String in
+            t.role == .them ? "对方：\(t.source) ／ 中文：\(t.zhDisplay ?? "")"
+                            : (t.foreign.map { "我：\(t.source) ／ 对方看到：\($0)" } ?? "我：\(t.source)")
         }
         let amounts = AmountNormalizer.findAmounts(in: source).enumerated().map { "⟦N\($0.offset + 1)⟧\($0.element.original)=\($0.element.display)" }
         let words = glossary.prefix(8).map { "\($0.source) = \($0.zh)" }

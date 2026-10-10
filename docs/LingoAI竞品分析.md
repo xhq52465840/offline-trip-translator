@@ -31,7 +31,7 @@
 ### 2.2 翻译怎么做（三个引擎）【官方】
 | 引擎 | 实现 | 用途 |
 |---|---|---|
-| LingoAI Model（默认） | App 里自带的离线翻译模型。商店里的署名：美区写 *Tencent Hy-MT2 (1.8B)*，新加坡区写 *Tencent HY-MT1.5*，许可证 Apache 2.0 | 长句、习语，全离线 |
+| LingoAI Model（默认） | App 里自带的离线翻译模型。商店里的署名：美区写 *Tencent Hy-MT2 (1.8B)*，新加坡区写 *Tencent HY-MT1.5*，商店页自称 Apache 2.0，**但 HY-MT1.5 的实际许可是 Tencent HY Community License**（不授权欧盟、英国、韩国；禁止用输出改进其他模型），见端侧模型验证报告附录 H | 长句、习语，全离线 |
 | System | Apple 系统的端侧 Translation | 短语，「接近即时」；语言包由 iOS 下载 |
 | Cloud（可选，默认关闭） | 自家服务器 ai.mzjpg.com → Cloudflare AI Gateway → Nebius（DeepSeek）/ 阿里云百炼（Qwen、DeepSeek、GLM）/ Google Gemini | 整篇文档一次翻译，保持术语一致；正式 / 随意语气；多 75 种语言；按点数计费；云端不可用时退回端侧 |
 
@@ -101,7 +101,7 @@
 ## 5. 可借鉴点（按优先级）
 
 **P0（建议立刻做）**
-1. **把 Hy-MT1.5-1.8B 加进模型评测**（GGUF 2-bit 574MB / 1.25-bit 440MB / Q4）。用 docs/model_eval 的 30 条用例对比 Qwen2.5-1.5B。如果它的印尼语↔中文直译质量明显好于系统 Translation，可以考虑「Hy-MT 直译 + Qwen 理解」，或者干脆用 Hy-MT 单模型同时做直译和理解（要测它能不能按指令输出结构化结果、带上下文）。Apache 2.0 许可证可以商用（以模型卡上的许可条款为准）。注意：它的 SME2 优化针对 M4，**A17 / A18 iPhone 上的速度未知**。
+1. **把 Hy-MT1.5-1.8B 加进模型评测**（GGUF 2-bit 574MB / 1.25-bit 440MB / Q4）。用 docs/model_eval 的 30 条用例对比 Qwen2.5-1.5B。如果它的印尼语↔中文直译质量明显好于系统 Translation，可以考虑「Hy-MT 直译 + Qwen 理解」，或者干脆用 Hy-MT 单模型同时做直译和理解（要测它能不能按指令输出结构化结果、带上下文）。**更正：许可证是 Tencent HY Community License，不是 Apache 2.0**。**已测完，结论见端侧模型验证报告附录 H：不替换现方案。**注意：它的 SME2 优化针对 M4，**A17 / A18 iPhone 上的速度未知**。
 2. **粘贴用「一键提示条，不用系统弹窗」**：和我们 PRD v2 的 PasteButton 方案一致，确认方向是对的。
 3. **用文案强调「完全离线、不注册账号、不追踪」**：LingoAI 免费版带 AdMob、语音可能走服务器、Cloud 会出设备，这些都是它的隐私短板。我们是「强制本机语音识别 + 零网络」，应该在商店页和隐私页明确对比式表述（不点名竞品）。
 

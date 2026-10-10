@@ -39,6 +39,9 @@ public struct SystemClock: Clock { public init() {}; public func now() -> Date {
 public final class ConversationModel {
     public private(set) var messages: [Message] = []
     public var theirLanguage: String = "id"
+    /// 当前场景，写进模型上下文（UX 改版）
+    public var scene: Scenario? { didSet { understander?.builder.scene = scene?.contextName } }
+    public var bargain = BargainState()
     public var onChange: (() -> Void)?
     public private(set) var inputHint: String?               // 输入框下的临时提示
     public let trial: TrialCounter
@@ -120,6 +123,24 @@ public final class ConversationModel {
         return .ok
     }
 
+    /// 场景快捷短语：预置译文，不调用翻译、不计试用条数，立即可出示。
+    public func sendPhrase(_ p: Phrase) {
+        var m = Message(id: UUID(), role: .me, createdAt: clock.now(), source: p.zh, sourceLocale: Lang.tourist, foreignLocaleHint: theirLanguage)
+        m.foreign = p.foreign(theirLanguage)
+        m.status = .ready
+        append(m)
+        bargain.noteMine(text: p.zh)
+    }
+
+    /// 砍价还价：按钮里的价格直接生成双语句子。
+    public func sendCounter(_ c: CounterOffer) {
+        var m = Message(id: UUID(), role: .me, createdAt: clock.now(), source: c.zh, sourceLocale: Lang.tourist, foreignLocaleHint: theirLanguage)
+        m.foreign = c.foreign
+        m.status = .ready
+        append(m)
+        bargain.myOffers.append(c.idr)
+    }
+
     // MARK: 对方消息（PRD v2 §7.2）
 
     public func receiveTheirs(_ raw: String) async {
@@ -127,6 +148,7 @@ public final class ConversationModel {
         guard !text.isEmpty else { return }
         let lang = theirLanguage
         var m = Message(id: UUID(), role: .them, createdAt: clock.now(), source: text, sourceLocale: lang)
+        bargain.noteTheirs(text: text)
         if let g = LanguageGuess.guess(text), g != lang { m.offerRetranslateAs = g }
         append(m)
         await translateTheirs(id: m.id, as: lang)
@@ -189,7 +211,8 @@ public final class ConversationModel {
 
     func contextTurns(excluding id: UUID) -> [ContextTurn] {
         messages.filter { $0.id != id && $0.status == .ready }.map {
-            $0.role == .them ? ContextTurn(role: .them, source: $0.source, zhDisplay: $0.display ?? $0.literal) : ContextTurn(role: .me, source: $0.source)
+            $0.role == .them ? ContextTurn(role: .them, source: $0.source, zhDisplay: $0.display ?? $0.literal)
+                             : ContextTurn(role: .me, source: $0.source, foreign: $0.foreign)
         }
     }
 
