@@ -76,3 +76,17 @@ final class UXTests: XCTestCase {
         XCTAssertEqual(HapticEvent.failed.kind, .error)
     }
 }
+
+final class CommunityPhraseTests: XCTestCase {
+    func testOffAppTipParkingPickupPhrasesPresentAndPolite() {
+        let flagged = Scenario.allCases.flatMap(\.phrases).filter(\.needsNativeReview)
+        XCTAssertGreaterThanOrEqual(flagged.count, 9)
+        for p in flagged {
+            XCTAssertTrue(p.id_.contains("Pak") || p.id_.contains("Kak"), "礼貌称呼：\(p.id_)")
+            XCTAssertFalse(p.en.isEmpty)
+        }
+        XCTAssertTrue(Scenario.ride.phrases.contains { $0.id_.contains("titik jemput") })
+        XCTAssertTrue(Scenario.delivery.phrases.contains { $0.id_.contains("karcis parkir") })
+        XCTAssertEqual(Set(Scenario.allCases.flatMap(\.phrases).map(\.zh)).count, Scenario.allCases.flatMap(\.phrases).count, "短语 id（中文）不重复")
+    }
+}

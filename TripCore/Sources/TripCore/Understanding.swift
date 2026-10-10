@@ -87,7 +87,7 @@ public enum OutputValidator {
 
     /// 允许出现的金额数值集合。
     public static func allowedValues(source: String, context: [ContextTurn]) -> Set<Int> {
-        var set = Set(AmountNormalizer.findAmounts(in: source).map(\.value))
+        var set = Set(AmountNormalizer.findAmounts(in: source).flatMap(\.values))
         let hasMoneyContext = !set.isEmpty || context.contains { !AmountNormalizer.findAmounts(in: $0.source).isEmpty }
         for n in AmountNormalizer.bareNumbers(in: source) {
             set.insert(n)

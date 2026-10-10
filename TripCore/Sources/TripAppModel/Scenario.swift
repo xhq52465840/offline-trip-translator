@@ -6,7 +6,11 @@ public struct Phrase: Identifiable, Equatable, Sendable {
     public let zh: String
     public let id_: String
     public let en: String
-    public init(_ zh: String, id: String, en: String) { self.zh = zh; self.id_ = id; self.en = en }
+    /// 来自社区真实语料痛点、尚未经母语者审校的新短语（docs/社区真实语料.md）。
+    public let needsNativeReview: Bool
+    public init(_ zh: String, id: String, en: String, needsNativeReview: Bool = false) {
+        self.zh = zh; self.id_ = id; self.en = en; self.needsNativeReview = needsNativeReview
+    }
     public func foreign(_ lang: String) -> String { lang == "en" ? en : id_ }
 }
 
@@ -111,6 +115,11 @@ public enum Scenario: String, CaseIterable, Identifiable, Codable, Sendable {
             Phrase("我在这里，请到这个位置接我", id: "Saya di sini, tolong jemput di lokasi ini.", en: "I'm here, please pick me up at this location."),
             Phrase("还要多久？", id: "Berapa lama lagi?", en: "How much longer?"),
             Phrase("按 App 上的价格", id: "Sesuai harga di aplikasi, ya.", en: "The price in the app, please."),
+            Phrase("我就在定位点这里", id: "Saya sudah di titik jemput ya, Pak.", en: "I'm at the pickup point.", needsNativeReview: true),
+            Phrase("定位点不对的话，我发位置给你", id: "Kalau titiknya salah, saya share lokasi ya, Pak.", en: "If the pin is wrong, I'll share my location.", needsNativeReview: true),
+            Phrase("请按 App 走，不付现金", id: "Maaf Pak, saya bayar lewat aplikasi saja, tidak cash.", en: "Sorry, I'll pay through the app, not cash.", needsNativeReview: true),
+            Phrase("我不取消，接不了请您取消", id: "Maaf Pak, saya tidak cancel. Kalau tidak bisa jemput, Bapak yang cancel ya.", en: "Sorry, I won't cancel. If you can't pick me up, please cancel.", needsNativeReview: true),
+            Phrase("不在 App 外加价，谢谢", id: "Maaf Pak, saya tidak mau tambah harga di luar aplikasi. Terima kasih.", en: "Sorry, no extra charge outside the app. Thank you.", needsNativeReview: true),
             Phrase("请开空调", id: "Tolong nyalakan AC.", en: "Please turn on the AC."),
             Phrase("在这里停就好", id: "Berhenti di sini saja.", en: "Just stop here, please."),
         ]
@@ -119,6 +128,10 @@ public enum Scenario: String, CaseIterable, Identifiable, Codable, Sendable {
             Phrase("我马上下来", id: "Saya segera turun.", en: "I'm coming down now."),
             Phrase("卖完了就取消吧", id: "Kalau habis, batalkan saja.", en: "If it's sold out, just cancel it."),
             Phrase("我在大门口等你", id: "Saya tunggu di depan gerbang.", en: "I'll wait at the front gate."),
+            Phrase("小费送到后在 App 里给", id: "Tipnya nanti saya kasih lewat aplikasi setelah sampai ya, Kak.", en: "I'll tip in the app after delivery.", needsNativeReview: true),
+            Phrase("有停车票吗？", id: "Maaf Kak, ada karcis parkirnya?", en: "Sorry, do you have the parking ticket?", needsNativeReview: true),
+            Phrase("请按 App 订单送，不加单", id: "Pesanan sesuai aplikasi saja ya, Kak. Tidak ada tambahan.", en: "Just the order in the app, nothing extra.", needsNativeReview: true),
+            Phrase("地址就是定位点", id: "Alamatnya sesuai titik ya, Kak.", en: "The address is at the pin.", needsNativeReview: true),
         ]
         case .restaurant: return [
             Phrase("可以看看菜单吗？", id: "Boleh lihat menunya?", en: "Can I see the menu?"),

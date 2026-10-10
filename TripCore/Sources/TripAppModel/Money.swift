@@ -40,8 +40,8 @@ public enum Money {
     /// 从一句原文（印尼语/英语）里找出金额并生成胶囊；去重，保持出现顺序。
     public static func chips(in text: String, rate: ExchangeRate?) -> [AmountChip] {
         var seen = Set<Int>(); var out: [AmountChip] = []
-        for m in AmountNormalizer.findAmounts(in: text) where m.value >= 100 && !seen.contains(m.value) {
-            seen.insert(m.value); out.append(chip(m.value, rate: rate))
+        for m in AmountNormalizer.findAmounts(in: text) {
+            for v in m.values where v >= 100 && !seen.contains(v) { seen.insert(v); out.append(chip(v, rate: rate)) }
         }
         return out
     }
