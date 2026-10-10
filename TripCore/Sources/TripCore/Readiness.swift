@@ -139,6 +139,8 @@ public struct DownloadMachine: Sendable {
         }
     }
 
+    mutating func forceInstalled() { state = .installed }
+
     public mutating func handle(_ e: DownloadEvent) {
         switch (state, e) {
         case (_, .start(let net, let free)):

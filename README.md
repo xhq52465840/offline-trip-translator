@@ -13,3 +13,19 @@
 ```
 cd TripCore && swift build && swift test
 ```
+
+## 阶段 B：推理引擎与下载
+
+- `TripCore/LLMEngine.swift`：`LLMEngine` 协议（load / warmUp 前缀缓存 / 流式 generate / complete / 取消）+ `MockEngine`
+- `TripCore/Understander.swift`：提示词 + 生成 + 超时 + 校验
+- `TripLLM/LlamaCppEngine.swift`：llama.cpp 实现。Apple 平台用官方 XCFramework（release **b11541**，`import llama`，checksum 已核对）；Linux 用 `CLlama` system library（仅当设置 `LLAMA_CPP_DIR`）。C API 已按 b11541 的 `include/llama.h` 核对（XCFramework 内的 llama.h 与源码逐字节相同）。
+- `TripCore/ModelDownloader.swift`：状态机 + 传输协议 + SHA-256 + 原子安装；`URLSessionTransport`（后台会话、resume data、蜂窝策略）只在 Apple 平台编译。
+- `Resources/model-manifest.json`：Qwen2.5-1.5B-Instruct Q4_K_M（HF 固定 commit，bytes 与 sha256 已核对）。
+
+Linux 冒烟（真实模型）：
+
+```
+cd /workspace/llama.cpp && cmake -B build -DBUILD_SHARED_LIBS=ON -DLLAMA_CURL=OFF && cmake --build build --target llama
+cd TripCore && LLAMA_CPP_DIR=/workspace/llama.cpp swift run llm-smoke /path/to/qwen2.5-1.5b-instruct-q4_k_m.gguf
+```
+输出见 `docs/llm-smoke-linux.txt`（Linux x86 CPU，非 iPhone 速度）。
