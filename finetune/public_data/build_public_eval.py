@@ -73,6 +73,10 @@ for l in open(f"{R}/wikivoyage_indonesian_phrasebook.wiki", encoding="utf-8"):
     m = re.match(r"^; (.+?) : (.+?)(?: \(''.*)?$", l.strip())
     if m and sec in WV_SCENE:
         en = re.sub(r"''|\[\[|\]\]", "", m.group(1)).strip(); idn = re.sub(r"''|<br>.*", "", m.group(2)).strip()
+        en = re.sub(r"\s*\([^)]*\)", "", en).strip(); idn = re.sub(r"\s*\([^)]*\)", "", idn).strip()   # 去掉括注（"Muslim"、发音等）
+        # 标牌类条目左右颠倒（左边是印尼语大写，如 DILARANG MASUK）：英文侧必须含常见英文小写词
+        if en.isupper() or not re.search(r"\b(the|a|an|is|are|i|you|my|me|please|do|can|how|where|what|to|of|it|this|have)\b", en.lower()):
+            if len(en.split()) > 2 or en.isupper(): continue
         if 2 <= len(idn.split()) <= 14 and "&" not in idn and "|" not in idn and "_" not in idn and "..." not in idn and "..." not in en:
             add(source_dataset="Wikivoyage Indonesian phrasebook", license="CC BY-SA 4.0", scene=WV_SCENE[sec], src_id=f"wikivoyage:{sec}", src=idn, ref_en=en, task="mt_id_en")
 
