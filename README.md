@@ -29,3 +29,9 @@ cd /workspace/llama.cpp && cmake -B build -DBUILD_SHARED_LIBS=ON -DLLAMA_CURL=OF
 cd TripCore && LLAMA_CPP_DIR=/workspace/llama.cpp swift run llm-smoke /path/to/qwen2.5-1.5b-instruct-q4_k_m.gguf
 ```
 输出见 `docs/llm-smoke-linux.txt`（Linux x86 CPU，非 iPhone 速度）。
+
+## 阶段 C：SwiftUI App
+
+- `TripCore/Sources/TripAppModel`（非 UI，Linux 可测）：`AppGate`（启动/前台阻断判定）、`ConversationModel`（金额占位翻译、理解替换 3 秒预算、我的消息改写+回译、试用）、`ClipboardHint`（hasStrings + PasteButton）、`PrepareRows`、`DemoScript`、回译一致判定、语言猜测。
+- `App/TripApp`（SwiftUI，iOS 17+）：强制准备引导、准备页、不可关闭的阻断 sheet（每次冷启动与 scenePhase .active 检查）、对话页、出示页、示例演示、隐私（匿名计数开关）、购买（StoreKit 2）。系统翻译：iOS 18+ `LanguageAvailability` / `prepareTranslation()`（经 `.translationTask`），iOS 26+ `TranslationSession(installedSource:target:)`；听写资源：iOS 26 `AssetInventory`。
+- 生成 Xcode 工程：`cd App && xcodegen generate`（`project.yml`）。

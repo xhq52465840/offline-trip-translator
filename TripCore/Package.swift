@@ -12,11 +12,14 @@ let llamaDir = ProcessInfo.processInfo.environment["LLAMA_CPP_DIR"]
 var targets: [Target] = [
     .target(name: "TripCore", resources: [.process("Resources")]),
     .testTarget(name: "TripCoreTests", dependencies: ["TripCore"]),
+    .target(name: "TripAppModel", dependencies: ["TripCore"]),
+    .testTarget(name: "TripAppModelTests", dependencies: ["TripAppModel", "TripCore"]),
 ]
 var tripLLMDeps: [Target.Dependency] = ["TripCore"]
 var products: [Product] = [
     .library(name: "TripCore", targets: ["TripCore"]),
     .library(name: "TripLLM", targets: ["TripLLM"]),
+    .library(name: "TripAppModel", targets: ["TripAppModel"]),
 ]
 
 #if os(Linux)
