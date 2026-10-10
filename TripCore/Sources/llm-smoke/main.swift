@@ -3,7 +3,7 @@ import TripCore
 import TripLLM
 
 // Linux 冷烟测试：用真实 GGUF 跑 TripCore 提示词 + 校验 + LlamaCppEngine（同一套 C API）。
-let path = CommandLine.arguments.dropFirst().first ?? "/workspace/models/qwen2.5-1.5b-instruct-q4_k_m.gguf"
+let path = CommandLine.arguments.dropFirst().first ?? "qwen2.5-1.5b-instruct-q4_k_m.gguf"
 
 struct Case { let id: String; let ctx: [ContextTurn]; let src: String; let lit: String }
 let cases: [Case] = [

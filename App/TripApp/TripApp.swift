@@ -15,6 +15,7 @@ struct TripApp: App {
                 .onChange(of: scenePhase) { _, phase in
                     // 每次回到前台都检查（PRD v2 §4.4），并更新剪贴板提示
                     if phase == .active { Task { await state.refresh(.foreground) } }
+                    if phase == .background { state.enterBackground() }
                 }
         }
     }

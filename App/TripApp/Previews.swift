@@ -22,7 +22,9 @@ extension AppState {
         let engine = MockEngine(pieceDelayNanos: 20_000_000) { _ in "5万，不含车费" }
         Task { try? await engine.load(modelURL: URL(fileURLWithPath: "/dev/null")) }
         let s = AppState(tier: .a8GB, probe: PreviewProbe(), translator: PreviewTranslator(), engine: engine,
-                         downloader: nil, env: SystemDownloadEnvironment(network: .wifi), speechInstaller: PreviewSpeechInstaller())
+                         downloader: nil, env: SystemDownloadEnvironment(network: .wifi), speechInstaller: PreviewSpeechInstaller(),
+                         transcriber: PreviewTranscriber(),
+                         sessions: SessionStore(directory: FileManager.default.temporaryDirectory.appendingPathComponent("preview-sessions")))
         Task { await s.conversation.receiveTheirs("50rb belum termasuk ongkos"); await s.conversation.sendMine("太贵了") }
         return s
     }
@@ -39,4 +41,10 @@ extension Message {
         m.foreign = "Terlalu mahal"; m.status = .ready
         return m
     }
+}
+
+final class PreviewTranscriber: Transcribing {
+    func start(locale: String) async throws {}
+    func finish() async -> String { "bisa kurang sedikit?" }
+    func cancel() {}
 }

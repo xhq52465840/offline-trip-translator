@@ -1,9 +1,9 @@
 import Foundation
 import TripCore
 
-public enum MessageStatus: Equatable, Sendable { case translating, ready, failed, trialBlocked }
+public enum MessageStatus: String, Codable, Equatable, Sendable { case translating, ready, failed, trialBlocked }
 
-public struct Message: Identifiable, Equatable, Sendable {
+public struct Message: Identifiable, Equatable, Codable, Sendable {
     public let id: UUID
     public var role: Role
     public var createdAt: Date
@@ -176,7 +176,16 @@ public final class ConversationModel {
 
     // MARK: 工具
 
-    public func newConversation() { messages = []; onChange?() }
+    public var onPersist: (([Message]) -> Void)?
+
+    public func newConversation() { messages = []; onChange?(); onPersist?(messages) }
+
+    /// 恢复上次的这场（被系统杀掉后再打开）。翻译中的半截消息改为失败，不产生半截气泡。
+    public func restore(_ saved: [Message]) {
+        messages = saved.filter { !($0.status == .translating && $0.role == .me && $0.foreign == nil && $0.source.isEmpty) }
+            .map { var m = $0; if m.status == .translating { m.status = .failed }; return m }
+        onChange?()
+    }
 
     func contextTurns(excluding id: UUID) -> [ContextTurn] {
         messages.filter { $0.id != id && $0.status == .ready }.map {
@@ -192,10 +201,11 @@ public final class ConversationModel {
         return re.matches(in: s, range: NSRange(location: 0, length: ns.length)).map { ns.substring(with: $0.range) }
     }
 
-    private func append(_ m: Message) { messages.append(m); onChange?() }
+    private func append(_ m: Message) { messages.append(m); onChange?(); onPersist?(messages) }
     private func update(_ id: UUID, _ f: (inout Message) -> Void) {
         guard let i = messages.firstIndex(where: { $0.id == id }) else { return }
         f(&messages[i]); onChange?()
+        if messages[i].status != .translating { onPersist?(messages) }
     }
     private func flash(_ s: String) { inputHint = s; onChange?() }
     public func clearHint() { inputHint = nil; onChange?() }

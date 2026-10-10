@@ -4,6 +4,7 @@ import TripCore
 import TripAppModel
 
 struct ConversationView: View {
+    @State private var confirmClear = false
     @EnvironmentObject var state: AppState
     @State private var input = ""
     @State private var presenting: Message?
@@ -35,8 +36,24 @@ struct ConversationView: View {
                     }
                 }
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button("新对话") { model.newConversation() }
+                    Menu("新对话") {
+                        Button("开始新对话") { state.newConversation(deletePrevious: false) }
+                        Button("开始新对话并删除上一场", role: .destructive) { state.newConversation(deletePrevious: true) }
+                        Button("清除本机对话", role: .destructive) { confirmClear = true }
+                    }
                 }
+            }
+            .confirmationDialog("清除本机所有对话？", isPresented: $confirmClear, titleVisibility: .visible) {
+                Button("清除", role: .destructive) { state.clearAllConversations() }
+                Button("取消", role: .cancel) {}
+            } message: { Text("对话只存在这台手机上，清除后无法恢复。") }
+            .alert("接着上次的对话？", isPresented: $state.askContinue) {
+                Button("继续") { state.continueSession() }
+                Button("新对话") { state.newConversation(deletePrevious: false); state.askContinue = false }
+            }
+            .alert(state.speechAlert ?? "", isPresented: Binding(get: { state.speechAlert != nil }, set: { if !$0 { state.speechAlert = nil } })) {
+                Button("去准备") { state.speechAlert = nil; state.showPrepare = true }
+                Button("好", role: .cancel) { state.speechAlert = nil }
             }
             .navigationDestination(isPresented: $state.showPrepare) { PrepareView() }
             .fullScreenCover(item: $presenting) { m in PresentView(text: m.foreign ?? "") }
@@ -110,13 +127,62 @@ struct ConversationView: View {
                 .disabled(!model.canSend || input.trimmingCharacters(in: .whitespaces).isEmpty)
             }
             HStack(spacing: 12) {
-                // 听写按钮：阶段 C 只放占位，接入 Speech 在阶段 D
-                Text("按住听对方").frame(maxWidth: .infinity, minHeight: 56).background(.blue.opacity(0.85)).foregroundStyle(.white).clipShape(RoundedRectangle(cornerRadius: 12))
-                Text("按住说中文").frame(maxWidth: .infinity, minHeight: 44).background(.gray.opacity(0.2)).clipShape(RoundedRectangle(cornerRadius: 12))
+                TalkButton(title: state.talk.buttonTitle.them, target: .them, prominent: true,
+                           locale: Lang.speechLocale(model.theirLanguage))
+                TalkButton(title: state.talk.buttonTitle.me, target: .me, prominent: false,
+                           locale: Lang.speechLocale(Lang.tourist))
             }
+            .disabled(!model.trial.allowsFull || model.isTranslating)
+            if let f = state.talk.feedback { Text(f).font(.caption).foregroundStyle(.secondary) }
             .opacity(model.trial.allowsFull ? 1 : 0.4)
         }
         .padding()
+    }
+}
+
+/// 按住说话按钮：按下 0.3 秒后开始，上滑约 80 点取消，最长 30 秒（逻辑在 TripAppModel.HoldToTalk）。
+struct TalkButton: View {
+    @EnvironmentObject var state: AppState
+    let title: String
+    let target: TalkTarget
+    let prominent: Bool
+    let locale: String
+    @State private var ticker: Task<Void, Never>?
+
+    var body: some View {
+        Text(title)
+            .font(prominent ? .headline : .body)
+            .frame(maxWidth: .infinity, minHeight: prominent ? 56 : 44)
+            .background(prominent ? Color.blue.opacity(0.85) : Color.gray.opacity(0.2))
+            .foregroundStyle(prominent ? Color.white : Color.primary)
+            .clipShape(RoundedRectangle(cornerRadius: 12))
+            .accessibilityLabel(target == .them ? "按住听对方" : "按住说中文")
+            .gesture(
+                DragGesture(minimumDistance: 0)
+                    .onChanged { v in
+                        if state.talk.phase == .idle {
+                            guard state.speechReady(for: target) else { return }
+                            state.talk.press(target, locale: locale, at: Date())
+                            startTicker()
+                        } else {
+                            state.talk.drag(dy: v.translation.height)
+                        }
+                    }
+                    .onEnded { _ in
+                        ticker?.cancel(); ticker = nil
+                        Task { await state.handleTalk(await state.talk.release(at: Date())) }
+                    }
+            )
+    }
+
+    private func startTicker() {
+        ticker?.cancel()
+        ticker = Task { @MainActor in
+            while !Task.isCancelled {
+                try? await Task.sleep(nanoseconds: 100_000_000)
+                if let outcome = await state.talk.tick(at: Date()) { await state.handleTalk(outcome); break }
+            }
+        }
     }
 }
 

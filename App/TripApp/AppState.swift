@@ -25,12 +25,18 @@ final class AppState: ObservableObject {
     let speechInstaller: SpeechAssetInstalling
     let purchase = PurchaseModel()
     let understander: Understander
+    let talk: HoldToTalk
+    let sessions: SessionStore
+    private var session: StoredSession?
+    @Published var askContinue = false
+    @Published var speechAlert: String?
 
     var isBlocking: Bool { if case .block = decision { return !showPrepare } else { return false } }
     var missingText: String { if case .block(let m) = decision { return AppGate.missingText(m) } else { return "" } }
 
     init(tier: DeviceTier, probe: LanguagePackProbing, translator: Translating, engine: LLMEngine,
-         downloader: ModelDownloader?, env: SystemDownloadEnvironment, speechInstaller: SpeechAssetInstalling) {
+         downloader: ModelDownloader?, env: SystemDownloadEnvironment, speechInstaller: SpeechAssetInstalling,
+         transcriber: Transcribing, sessions: SessionStore) {
         self.probe = probe; self.engine = engine; self.downloader = downloader; self.env = env; self.speechInstaller = speechInstaller
         let dl = downloader
         gate = AppGate(tier: tier, probe: probe, modelReadiness: { dl?.readiness ?? .unavailable("没有适合这台手机的理解能力") })
@@ -44,6 +50,22 @@ final class AppState: ObservableObject {
         conversation = ConversationModel(translator: translator, understander: understander,
                                          trial: TrialCounter(store: store), metrics: MetricsSettings())
         conversation.onChange = { [weak self] in self?.tick += 1 }
+        talk = HoldToTalk(transcriber: transcriber)
+        self.sessions = sessions
+        talk.onChange = { [weak self] in self?.tick += 1 }
+        conversation.onPersist = { [weak self] msgs in
+            guard let self else { return }
+            if self.session == nil { self.session = try? self.sessions.startNew(theirLanguage: self.conversation.theirLanguage, deletePrevious: false) }
+            self.session?.messages = msgs
+            self.session?.theirLanguage = self.conversation.theirLanguage
+            if let s = self.session { try? self.sessions.save(s) }
+        }
+        sessions.cleanup()
+        switch sessions.load() {
+        case .restored(let s): session = s; conversation.theirLanguage = s.theirLanguage; conversation.restore(s.messages)
+        case .askContinue(let s): session = s; conversation.theirLanguage = s.theirLanguage; conversation.restore(s.messages); askContinue = true
+        case .empty, .corrupt: break
+        }
         downloader?.onChange = { [weak self] _ in
             Task { @MainActor in
                 guard let self else { return }
@@ -64,7 +86,8 @@ final class AppState: ObservableObject {
                             transport: URLSessionTransport(), environment: env)
         }
         return AppState(tier: tier, probe: SystemPackProbe(), translator: SystemTranslator(), engine: LlamaCppEngine(),
-                        downloader: downloader, env: env, speechInstaller: SystemSpeechInstaller())
+                        downloader: downloader, env: env, speechInstaller: SystemSpeechInstaller(),
+                        transcriber: LiveTranscriber(), sessions: SessionStore(directory: support.appendingPathComponent("sessions")))
     }
 
     func refresh(_ trigger: GateTrigger) async {
@@ -97,6 +120,42 @@ final class AppState: ObservableObject {
             await refresh(.downloadFinished)
         }
         downloader?.start()
+    }
+
+    // MARK: 听写
+
+    func speechReady(for target: TalkTarget) -> Bool {
+        let item: PrepareItem = target == .me ? .touristSpeech : .speech(conversation.theirLanguage)
+        if gate.status.items[item] == .ready { return true }
+        speechAlert = target == .me ? "中文还不能离线听" : "\(Lang.displayName(conversation.theirLanguage))还不能离线听"
+        return false
+    }
+
+    func handleTalk(_ outcome: HoldToTalk.Outcome) async {
+        switch outcome {
+        case .text(let s, .them): await conversation.receiveTheirs(s)
+        case .text(let s, .me): await conversation.sendMine(s)
+        case .failed: speechAlert = "需要麦克风和语音识别权限。可在系统设置里打开。"
+        default: break
+        }
+        tick += 1
+    }
+
+    func enterBackground() { talk.enterBackground() }
+
+    // MARK: 会话
+
+    func newConversation(deletePrevious: Bool) {
+        session = try? sessions.startNew(theirLanguage: conversation.theirLanguage, deletePrevious: deletePrevious)
+        conversation.newConversation()
+    }
+
+    func continueSession() { if let s = session { try? sessions.touch(s) }; askContinue = false }
+
+    func clearAllConversations() {
+        try? sessions.deleteAll()
+        session = nil
+        conversation.newConversation()
     }
 
     func confirmCellular() { pendingCellularConfirm = false; downloader?.confirmCellular() }

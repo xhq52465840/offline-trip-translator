@@ -1,5 +1,13 @@
+.DS_Store
 .build/
 .swiftpm/
 DerivedData/
-*.xcuserstate
 xcuserdata/
+*.xcuserstate
+TripCore/Package.resolved
+App/TripUnderstand.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/
+# 模型文件不进仓库
+*.gguf
+*.bin
+*.safetensors
+models/

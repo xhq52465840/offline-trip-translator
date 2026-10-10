@@ -28,7 +28,15 @@ targets:
         NSMicrophoneUsageDescription: 用来听对方说话和你说的中文。只在手机上识别，不保存录音。
         NSSpeechRecognitionUsageDescription: 用来把听到的话转成文字。识别在这台手机上完成。
         ITSAppUsesNonExemptEncryption: false
+    entitlements:
+      path: TripApp/TripUnderstand.entitlements
+      properties:
+        com.apple.developer.kernel.increased-memory-limit: true
     settings:
       base:
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        CODE_SIGN_STYLE: Automatic
+        DEVELOPMENT_TEAM: ""   # 在 Xcode 里选你的 Team
+        PRODUCT_BUNDLE_IDENTIFIER: app.tripunderstand.demo
         TARGETED_DEVICE_FAMILY: "1"
         SWIFT_VERSION: "5.0"

@@ -1,0 +1,3 @@
+qwen2.5-1.5b-instruct-q4_k_m 冷启动无缓存首token秒 1.85 提示约tokens 378 prefill tok/s约 204
+Qwen3-1.7B-Q4_K_M 冷启动无缓存首token秒 2.43 提示约tokens 382 prefill tok/s约 157
+Qwen3-4B-Instruct-2507-Q4_K_M 冷启动无缓存首token秒 6.45 提示约tokens 378 prefill tok/s约 59
