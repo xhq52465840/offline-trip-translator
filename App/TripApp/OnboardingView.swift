@@ -14,6 +14,9 @@ struct OnboardingView: View {
                         Text("先准备好，再出发").font(.title2.bold())
                         Text("这个应用全部在手机上运行，不联网也能用。第一次需要在 Wi‑Fi 下准备好语言和理解能力，\(totalSize)，下载完成后才能开始用。")
                             .foregroundStyle(.secondary)
+                        Label(state.etaText, systemImage: "house.fill")
+                            .font(.subheadline.weight(.semibold))
+                            .accessibilityLabel(state.etaText)
                     }.padding(.vertical, 4)
                 }
                 PrepareRowsSection()
@@ -56,7 +59,7 @@ struct PrepareRowsSection: View {
                 .onTapGesture { if row.actionable { state.prepareAll() } }
             }
         } footer: {
-            Text("出发前在 Wi‑Fi 下准备好。准备好之后，没网也能用。")
+            Text(state.etaText + " 准备好之后，没网也能用。")
         }
     }
 }

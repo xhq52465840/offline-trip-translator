@@ -40,7 +40,29 @@ final class AppState: ObservableObject {
     }
     static func saveRate(_ r: ExchangeRate) { UserDefaults.standard.set(r.idrPerCny, forKey: "idrPerCny") }
 
-    func enter(scene: Scenario?) { conversation.scene = scene; tick += 1 }
+    /// 场景卡片最近使用排序（TripAppModel.RecentScenes）
+    @Published var recentScenes: RecentScenes = AppState.loadRecent() { didSet { AppState.saveRecent(recentScenes) } }
+    static func loadRecent() -> RecentScenes {
+        (UserDefaults.standard.data(forKey: "recentScenes")).flatMap { try? JSONDecoder().decode(RecentScenes.self, from: $0) } ?? RecentScenes()
+    }
+    static func saveRecent(_ r: RecentScenes) { UserDefaults.standard.set(try? JSONEncoder().encode(r), forKey: "recentScenes") }
+
+    /// 模型下载剩余时间估算（TripAppModel.DownloadETA）
+    var eta = DownloadETA()
+    var etaText: String {
+        guard let d = downloader else { return Copy.downloadAdvice(eta: nil) }
+        var received: Int64 = 0
+        if case .downloading(let r, _) = d.machine.state { received = r }
+        if case .paused(let r, _, _) = d.machine.state { received = r }
+        if case .installed = d.machine.state { return "理解能力已就绪" }
+        return Copy.downloadAdvice(eta: eta.text(remaining: max(0, d.entry.bytes - received)))
+    }
+
+    func enter(scene: Scenario?) {
+        conversation.scene = scene
+        if let scene { recentScenes.use(scene) }
+        tick += 1
+    }
 
     var isBlocking: Bool { if case .block = decision { return !showPrepare } else { return false } }
     var missingText: String { if case .block(let m) = decision { return AppGate.missingText(m) } else { return "" } }
@@ -80,6 +102,7 @@ final class AppState: ObservableObject {
         downloader?.onChange = { [weak self] _ in
             Task { @MainActor in
                 guard let self else { return }
+                if case .downloading(let r, _) = self.downloader?.machine.state { self.eta.record(bytes: r, at: Date()); self.tick += 1 }
                 if case .awaitingCellularConfirmation = self.downloader?.machine.state { self.pendingCellularConfirm = true }
                 await self.refresh(.downloadFinished)
             }

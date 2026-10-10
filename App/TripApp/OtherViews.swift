@@ -10,7 +10,7 @@ struct DemoView: View {
         List {
             Section {
                 Toggle("显示理解后的结果", isOn: $showUnderstood.animation())
-            } footer: { Text("这是预先录好的示例对话，不需要下载就能看。") }
+            } footer: { Text("这是预先录好的示例对话，不需要下载就能看。\n" + Copy.amountTrust) }
             ForEach(DemoScript.lines) { l in
                 VStack(alignment: l.role == .me ? .trailing : .leading, spacing: 4) {
                     Text(l.role == .me ? l.source : (showUnderstood ? l.understood : l.literal)).font(.title3)
@@ -94,6 +94,7 @@ struct PurchaseView: View {
                 Text("没网能用")
                 Text("印尼语和英语都能听、能看、能递给对方")
                 Text("以后不加订阅")
+                Text(Copy.amountTrust).font(.footnote).foregroundStyle(.secondary)
             } footer: { Text("可免费完整使用 30 条消息，之后只能看对方消息的字面意思。购买后仍需完成离线准备。") }
             Section {
                 if p.unlocked {

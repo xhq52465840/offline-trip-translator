@@ -35,7 +35,7 @@ struct HomeView: View {
                             Image(systemName: "bubble.left.and.text.bubble.right.fill").font(.largeTitle)
                             VStack(alignment: .leading, spacing: 4) {
                                 Text("开始对话").font(.title2.bold())
-                                Text("贴进对方的话，或按住说").font(.subheadline).opacity(0.85)
+                                Text(Copy.homeSubtitle).font(.subheadline).opacity(0.85)
                             }
                             Spacer()
                             Image(systemName: "chevron.right")
@@ -49,7 +49,7 @@ struct HomeView: View {
 
                     Text("在哪儿？选一个，会多一些常用句").font(.headline).foregroundStyle(.secondary)
                     LazyVGrid(columns: columns, spacing: 12) {
-                        ForEach(Scenario.allCases) { s in
+                        ForEach(state.recentScenes.ordered()) { s in
                             Button { state.enter(scene: s); path.append(s) } label: { ScenarioCard(scene: s) }
                                 .buttonStyle(.plain)
                         }
@@ -173,7 +173,7 @@ struct ConversationView: View {
             Button("好", role: .cancel) { state.speechAlert = nil }
         }
         .navigationDestination(isPresented: $state.showPrepare) { PrepareView() }
-        .fullScreenCover(item: $presenting) { m in PresentView(text: m.foreign ?? "") }
+        .fullScreenCover(item: $presenting) { m in PresentView(text: m.foreign ?? "", amountLine: PresentContent.amountLine(foreign: m.foreign ?? "", source: m.source)) }
         .disabled(state.decision != .open)
     }
 
@@ -310,7 +310,10 @@ struct BubbleView: View {
     let viewer: Viewer
     var onPresent: () -> Void = {}
     var onRetranslate: (String) -> Void = { _ in }
+    @EnvironmentObject var state: AppState
     @State private var copied = false
+    /// 复制后提示「回 Grab 粘贴」（iOS 不能自动切回上一个 App）
+    @State private var copyHint: String?
 
     private var trailing: Bool { row.side == .trailing }
 
@@ -361,12 +364,19 @@ struct BubbleView: View {
                         UIPasteboard.general.string = m.foreign
                         #endif
                         Haptics.play(.understood)
+                        copyHint = CopyHint.text(scene: state.conversation.scene)
                         copied = true
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) { copied = false }
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) { copied = false; copyHint = nil }
                     }
                     Button("出示", action: onPresent)
                 }
                 .font(.callout).disabled(!m.canCopyOrPresent)
+                if let h = copyHint {
+                    Label(h, systemImage: "arrow.uturn.backward.circle")
+                        .font(.footnote).foregroundStyle(.secondary)
+                        .transition(.opacity)
+                        .accessibilityAddTraits(.updatesFrequently)
+                }
             }
         }
     }
@@ -457,6 +467,8 @@ struct TalkButton: View {
 /// 出示页（PRD v2 §8）：黑底白字，只有一句。
 struct PresentView: View {
     let text: String
+    /// 对方熟悉的金额写法（Rp 50.000），大字单独一行，方便核对
+    var amountLine: String? = nil
     @Environment(\.dismiss) private var dismiss
     var body: some View {
         ZStack(alignment: .top) {
@@ -470,6 +482,10 @@ struct PresentView: View {
                     .padding(20)
                     .frame(maxWidth: .infinity, minHeight: 600)
                     .accessibilityAddTraits(.isHeader)
+                if let a = amountLine {
+                    Text(a).font(.system(size: 44, weight: .heavy).monospacedDigit())
+                        .foregroundStyle(.yellow).padding(.horizontal, 20).frame(maxWidth: .infinity, alignment: .leading)
+                }
             }
             Button("关闭") { dismiss() }.font(.system(size: 15)).foregroundStyle(.white.opacity(0.8)).padding(.top, 8)
         }
