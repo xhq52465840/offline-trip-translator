@@ -29,7 +29,7 @@ struct RootView: View {
             switch state.decision {
             case .unsupportedDevice: UnsupportedView()
             case .onboarding: OnboardingView()
-            default: ConversationView()
+            default: HomeView()
             }
         }
         // 不完整时的阻断 sheet：不可下滑关闭

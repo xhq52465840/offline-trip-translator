@@ -30,6 +30,17 @@ final class AppState: ObservableObject {
     private var session: StoredSession?
     @Published var askContinue = false
     @Published var speechAlert: String?
+    /// 离线汇率（1 人民币 = ? 印尼盾），用户手动设置；不联网获取
+    @Published var rate: ExchangeRate = AppState.loadRate() { didSet { AppState.saveRate(rate) } }
+    @Published var faceToFace = false
+
+    static func loadRate() -> ExchangeRate {
+        let v = UserDefaults.standard.double(forKey: "idrPerCny")
+        return v > 0 ? ExchangeRate(idrPerCny: v, updatedNote: "手动设置") : .default
+    }
+    static func saveRate(_ r: ExchangeRate) { UserDefaults.standard.set(r.idrPerCny, forKey: "idrPerCny") }
+
+    func enter(scene: Scenario?) { conversation.scene = scene; tick += 1 }
 
     var isBlocking: Bool { if case .block = decision { return !showPrepare } else { return false } }
     var missingText: String { if case .block(let m) = decision { return AppGate.missingText(m) } else { return "" } }

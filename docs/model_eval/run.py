@@ -1,6 +1,8 @@
 import sys,time,json,re,os
 from llama_cpp import Llama
 from cases import C
+if os.environ.get('CASES')=='ext':
+    from cases_ext import C2 as C
 SYS="""你是旅行对话的中文译文修正器。游客是中国人，对方说印尼语或英语。你只修改「字面」这句中文译文，让它符合这场对话和原文真实意思：
 - 把印尼语/英语缩写俚语译对（brp=berapa多少, gk/nggak=不, udh/udah=已经, sy=我, bs=bisa可以, otw/omw=在路上, mnt=分钟, lg=lagi再/还, aja=就, kak/pak=称呼可省略）。
 - 金额：rb/ribu=千，jt/juta=百万，换成中文万，如50rb=5万，1,5jt=150万。上下文在讲价时，没单位的数字如40通常指4万。
@@ -32,7 +34,7 @@ if __name__=="__main__":
     path=sys.argv[1]; name=os.path.basename(path); nothink="Qwen3-" in name and "2507" not in name
     if path=="LITERAL":
         res=[dict(id=c[0],out=c[4],score=score(c[4],c)[0]) for c in C]
-        json.dump(res,open("res_LITERAL.json","w"),ensure_ascii=False,indent=1);print(sum(r["score"] for r in res));sys.exit()
+        json.dump(res,open("res_LITERAL.json" if os.environ.get("CASES")!="ext" else "ext_LITERAL.json","w"),ensure_ascii=False,indent=1);print(sum(r["score"] for r in res));sys.exit()
     t=time.time(); llm=Llama(path,n_ctx=2048,n_threads=8,verbose=False); load=time.time()-t
     res=[]
     for c in C:
@@ -49,4 +51,4 @@ if __name__=="__main__":
         res.append(dict(id=c[0],cat=c[1],src=c[3],out=out,score=s,valid=valid(out),ttft=round((first or end)-t0,3),gen_tps=round((toks-1)/max(end-first,1e-6),1) if first and toks>1 else None,prompt_tok_approx=ntok))
         print(c[0],s,out,res[-1]["ttft"],flush=True)
     sm=dict(model=name,size_mb=round(os.path.getsize(path)/1e6),load_s=round(load,2),score=sum(r["score"] for r in res),max=2*len(C),full=sum(r["score"]==2 for r in res),valid=sum(r["valid"] for r in res),ttft_med=sorted(r["ttft"] for r in res)[15],tps_med=sorted(r["gen_tps"] or 0 for r in res)[15])
-    json.dump(dict(summary=sm,results=res),open(f"res_{name}.json","w"),ensure_ascii=False,indent=1); print(sm)
+    json.dump(dict(summary=sm,results=res),open(f"res_{name}.json" if os.environ.get("CASES")!="ext" else f"ext_{name}.json","w"),ensure_ascii=False,indent=1); print(sm)
