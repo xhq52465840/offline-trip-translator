@@ -60,3 +60,8 @@ CUDA 备选：`python peft/train_peft.py --model Qwen/Qwen2.5-1.5B-Instruct --da
 
 ## 本机实测（Linux x86 CPU，非 Mac / 非 iPhone）
 见 `results/README.md`。
+
+### 短程 LoRA（2026-10-11，【实测 · 短 CPU 跑】，非最终质量）
+- 训练：CPU PEFT，train=2244，约 150 step，`val_loss` 1.40→0.05；融合量化 `runs/short-Q4_K_M.gguf`（约 941MB，不入库）。
+- App 60 条：`eval_base` 严格 90/120、金额错 5 → `eval_short` 严格 **105/120**、金额错 **2**（关键词 97→110）。
+- 公开集 chrF++：`scripts/eval_public.py` → `results/public_{base,short}.json`（汇总表在 `results/README.md`）。
