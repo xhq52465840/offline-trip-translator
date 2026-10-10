@@ -41,7 +41,6 @@ public final class ConversationModel {
     public var theirLanguage: String = "id"
     /// 当前场景，写进模型上下文（UX 改版）
     public var scene: Scenario? { didSet { understander?.builder.scene = scene?.contextName } }
-    public var bargain = BargainState()
     public var onChange: (() -> Void)?
     public private(set) var inputHint: String?               // 输入框下的临时提示
     public let trial: TrialCounter
@@ -129,16 +128,6 @@ public final class ConversationModel {
         m.foreign = p.foreign(theirLanguage)
         m.status = .ready
         append(m)
-        bargain.noteMine(text: p.zh)
-    }
-
-    /// 砍价还价：按钮里的价格直接生成双语句子。
-    public func sendCounter(_ c: CounterOffer) {
-        var m = Message(id: UUID(), role: .me, createdAt: clock.now(), source: c.zh, sourceLocale: Lang.tourist, foreignLocaleHint: theirLanguage)
-        m.foreign = c.foreign
-        m.status = .ready
-        append(m)
-        bargain.myOffers.append(c.idr)
     }
 
     // MARK: 对方消息（PRD v2 §7.2）
@@ -148,7 +137,6 @@ public final class ConversationModel {
         guard !text.isEmpty else { return }
         let lang = theirLanguage
         var m = Message(id: UUID(), role: .them, createdAt: clock.now(), source: text, sourceLocale: lang)
-        bargain.noteTheirs(text: text)
         if let g = LanguageGuess.guess(text), g != lang { m.offerRetranslateAs = g }
         append(m)
         await translateTheirs(id: m.id, as: lang)
