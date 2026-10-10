@@ -1,0 +1,123 @@
+{
+ "model": "gemma-3-270m-it-Q4_K_M.gguf",
+ "tag": "smoke270m",
+ "n": 9,
+ "summary": {
+  "source:STIF-Indonesia test/slang_norm": {
+   "n": 3,
+   "chrf": 52.58
+  },
+  "source:Tatoeba/mt_id_zh": {
+   "n": 3,
+   "chrf": 0.0
+  },
+  "source:Wikivoyage Indonesian phrasebook/mt_id_en": {
+   "n": 3,
+   "chrf": 5.48
+  },
+  "task:mt_id_en": {
+   "n": 3,
+   "chrf": 5.48
+  },
+  "task:mt_id_zh": {
+   "n": 3,
+   "chrf": 0.0
+  },
+  "task:slang_norm": {
+   "n": 3,
+   "chrf": 52.58
+  }
+ },
+ "rows": [
+  {
+   "id": "P0001",
+   "task": "mt_id_zh",
+   "source_dataset": "Tatoeba",
+   "scene": "restaurant",
+   "src": "Aku ingin minum kopi.",
+   "ref": "我想要一杯咖啡。",
+   "hyp": "kopi",
+   "sec": 4.09
+  },
+  {
+   "id": "P0002",
+   "task": "mt_id_zh",
+   "source_dataset": "Tatoeba",
+   "scene": "time",
+   "src": "John tiba di Jepang kemarin.",
+   "ref": "约翰昨天来到了日本。",
+   "hyp": "John tiba di Jepang kemarin.",
+   "sec": 3.29
+  },
+  {
+   "id": "P0003",
+   "task": "mt_id_zh",
+   "source_dataset": "Tatoeba",
+   "scene": "restaurant",
+   "src": "Minum obat ini setiap 6 jam.",
+   "ref": "每六个小时吃一次这个药。",
+   "hyp": "12",
+   "sec": 2.2
+  },
+  {
+   "id": "P0154",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "chat",
+   "src": "no entry",
+   "ref": "DILARANG MASUK!",
+   "hyp": "no entry",
+   "sec": 4.61
+  },
+  {
+   "id": "P0155",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "chat",
+   "src": "Assalamu 'alaikum",
+   "ref": "Hello. (\"Muslim\")",
+   "hyp": "Wa laikum.",
+   "sec": 4.36
+  },
+  {
+   "id": "P0156",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "chat",
+   "src": "Apa kabar?",
+   "ref": "How are you?",
+   "hyp": "Apa kabar?",
+   "sec": 3.99
+  },
+  {
+   "id": "P0303",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "belum ada konfirmasi lagi kah min ?",
+   "ref": "belum ada konfirmasi lagikah , admin ?",
+   "hyp": "belum ada konfirmasi lagi kah min ?",
+   "sec": 1.7
+  },
+  {
+   "id": "P0304",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "ride",
+   "src": "matiin notif yg itu . kmrn jg sampah bgt notif gua isinya gojek .",
+   "ref": "matikan notifikasi yang itu . kemarin juga sampah sekali , notifikasi saya isinya gojek .",
+   "hyp": "matiin notif yg itu . kmrn jg sampah bgt notif gua isinya gojek",
+   "sec": 4.69
+  },
+  {
+   "id": "P0305",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "min , info resi id191432841909e dong , soalnya tujuan kiriman harusnya banjarbaru tapi di over ke banjarmasin",
+   "ref": "admin , mohon info resi id191432841909e ! karena tujuan pengiriman harusnya banjarbaru , tapi dipindahkan ke banjarmasin .",
+   "hyp": "min , info resi id191432841909e dong , soalnya tujuan kiriman harusnya banjarbaru tapi di over ke banjarmasin",
+   "sec": 5.83
+  }
+ ]
+}
