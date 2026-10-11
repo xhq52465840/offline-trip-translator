@@ -47,27 +47,33 @@ struct PrivacyView: View {
 
 @MainActor
 final class PurchaseModel: ObservableObject {
-    static let productID = "unlock.full"
-    @Published var product: Product?
-    @Published var unlocked = false
+    /// 决策 D4：单次旅行包（30 天非续期订阅）+ 终身买断（非消耗型）。价格为提案，以 App Store Connect 为准。
+    static let productIDs = PurchaseProduct.allCases.map(\.rawValue)
+    @Published var products: [Product] = []
+    @Published var entitlement: EntitlementResolver.Result = .none
     @Published var message: String?
+    var unlocked: Bool { entitlement != .none }
 
     func load() async {
-        product = try? await Product.products(for: [Self.productID]).first
-        if product == nil { message = "价格暂时取不到" }
+        let ps = (try? await Product.products(for: Self.productIDs)) ?? []
+        // 旅行包在前、终身在后
+        products = ps.sorted { Self.productIDs.firstIndex(of: $0.id) ?? 0 < Self.productIDs.firstIndex(of: $1.id) ?? 0 }
+        if products.isEmpty { message = "价格暂时取不到" }
         await refreshEntitlement()
     }
 
+    /// 非续期订阅系统不管到期，App 自己按购买日期 + 30 天算（EntitlementResolver，有单测）。
     func refreshEntitlement() async {
-        var ok = false
-        for await result in Transaction.currentEntitlements {
-            if case .verified(let t) = result, t.productID == Self.productID, t.revocationDate == nil { ok = true }
+        var txns: [EntitlementResolver.Txn] = []
+        for await result in Transaction.all {
+            if case .verified(let t) = result, Self.productIDs.contains(t.productID) {
+                txns.append(.init(productID: t.productID, purchaseDate: t.purchaseDate, revoked: t.revocationDate != nil))
+            }
         }
-        unlocked = ok
+        entitlement = EntitlementResolver.resolve(txns, now: Date())
     }
 
-    func buy() async {
-        guard let product else { return }
+    func buy(_ product: Product) async {
         do {
             switch try await product.purchase() {
             case .success(let v):
@@ -93,21 +99,34 @@ struct PurchaseView: View {
             Section {
                 Text("没网能用")
                 Text("印尼语和英语都能听、能看、能递给对方")
-                Text("以后不加订阅")
+                Text("不自动续费")
                 Text(Copy.amountTrust).font(.footnote).foregroundStyle(.secondary)
-            } footer: { Text("可免费完整使用 30 条消息，之后只能看对方消息的字面意思。购买后仍需完成离线准备。") }
+            } footer: { Text("免费试用 24 小时：从第一条翻译开始计时，期间不限条数。试用结束后只能看对方消息的字面意思。购买后仍需完成离线准备。") }
             Section {
-                if p.unlocked {
-                    Text("已买断")
-                } else {
-                    Button(p.product.map { "一次买断 \($0.displayPrice)" } ?? "价格暂时取不到") { Task { await p.buy(); sync() } }
-                        .disabled(p.product == nil)
+                switch p.entitlement {
+                case .lifetime: Text("已终身买断")
+                case .passUntil(let d): Text("旅行包有效期至 \(d.formatted(date: .abbreviated, time: .omitted))")
+                case .none: EmptyView()
+                }
+                if p.entitlement != .lifetime {
+                    ForEach(p.products, id: \.id) { prod in
+                        Button {
+                            Task { await p.buy(prod); sync() }
+                        } label: {
+                            VStack(alignment: .leading) {
+                                Text(prod.id == PurchaseProduct.tripPass.rawValue ? "单次旅行包（30 天）\(prod.displayPrice)" : "终身买断 \(prod.displayPrice)")
+                                Text(prod.id == PurchaseProduct.tripPass.rawValue ? "一次旅行够用，到期不自动续费" : "以后每次去都能用")
+                                    .font(.footnote).foregroundStyle(.secondary)
+                            }
+                        }
+                    }
+                    if p.products.isEmpty { Text("价格暂时取不到").foregroundStyle(.secondary) }
                 }
                 Button("恢复购买") { Task { await p.restore(); sync() } }
             }
             if let m = p.message { Text(m).foregroundStyle(.secondary) }
         }
-        .navigationTitle("一次买断")
+        .navigationTitle("购买")
         .task { await p.load(); sync() }
     }
     private func sync() {

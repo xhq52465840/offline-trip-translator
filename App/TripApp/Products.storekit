@@ -1,0 +1,48 @@
+{
+  "identifier" : "8F1C2A40-0D9B-4C7E-9E51-5A7B3C2D1E0F",
+  "nonRenewingSubscriptions" : [
+    {
+      "displayPrice" : "18.0",
+      "familyShareable" : false,
+      "internalID" : "6739000001",
+      "localizations" : [
+        {
+          "description" : "30 天内离线完整使用，到期不自动续费",
+          "displayName" : "单次旅行包（30 天）",
+          "locale" : "zh_CN"
+        }
+      ],
+      "productID" : "pass.trip30",
+      "referenceName" : "Trip Pass 30 days",
+      "type" : "NonRenewingSubscription"
+    }
+  ],
+  "products" : [
+    {
+      "displayPrice" : "48.0",
+      "familyShareable" : false,
+      "internalID" : "6739000002",
+      "localizations" : [
+        {
+          "description" : "终身离线完整使用",
+          "displayName" : "终身买断",
+          "locale" : "zh_CN"
+        }
+      ],
+      "productID" : "unlock.lifetime",
+      "referenceName" : "Lifetime Unlock",
+      "type" : "NonConsumable"
+    }
+  ],
+  "settings" : {
+    "_applicationInternalID" : "6739000000",
+    "_developerTeamID" : "",
+    "_locale" : "zh_CN",
+    "_storefront" : "CHN"
+  },
+  "subscriptionGroups" : [ ],
+  "version" : {
+    "major" : 4,
+    "minor" : 0
+  }
+}

@@ -26,7 +26,7 @@ struct OnboardingView: View {
                 Section("准备期间可以先看看") {
                     NavigationLink("示例演示") { DemoView() }
                     NavigationLink("隐私说明") { PrivacyView() }
-                    NavigationLink("一次买断 / 恢复购买") { PurchaseView() }
+                    NavigationLink("购买 / 恢复购买") { PurchaseView() }
                 }
             }
             .navigationTitle("离线准备")
@@ -73,7 +73,7 @@ struct PrepareView: View {
             Section { Button("全部准备") { state.prepareAll() } }
             Section {
                 NavigationLink("隐私说明") { PrivacyView() }
-                NavigationLink("一次买断 / 恢复购买") { PurchaseView() }
+                NavigationLink("购买 / 恢复购买") { PurchaseView() }
             }
         }
         .navigationTitle("离线准备")

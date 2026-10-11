@@ -1,6 +1,20 @@
 import Foundation
 import TripCore
 
+/// 试用横幅文案（决策 D3）
+public enum TrialBanner {
+    public static func text(_ s: EntitlementState) -> String? {
+        switch s {
+        case .unlocked: return nil
+        case .notStarted: return "免费试用 24 小时：从第一条翻译开始计时"
+        case .expired: return "24 小时试用已结束"
+        case .trial(let left):
+            let h = Int((left / 3600).rounded(.up))
+            return "试用还剩约 \(h) 小时，期间不限条数" + (h <= TrialPolicy.warnHours ? " · 没网时不能购买，建议现在连网购买" : "")
+        }
+    }
+}
+
 public enum MessageStatus: String, Codable, Equatable, Sendable { case translating, ready, failed, trialBlocked }
 
 public struct Message: Identifiable, Equatable, Codable, Sendable {
@@ -60,8 +74,7 @@ public final class ConversationModel {
     public var canSend: Bool { !isTranslating }
 
     public var bannerText: String? {
-        guard let r = trial.bannerRemaining else { return nil }
-        return r == 0 ? "试用已用完" : "还可完整试用 \(r) 条 · 没网时不能购买，建议现在连网买断"
+        TrialBanner.text(trial.state)
     }
 
     // MARK: 发送中文（PRD v2 §7.3、§7.4）

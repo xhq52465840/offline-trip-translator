@@ -47,3 +47,13 @@ final class GuidanceTests: XCTestCase {
         XCTAssertNil(PresentContent.amountLine(foreign: "Terima kasih", source: "谢谢"))
     }
 }
+
+final class TrialBannerTests: XCTestCase {
+    func testBannerText() {
+        XCTAssertEqual(TrialBanner.text(.notStarted), "免费试用 24 小时：从第一条翻译开始计时")
+        XCTAssertEqual(TrialBanner.text(.trial(remaining: 3600 * 10 + 1)), "试用还剩约 11 小时，期间不限条数")
+        XCTAssertTrue(TrialBanner.text(.trial(remaining: 3600 * 2))!.contains("建议现在连网购买"))
+        XCTAssertEqual(TrialBanner.text(.expired), "24 小时试用已结束")
+        XCTAssertNil(TrialBanner.text(.unlocked))
+    }
+}

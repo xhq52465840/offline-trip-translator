@@ -40,3 +40,12 @@ targets:
         PRODUCT_BUNDLE_IDENTIFIER: app.tripunderstand.demo
         TARGETED_DEVICE_FAMILY: "1"
         SWIFT_VERSION: "5.0"
+schemes:
+  TripUnderstand:
+    build:
+      targets:
+        TripUnderstand: all
+    run:
+      config: Debug
+      # 本地 StoreKit 沙盒（决策 D4，价格为提案）
+      storeKitConfiguration: TripApp/Products.storekit

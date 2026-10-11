@@ -41,7 +41,7 @@ final class AppModelTests: XCTestCase {
         try? await e.load(modelURL: URL(fileURLWithPath: "/dev/null"))
         return e
     }
-    func trial(_ used: Int = 0) -> TrialCounter { TrialCounter(store: InMemoryTrialStore(used: used)) }
+    func trial(_ used: Int = 0) -> TrialCounter { TrialCounter(store: used >= 30 ? InMemoryTrialStore.expired() : InMemoryTrialStore()) }
 
     func testTheirsPlaceholderAndUnderstanding() async {
         let tr = FakeTranslator()
@@ -53,7 +53,7 @@ final class AppModelTests: XCTestCase {
         XCTAssertEqual(msg.literal, "5万还没有包括费用")
         XCTAssertEqual(msg.mainLine, "5万，不含车费")
         XCTAssertEqual(msg.literalLine, "字面：5万还没有包括费用")
-        XCTAssertEqual(m.trial.used, 1)
+        XCTAssertNotEqual(m.trial.state, .notStarted, "第一条翻译开始计时")
     }
 
     func testPlaceholderLostFallsBack() async {
@@ -82,7 +82,7 @@ final class AppModelTests: XCTestCase {
 
     func testTrialExhausted() async {
         let m = ConversationModel(translator: FakeTranslator(), understander: Understander(engine: await engine("不应出现")), trial: trial(30))
-        XCTAssertEqual(m.bannerText, "试用已用完")
+        XCTAssertEqual(m.bannerText, "24 小时试用已结束")
         let r = await m.sendMine("太贵了"); XCTAssertEqual(r, .ok)
         XCTAssertEqual(m.messages[0].status, .trialBlocked)
         XCTAssertNil(m.messages[0].foreign)
@@ -104,7 +104,7 @@ final class AppModelTests: XCTestCase {
         r = await m.sendMine("150000"); XCTAssertEqual(r, .ok)
         XCTAssertEqual(m.messages[1].foreign, "150000")
         XCTAssertEqual(tr.calls.count, 2, "纯数字不调用翻译")
-        XCTAssertEqual(m.trial.used, 2)
+        XCTAssertNotEqual(m.trial.state, .notStarted)
     }
 
     func testBackTranslationShownWhenInconsistent() async {
@@ -134,7 +134,7 @@ final class AppModelTests: XCTestCase {
         let m = ConversationModel(translator: tr, understander: nil, trial: trial())
         await m.receiveTheirs("halo")
         XCTAssertEqual(m.messages[0].status, .failed); XCTAssertEqual(m.messages[0].mainLine, "这句还没翻译出来")
-        XCTAssertEqual(m.trial.used, 0, "失败不计数")
+        XCTAssertEqual(m.trial.state, .notStarted, "失败不开始计时")
     }
 
     func testRetranslateOffer() async {
@@ -145,7 +145,7 @@ final class AppModelTests: XCTestCase {
         await m.retranslate(m.messages[0].id, as: "en")
         XCTAssertEqual(tr.calls.last?.1, "en"); XCTAssertNil(m.messages[0].offerRetranslateAs)
         XCTAssertEqual(m.theirLanguage, "id", "开关不变")
-        XCTAssertEqual(m.trial.used, 1, "重译不重复计数")
+        XCTAssertNotEqual(m.trial.state, .notStarted)
     }
 
     func testGate() async {

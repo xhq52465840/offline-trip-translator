@@ -352,7 +352,7 @@ struct BubbleView: View {
         if m.role == .me {
             switch m.status {
             case .trialBlocked:
-                NavigationLink { PurchaseView() } label: { Text("试用已用完，买断后才能发给对方").font(.footnote) }
+                NavigationLink { PurchaseView() } label: { Text("24 小时试用已结束，购买后才能发给对方").font(.footnote) }
             case .translating:
                 Text("正在换成对方的话").font(.footnote).foregroundStyle(.secondary)
             case .failed:
