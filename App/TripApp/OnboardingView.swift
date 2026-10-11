@@ -26,6 +26,7 @@ struct OnboardingView: View {
                 Section("准备期间可以先看看") {
                     NavigationLink("示例演示") { DemoView() }
                     NavigationLink("隐私说明") { PrivacyView() }
+                    NavigationLink("常用句（下载期间可用）") { PhraseBookView() }
                     NavigationLink("购买 / 恢复购买") { PurchaseView() }
                 }
             }
@@ -95,6 +96,9 @@ struct BlockingSheet: View {
                 state.prepareAll()
             } label: { Text("去下载").frame(maxWidth: .infinity) }
                 .buttonStyle(.borderedProminent).controlSize(.large)
+            NavigationLink { PhraseBookView() } label: {
+                Label("下载期间先用：常用句（出示给对方）", systemImage: "text.bubble")
+            }
             NavigationLink("查看隐私说明") { PrivacyView() }
         }
         .padding(24)

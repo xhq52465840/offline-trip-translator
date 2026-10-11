@@ -81,3 +81,20 @@ public enum PresentContent {
         return list.isEmpty ? nil : list.joined(separator: " · ")
     }
 }
+
+/// 决策 D2：下载未完成时，阻断流程里**只**开放预置译文的快捷短语（出示给对方）；其余全部锁定。
+/// 预置短语不调用翻译和模型，不开始试用计时。
+public enum LockedFeature: CaseIterable, Sendable { case phraseShow, conversation, listen, speak, paste, copyTranslation }
+public enum LockedAccess {
+    public static func allows(_ f: LockedFeature, ready: Bool) -> Bool { ready || f == .phraseShow }
+}
+
+public enum PhraseBook {
+    public struct Section: Identifiable, Sendable { public var id: Scenario { scene }; public let scene: Scenario; public let phrases: [Phrase] }
+    /// 按最近使用的场景排序；已审校的在前，待校对的在后
+    public static func sections(recent: RecentScenes = RecentScenes()) -> [Section] {
+        recent.ordered().map { s in Section(scene: s, phrases: s.phrases.filter { !$0.needsNativeReview } + s.phrases.filter(\.needsNativeReview)) }
+    }
+    /// 出示内容：对方语言为大字，中文为小字（让我自己确认点对了）
+    public static func present(_ p: Phrase, lang: String) -> (big: String, small: String) { (p.foreign(lang), p.zh) }
+}

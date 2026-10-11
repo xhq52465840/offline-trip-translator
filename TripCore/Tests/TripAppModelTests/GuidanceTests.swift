@@ -57,3 +57,28 @@ final class TrialBannerTests: XCTestCase {
         XCTAssertNil(TrialBanner.text(.unlocked))
     }
 }
+
+final class LockedAccessTests: XCTestCase {
+    func testOnlyPhrasesWhileNotReady() {
+        for f in LockedFeature.allCases {
+            XCTAssertEqual(LockedAccess.allows(f, ready: false), f == .phraseShow, "\(f)")
+            XCTAssertTrue(LockedAccess.allows(f, ready: true))
+        }
+    }
+    func testPhraseBook() {
+        var r = RecentScenes(); r.use(.hotel)
+        let secs = PhraseBook.sections(recent: r)
+        XCTAssertEqual(secs.first?.scene, .hotel)
+        XCTAssertEqual(secs.count, Scenario.allCases.count)
+        let ride = secs.first { $0.scene == .ride }!.phrases
+        XCTAssertFalse(ride.first!.needsNativeReview, "已审校在前")
+        XCTAssertTrue(ride.last!.needsNativeReview)
+        let p = PhraseBook.present(Scenario.restaurant.phrases[1], lang: "id")
+        XCTAssertEqual(p.big, "Tidak pedas, ya.")
+    }
+    func testPhrasesNeedNoTrialOrModel() {
+        let trial = TrialCounter(store: InMemoryTrialStore())
+        _ = PhraseBook.present(Scenario.ride.phrases[0], lang: "id")
+        XCTAssertEqual(trial.state, .notStarted)
+    }
+}

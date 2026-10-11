@@ -134,3 +134,40 @@ struct PurchaseView: View {
         state.objectWillChange.send()
     }
 }
+
+/// 决策 D2：下载期间唯一可用的功能——预置短语，点一下全屏出示给对方。不联网、不用模型、不计试用。
+struct PhraseBookView: View {
+    @EnvironmentObject var state: AppState
+    @State private var lang = "id"
+    @State private var showing: Phrase?
+    var body: some View {
+        List {
+            Section {
+                Picker("对方语言", selection: $lang) {
+                    Text("印尼语").tag("id"); Text("English").tag("en")
+                }.pickerStyle(.segmented)
+            } footer: { Text("下载完成前只能用这些预先翻好的句子。点一下，把屏幕给对方看。") }
+            ForEach(PhraseBook.sections(recent: state.recentScenes)) { sec in
+                Section(sec.scene.title) {
+                    ForEach(sec.phrases, id: \.zh) { p in
+                        Button { showing = p } label: {
+                            HStack {
+                                VStack(alignment: .leading) {
+                                    Text(p.zh).font(.body.weight(.semibold))
+                                    Text(p.foreign(lang)).font(.footnote).foregroundStyle(.secondary)
+                                }
+                                Spacer()
+                                if p.needsNativeReview { Text("待校对").font(.caption2).foregroundStyle(.orange) }
+                            }
+                        }
+                        .accessibilityHint("全屏出示给对方")
+                    }
+                }
+            }
+        }
+        .navigationTitle("常用句（离线可用）")
+        .fullScreenCover(item: $showing) { p in
+            PresentView(text: PhraseBook.present(p, lang: lang).big, amountLine: nil)
+        }
+    }
+}

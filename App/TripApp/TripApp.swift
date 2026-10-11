@@ -34,7 +34,7 @@ struct RootView: View {
         }
         // 不完整时的阻断 sheet：不可下滑关闭
         .sheet(isPresented: Binding(get: { state.isBlocking }, set: { _ in })) {
-            BlockingSheet().interactiveDismissDisabled(true)
+            NavigationStack { BlockingSheet() }.interactiveDismissDisabled(true)
         }
         .translationPrepareHost(state: state)
     }
