@@ -17,7 +17,7 @@ App/                      SwiftUI 应用（iOS 17+）
   TripUnderstand.xcodeproj 已生成好的工程（Linux 上用 XcodeGen 2.44.1 生成）
   TripApp/                视图、AppState、系统服务（Translation / Speech / 网络）、Info.plist、entitlements、图标占位
 TripCore/                 本地 Swift Package
-  Sources/TripCore        纯 Foundation 逻辑：金额解析、就绪/下载状态机、SHA-256、提示词与校验、试用计数、下载器、LLMEngine 协议 + MockEngine
+  Sources/TripCore        纯 Foundation 逻辑：金额解析、就绪/下载状态机、SHA-256、提示词与校验、24 小时试用（防改时间）、购买权益、下载器、LLMEngine 协议 + MockEngine
   Sources/TripLLM         LlamaCppEngine（llama.cpp C API；Apple 用官方 XCFramework b11541）
   Sources/TripAppModel    与 UI 无关的视图模型：对话、门禁、剪贴板、按住说话、会话持久化
   Sources/llm-smoke       仅 Linux：用真实 GGUF 跑引擎冒烟
@@ -54,7 +54,7 @@ docs/                     原始需求、prd/tech、评审报告、端侧模型�
 - SpeechAnalyzer 路径（iOS 26）的音频格式转换、结果最终化时机；SFSpeechRecognizer 本机识别对印尼语的支持需真机确认。
 - Translation 框架 iOS 18–25 的 `prepareTranslation` 桥接、语言包状态探测。
 - llama.cpp XCFramework 在 iOS 上的加载、Metal 卸载层数、内存峰值；Linux 上已用同一 C API 跑通 Qwen2.5-1.5B。
-- 后台 URLSession 下载、续传、Keychain 试用计数、StoreKit 购买（购买页为占位）。
+- 后台 URLSession 下载、续传、Keychain 24 小时试用、StoreKit 两档购买（可在 Xcode 用本地 App/TripApp/Products.storekit 沙盒测试，价格为提案）、面对面对方按住说话的旋转手势方向。
 - `increased-memory-limit` entitlement 与个人开发者账号的签名兼容性。
 
 ## 下一步
