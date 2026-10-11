@@ -123,8 +123,16 @@ struct ConversationView: View {
                 }
             }
             if state.faceToFace {
-                TranscriptList(viewer: .partner, onPresent: { _ in }).rotationEffect(.degrees(180))
-                    .background(Color(.secondarySystemBackground))
+                // 对方半屏（决策 D6）：对话 + 对方语言的按住说话按钮，整体旋转 180°
+                VStack(spacing: 8) {
+                    TranscriptList(viewer: .partner, onPresent: { _ in })
+                    TalkButton(title: state.talk.partnerTitle(lang: model.theirLanguage), symbol: "mic.fill", target: .them, prominent: true,
+                               locale: Lang.speechLocale(model.theirLanguage))
+                        .padding(.horizontal, 16).padding(.bottom, 8)
+                        .accessibilityLabel(state.talk.partnerTitle(lang: model.theirLanguage))
+                }
+                .rotationEffect(.degrees(180))
+                .background(Color(.secondarySystemBackground))
                 Divider()
             }
             TranscriptList(viewer: .me, onPresent: { presenting = $0 })

@@ -38,6 +38,19 @@ public final class HoldToTalk {
         }
     }
 
+    /// 决策 D6：面对面模式里对方那半屏（旋转 180°）的按钮，用对方语言写，对方自己按住说。
+    /// 录的是对方语言（target = .them），和我这边「按住听对方」走同一条处理路径。
+    public func partnerTitle(lang: String) -> String {
+        let active: Bool
+        switch phase { case .recording(.them), .cancelZone(.them): active = true; default: active = false }
+        switch (lang, active) {
+        case ("id", false): return "Tahan untuk bicara"
+        case ("id", true): return "Lepas untuk menerjemahkan · geser ke atas untuk batal"
+        case (_, false): return "Hold to talk"
+        case (_, true): return "Release to translate · slide up to cancel"
+        }
+    }
+
     public func press(_ t: TalkTarget, locale: String, at now: Date) {
         guard phase == .idle else { return }
         target = t; self.locale = locale; pressedAt = now; feedback = nil

@@ -140,3 +140,31 @@ final class HoldToTalkTests: XCTestCase {
         let f = await h.tick(at: t0.addingTimeInterval(0.4)); XCTAssertEqual(f, .failed); XCTAssertEqual(h.phase, .idle)
     }
 }
+
+@MainActor
+final class PartnerTalkTests: XCTestCase {
+    final class T: Transcribing {
+        var text = "Kak, saya di lobi"; var locales: [String] = []
+        func start(locale: String) async throws { locales.append(locale) }
+        func finish() async -> String { text }
+        func cancel() {}
+    }
+    func testPartnerButtonRecordsTheirLanguageAndGoesToTheirs() async {
+        let t = T(); let h = HoldToTalk(transcriber: t); let t0 = Date()
+        XCTAssertEqual(h.partnerTitle(lang: "id"), "Tahan untuk bicara")
+        XCTAssertEqual(h.partnerTitle(lang: "en"), "Hold to talk")
+        h.press(.them, locale: "id-ID", at: t0)
+        _ = await h.tick(at: t0.addingTimeInterval(0.4))
+        XCTAssertTrue(h.partnerTitle(lang: "id").hasPrefix("Lepas"))
+        h.press(.me, locale: "zh-CN", at: t0)          // 我这边同时按下被忽略（一次只录一个人）
+        XCTAssertEqual(h.phase, .recording(.them))
+        let o = await h.release(at: t0.addingTimeInterval(2))
+        XCTAssertEqual(o, .text("Kak, saya di lobi", .them)); XCTAssertEqual(t.locales, ["id-ID"])
+    }
+    func testPartnerCancel() async {
+        let h = HoldToTalk(transcriber: T()); let t0 = Date()
+        h.press(.them, locale: "id-ID", at: t0); _ = await h.tick(at: t0.addingTimeInterval(0.5))
+        h.drag(dy: -100)
+        let o = await h.release(at: t0.addingTimeInterval(1)); XCTAssertEqual(o, .cancelled)
+    }
+}
