@@ -65,3 +65,10 @@ CUDA 备选：`python peft/train_peft.py --model Qwen/Qwen2.5-1.5B-Instruct --da
 - 训练：CPU PEFT，train=2244，约 150 step，`val_loss` 1.40→0.05；融合量化 `runs/short-Q4_K_M.gguf`（约 941MB，不入库）。
 - App 60 条：`eval_base` 严格 90/120、金额错 5 → `eval_short` 严格 **105/120**、金额错 **2**（关键词 97→110）。
 - 公开集 chrF++：`scripts/eval_public.py` → `results/public_{base,short}.json`（汇总表在 `results/README.md`）。
+
+## Mac run r1 结论与配置调整（2026-10-12）
+
+- 1500 步 / lr 1e-4：验证 loss 第 600 步起为 0，App 格式 60 条 strict 85→88、金额错 5→2，但公开集 chrF++ 47.11→0.28，输出不再是翻译（灾难性遗忘；模板数据多样性不足，验证集与训练集同分布）。
+- 已改 `mlx/lora.yaml`：400 步、lr 5e-5、dropout 0.1、每 100 步存检查点、每 50 步验证。
+- 选模型规则：App 格式 strict 不低于基座 **且** 公开集 chrF++ 下降不超过 3 分；否则不采用该检查点。
+- 后续（待做）：混入通用翻译回放数据（从 Tatoeba 训练侧取，与 public_eval 不相交）以防遗忘。

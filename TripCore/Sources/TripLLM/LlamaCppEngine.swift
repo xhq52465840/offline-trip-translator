@@ -28,7 +28,8 @@ public final class LlamaCppEngine: LLMEngine, @unchecked Sendable {
     private var _stats: GenerationStats?
     private static let backendOnce: Void = { llama_backend_init() }()
 
-    public init(config: Config = .init()) { self.config = config; _ = Self.backendOnce }
+    /// 不在 init 里初始化后端：llama_backend_init 会编译 Metal 着色器，放主线程会白屏约 8 秒（Mac run r1）。
+    public init(config: Config = .init()) { self.config = config }
     deinit { freeAll() }
 
     public var isLoaded: Bool { queue.sync { ctx != nil } }
@@ -36,6 +37,7 @@ public final class LlamaCppEngine: LLMEngine, @unchecked Sendable {
 
     public func load(modelURL: URL) async throws {
         try await run {
+            _ = Self.backendOnce          // 首次加载时在后台队列初始化
             self.freeAll()
             var mp = llama_model_default_params()
             mp.n_gpu_layers = self.config.gpuLayers

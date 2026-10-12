@@ -19,16 +19,18 @@ struct OnboardingView: View {
                             .accessibilityLabel(state.etaText)
                     }.padding(.vertical, 4)
                 }
-                PrepareRowsSection()
+                // 主按钮放在清单前，首屏可见（Mac run r1：原来在首屏以下）
                 Section {
                     Button("开始准备") { state.prepareAll() }.font(.headline)
                 }
+                // 准备期间能用的入口紧跟主按钮，不再被 Home 条压住
                 Section("准备期间可以先看看") {
-                    NavigationLink("示例演示") { DemoView() }
-                    NavigationLink("隐私说明") { PrivacyView() }
                     NavigationLink("常用句（下载期间可用）") { PhraseBookView() }
+                    NavigationLink("示例演示") { DemoView() }
                     NavigationLink("购买 / 恢复购买") { PurchaseView() }
+                    NavigationLink("隐私说明") { PrivacyView() }
                 }
+                PrepareRowsSection()
             }
             .navigationTitle("离线准备")
             .cellularConfirm()

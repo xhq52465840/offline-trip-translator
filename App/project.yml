@@ -23,6 +23,8 @@ targets:
       path: TripApp/Info.plist
       properties:
         CFBundleDisplayName: 离线行程理解
+        CFBundleDevelopmentRegion: zh-Hans   # 系统控件（返回按钮等）显示中文（Mac run r1：显示 Back）
+        CFBundleLocalizations: [zh-Hans]
         UISupportedInterfaceOrientations: [UIInterfaceOrientationPortrait]
         UILaunchScreen: {}
         NSMicrophoneUsageDescription: 用来听对方说话和你说的中文。只在手机上识别，不保存录音。
@@ -40,6 +42,7 @@ targets:
         PRODUCT_BUNDLE_IDENTIFIER: app.tripunderstand.demo
         TARGETED_DEVICE_FAMILY: "1"
         SWIFT_VERSION: "5.0"
+        DEVELOPMENT_LANGUAGE: zh-Hans
   TripUITests:
     type: bundle.ui-testing
     platform: iOS

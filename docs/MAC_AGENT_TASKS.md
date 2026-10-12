@@ -133,13 +133,27 @@ grep -E "error:|warning: .*deprecated" "$WORK/t3_build.log" | sort -u > "$WORK/t
 
 ```bash
 RUNTIME=$(xcrun simctl list runtimes available -j | python3 -c "import json,sys;r=[x for x in json.load(sys.stdin)['runtimes'] if x['platform']=='iOS'];r.sort(key=lambda x:[int(p) for p in x['version'].split('.')]);print(r[-1]['identifier'])")
-DEVTYPE=$(xcrun simctl list devicetypes -j | python3 -c "import json,sys;d=[x for x in json.load(sys.stdin)['devicetypes'] if x['name'].startswith('iPhone') and 'Pro' in x['name'] and 'Max' not in x['name']];print(d[-1]['identifier'])")
+DEVTYPE=$(xcrun simctl list devicetypes -j | python3 -c "
+import json,sys,re
+d=[x for x in json.load(sys.stdin)['devicetypes'] if re.fullmatch(r'iPhone \d+ Pro', x['name'])]
+d.sort(key=lambda x:int(re.search(r'\d+',x['name']).group()))
+print(d[-1]['identifier'])")   # 取编号最大的「iPhone N Pro」（r1 误选了 iPhone 11 Pro）
 SIM=$(xcrun simctl create "Trip-r$ROUND" "$DEVTYPE" "$RUNTIME")
 xcrun simctl boot "$SIM"; xcrun simctl bootstatus "$SIM" -b
 echo "RUNTIME=$RUNTIME DEVTYPE=$DEVTYPE SIM=$SIM"
 ```
 
 （T3 里如已设 `SIM`，这里用新的 `SIM` 覆盖；T3 编译若失败，T4 全部标 ❌。）
+
+### 4.1b llama.xcframework 模拟器切片（r1 发现：官方 b11541 zip 只有 ios-arm64 与 macOS）
+
+模拟器链接需要本机补 `ios-arm64-simulator` 切片。**这是允许的仓库改动**：把 r1 的补片步骤写成脚本 `TripCore/scripts/patch_llama_xcframework_sim.sh`（参数：DerivedData 路径；从 `$LLAMA_CPP` b11541 编模拟器库、ad-hoc 签名、放入 `SourcePackages/artifacts/tripcore/llama/llama.xcframework/ios-arm64-simulator`、更新 Info.plist），提交到仓库并在每次新 DerivedData 解压后运行。不要改 `Package.swift` 的 checksum，不要提交二进制。
+
+```bash
+[ -x "$REPO/TripCore/scripts/patch_llama_xcframework_sim.sh" ] && \
+  bash "$REPO/TripCore/scripts/patch_llama_xcframework_sim.sh" "$WORK/DerivedData" && \
+  bash "$REPO/TripCore/scripts/patch_llama_xcframework_sim.sh" "$WORK/DerivedData-pkg"
+```
 
 ### 4.2 包内逻辑测试（模拟器）
 
@@ -332,6 +346,22 @@ ls -l runs/mlx_adapters/
 grep -E "Val loss|Train loss" runs/mlx_train.log | tail -10
 ```
 
+### 6.3b 检查点挑选（r2 起）
+
+`lora.yaml` 已改为 400 步、每 100 步存检查点（r1：1500 步导致公开集 chrF 47→0.3）。对 200 步与 400 步两个检查点都做 6.4–6.5（用 tag `mac_lora_s200`、`mac_lora_s400`）：
+
+```bash
+cd "$REPO/finetune"
+for S in 200 400; do
+  D=runs/mlx_adapters_s$S; mkdir -p $D
+  cp runs/mlx_adapters/adapter_config.json $D/
+  cp runs/mlx_adapters/$(printf "%07d" $S)_adapters.safetensors $D/adapters.safetensors
+done
+ls runs/mlx_adapters_s*/
+```
+
+6.4 中把 `--adapter-path runs/mlx_adapters` 换成 `runs/mlx_adapters_s$S`、输出前缀换成 `runs/trip-lora-s$S`，6.5 的 tag 换成 `mac_lora_s$S`。采用规则：App 格式 strict ≥ 基座，且公开集各任务 chrF 下降 ≤ 3。
+
 ### 6.4 融合 → GGUF Q4_K_M → sha256
 
 ```bash
@@ -363,7 +393,7 @@ python3 - <<'PY'
 import json, os
 print("| tag | score | strict | 原30 strict | 扩30 strict | 金额错 | App 接受 | TTFT 中位 |")
 print("|---|---|---|---|---|---|---|---|")
-for t in ["base", "short", "mac_base", "mac_lora"]:
+for t in ["base", "short", "mac_base", "mac_lora", "mac_lora_s200", "mac_lora_s400"]:
     p = f"eval_{t}.json"
     if os.path.exists(p):
         s = json.load(open(p))["summary"]
@@ -371,7 +401,7 @@ for t in ["base", "short", "mac_base", "mac_lora"]:
 print()
 print("| tag | n | mt_id_zh chrF | mt_id_en chrF++ | slang_norm chrF++ |")
 print("|---|---|---|---|---|")
-for t in ["base", "short", "mac_base", "mac_lora"]:
+for t in ["base", "short", "mac_base", "mac_lora", "mac_lora_s200", "mac_lora_s400"]:
     p = f"public_{t}.json"
     if os.path.exists(p):
         d = json.load(open(p)); s = d["summary"]
@@ -450,7 +480,7 @@ while true; do
   git fetch -q origin
   gh pr view "$PR" --comments --json comments -q '.comments[].body' | tail -5 > "$WORK/pr_comments.txt"
   STATE=$(gh pr view "$PR" --json state -q .state)
-  if grep -qiE "^\s*stop\b" "$WORK/pr_comments.txt" || [ "$STATE" = "MERGED" ]; then echo STOP; break; fi
+  if grep -qiE "^\s*stop\b" "$WORK/pr_comments.txt"; then echo STOP; break; fi   # 合并不代表停止（$STATE 仅记录）
   if grep -qi "next round" "$WORK/pr_comments.txt" && [ "$(git rev-parse origin/master)" != "$LAST" ]; then echo NEXT; break; fi
   sleep 600
 done
@@ -463,11 +493,12 @@ done
   ```
   从 T1 重新开始（日期变了就用新日期，轮次继续累加）。
 - 只有 `next round` 但 master 没新提交：继续等（审阅方可能还在推）。
-- 上一轮 PR 不用关闭；审阅方负责关闭/合并。
+- 上一轮 PR 不用关闭；审阅方负责关闭/合并（可能 squash 进 master 后关闭 PR，评论仍有效）。
+- 新一轮开分支前先 `git checkout master && git pull --ff-only`，因为上一轮的提交可能已被 squash 进 master，旧分支不要再用。
 
 ### 停止条件（满足任一即停，在最后的 PR 上评论总结）
 
-1. PR 评论出现 `stop`（独占一行）或 PR 被审阅方合并后没有新的 `next round`；
+1. PR 评论出现 `stop`（独占一行）。**PR 被合并（或审阅方 squash 后关闭）不是停止信号**：审阅方仍会在该 PR（含已合并/已关闭的 PR）上评论 `next round`，照常进入下一轮；
 2. 连续两轮：T2/T4 全部通过、无新编译错误、无新 UX 问题（报告里写明「连续两轮全绿」）；
 3. 达到 8 轮；
 4. 等待超过 24 小时没有新评论；

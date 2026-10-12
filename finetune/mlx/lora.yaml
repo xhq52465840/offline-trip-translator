@@ -5,18 +5,18 @@ data: "out"            # 含 train.jsonl / valid.jsonl / test.jsonl（{"messages
 fine_tune_type: lora
 mask_prompt: true      # 只对最后一条 assistant 计算 loss
 batch_size: 4
-iters: 1500
-learning_rate: 1.0e-4
+iters: 400              # Mac run r1：1500 步验证 loss→0、公开集 chrF 47→0.3（灾难性遗忘），缩短
+learning_rate: 5.0e-5
 num_layers: -1         # 全部层挂 LoRA
 max_seq_length: 1024
 grad_checkpoint: true
 steps_per_report: 20
-steps_per_eval: 200
-save_every: 500
+steps_per_eval: 50
+save_every: 100          # 每 100 步存检查点，便于挑公开集不掉分的那个
 adapter_path: "runs/mlx_adapters"
 lora_parameters:
   rank: 16
   scale: 20.0
-  dropout: 0.05
+  dropout: 0.1
   keys: ["self_attn.q_proj", "self_attn.k_proj", "self_attn.v_proj", "self_attn.o_proj", "mlp.gate_proj", "mlp.up_proj", "mlp.down_proj"]
 seed: 0
