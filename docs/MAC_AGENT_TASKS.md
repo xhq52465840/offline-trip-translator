@@ -1,7 +1,7 @@
 # Mac 执行手册（给在用户 Mac 上运行的 AI 代理）
 
 > 你只有仓库地址：`https://github.com/xhq52465840/offline-trip-translator`（默认分支 `master`）。
-> 本手册自包含：按 T0 → T7 顺序执行。每个任务都有：目标、命令、成功标准、失败处理、记录内容。
+> 本手册自包含：按 T0 → T7 顺序执行，并按文末「§迭代循环」一轮一轮重复（每轮编号 r1、r2…）。每个任务都有：目标、命令、成功标准、失败处理、记录内容。
 > 假设机器为 Apple Silicon Mac。所有时间按用户本地时区记录。
 
 ## 总规则（必须遵守）
@@ -11,7 +11,7 @@
 3. **绝不提交**：`.gguf`、`.safetensors`、`.bin`、适配器权重、`finetune/runs/` 下任何东西、任何密钥/令牌/证书/个人路径以外的隐私信息。仓库 `.gitignore` 已排除这些，提交前仍需 `git status` 人工核对。
 4. **不要上传模型**到任何地方（不传 HF、不传网盘、不传对象存储）。只在报告里写本地路径、字节数、sha256。
 5. 不要修改 `TripCore/Sources/TripCore/Resources/model-manifest.json` 里的地址/哈希（托管方案未定）。
-6. 所有输出写到仓库内 `reports/mac_run_<日期>.md`（模板见文末），结果 JSON 放 `finetune/results/`。
+6. 所有输出写到仓库内 `reports/mac_run_<日期>_r<轮次>.md`（模板见文末），结果 JSON 放 `finetune/results/`。
 7. 长任务用 `caffeinate` 防睡眠，并把日志写到文件，不要只看终端。
 
 先设置几个变量（后续命令都用它们）：
@@ -22,6 +22,9 @@ export WORK=$HOME/trip-work            # 工作目录（模型、llama.cpp、ven
 export REPO=$WORK/offline-trip-translator
 export LLAMA_CPP=$WORK/llama.cpp
 export VENV=$WORK/venv-ft
+export ROUND=${ROUND:-1}                # 当前轮次，见 §迭代循环
+export BR=mac-run-$RUN_DATE-r$ROUND
+export SCREENS=reports/screens/$RUN_DATE-r$ROUND
 mkdir -p "$WORK"
 ```
 
@@ -72,7 +75,7 @@ else
 fi
 cd "$REPO"
 git log --oneline -1
-git checkout -b "mac-run-$RUN_DATE"
+git checkout -B "$BR"
 ls App TripCore finetune docs
 ```
 
@@ -124,34 +127,110 @@ grep -E "error:|warning: .*deprecated" "$WORK/t3_build.log" | sort -u > "$WORK/t
 
 ---
 
-## T4 在模拟器上跑测试
+## T4 在模拟器上运行并测试 App（必须真的跑起来）
 
-App 工程没有 UI 测试目标；逻辑测试在 Swift 包里，用 xcodebuild 在 iOS 模拟器上跑包测试：
+### 4.1 选最新 iPhone 模拟器并启动
+
+```bash
+RUNTIME=$(xcrun simctl list runtimes available -j | python3 -c "import json,sys;r=[x for x in json.load(sys.stdin)['runtimes'] if x['platform']=='iOS'];r.sort(key=lambda x:[int(p) for p in x['version'].split('.')]);print(r[-1]['identifier'])")
+DEVTYPE=$(xcrun simctl list devicetypes -j | python3 -c "import json,sys;d=[x for x in json.load(sys.stdin)['devicetypes'] if x['name'].startswith('iPhone') and 'Pro' in x['name'] and 'Max' not in x['name']];print(d[-1]['identifier'])")
+SIM=$(xcrun simctl create "Trip-r$ROUND" "$DEVTYPE" "$RUNTIME")
+xcrun simctl boot "$SIM"; xcrun simctl bootstatus "$SIM" -b
+echo "RUNTIME=$RUNTIME DEVTYPE=$DEVTYPE SIM=$SIM"
+```
+
+（T3 里如已设 `SIM`，这里用新的 `SIM` 覆盖；T3 编译若失败，T4 全部标 ❌。）
+
+### 4.2 包内逻辑测试（模拟器）
 
 ```bash
 cd "$REPO/TripCore"
-xcodebuild -list                           # 期望看到 TripCore-Package scheme
 xcodebuild test -scheme TripCore-Package -destination "id=$SIM" \
-  -derivedDataPath "$WORK/DerivedData-pkg" 2>&1 | tee "$WORK/t4_test.log" | tail -30
-grep -E "Executed|TEST (SUCCEEDED|FAILED)" "$WORK/t4_test.log"
+  -derivedDataPath "$WORK/DerivedData-pkg" 2>&1 | tee "$WORK/t4_pkg.log" | tail -20
+grep -E "Executed|TEST (SUCCEEDED|FAILED)" "$WORK/t4_pkg.log"
 ```
 
-如果 T3 成功，再在模拟器里装起来启动，确认不崩溃（截图存 `reports/`，截图里不要有个人信息）：
+### 4.3 安装、以测试模式启动、截图
+
+App 在 **DEBUG** 构建里支持启动参数 `-UITestMode <模式>`（实现：`TripCore/Sources/TripAppModel/UITestMode.swift` + `App/TripApp/AppState.swift` 的 `uiTest(_:)`；Release 构建不含）：
+
+| 模式 | 效果 |
+|---|---|
+| `mock-onboarding` | 首次启动引导页 |
+| `mock-not-ready` | 已引导过但模型缺失 → 每次启动出现阻断弹窗（可进「常用句」） |
+| `mock-ready` | 全部就绪 → 首页 / 对话；MockEngine 固定理解输出、假翻译表 |
+
+模拟器里**不需要**下载 1.1 GB 模型，也不需要 Apple Translation 语言包。测试模式用独立 UserDefaults 域与内存试用记录，每次启动清空。
 
 ```bash
-APP=$(find "$WORK/DerivedData/Build/Products/Debug-iphonesimulator" -name "TripUnderstand.app" -maxdepth 1 | head -1)
-xcrun simctl boot "$SIM" 2>/dev/null || true
+cd "$REPO"; mkdir -p "$SCREENS"
+APP=$(find "$WORK/DerivedData/Build/Products/Debug-iphonesimulator" -maxdepth 1 -name "TripUnderstand.app" | head -1)
 xcrun simctl install "$SIM" "$APP"
-xcrun simctl launch "$SIM" app.tripunderstand.demo
-sleep 8
-mkdir -p "$REPO/reports"
-xcrun simctl io "$SIM" screenshot "$REPO/reports/mac_run_${RUN_DATE}_launch.png"
+for MODE in mock-onboarding mock-not-ready mock-ready; do
+  xcrun simctl terminate "$SIM" app.tripunderstand.demo 2>/dev/null
+  xcrun simctl launch "$SIM" app.tripunderstand.demo -UITestMode $MODE
+  sleep 6
+  xcrun simctl io "$SIM" screenshot "$SCREENS/simctl_$MODE.png"
+done
+xcrun simctl launch "$SIM" app.tripunderstand.demo -UITestMode mock-ready; sleep 5
+xcrun simctl ui "$SIM" appearance dark; sleep 2; xcrun simctl io "$SIM" screenshot "$SCREENS/simctl_mock-ready_dark.png"
+xcrun simctl ui "$SIM" appearance light
 ```
 
-- 模拟器里**不要**真的开始下载 1.1 GB 模型（会占用流量和时间）；看到引导页/阻断页即可。
-- **成功标准**：包测试 `TEST SUCCEEDED`；App 能启动到引导页。
-- **失败处理**：记录原文；模拟器上的测试失败但 Linux 通过的，标注「平台差异」。
-- **记录**：测试数、截图文件名、崩溃日志（如有：`xcrun simctl spawn "$SIM" log show --last 2m --predicate 'process == "TripUnderstand"' | tail -50`）。
+### 4.4 XCUITest（目标 `TripUITests`，在 `App/project.yml` 中；先 `xcodegen generate`）
+
+覆盖：引导页出现；未就绪启动出现阻断弹窗；从阻断弹窗进入常用句并全屏出示；购买页打开；`mock-ready` 下首页 → 对话 → 输入「太贵了」发送 → 出现假译文「Terlalu mahal」；启动内存 / 启动时间指标（`XCTMemoryMetric`、`XCTApplicationLaunchMetric`）。
+
+```bash
+cd "$REPO/App"
+xcodegen generate
+xcodebuild test -project TripUnderstand.xcodeproj -scheme TripUnderstand -destination "id=$SIM" \
+  -derivedDataPath "$WORK/DerivedData" CODE_SIGNING_ALLOWED=NO \
+  -resultBundlePath "$WORK/ui_r$ROUND.xcresult" \
+  TEST_RUNNER_SCREEN_DIR="$REPO/$SCREENS" 2>&1 | tee "$WORK/t4_ui.log" | tail -40
+grep -E "Test Case .*(passed|failed)|error:|TEST (SUCCEEDED|FAILED)" "$WORK/t4_ui.log"
+ls -la "$REPO/$SCREENS"
+```
+
+- `TEST_RUNNER_SCREEN_DIR` 会以 `SCREEN_DIR` 传给测试进程，测试把截图 PNG 直接写到该目录（模拟器可写主机路径）。若目录为空，从 xcresult 导出：
+  ```bash
+  xcrun xcresulttool export attachments --path "$WORK/ui_r$ROUND.xcresult" --output-path "$REPO/$SCREENS/xcresult" 2>&1 | tail -3 \
+    || echo "xcresulttool 版本不支持 export attachments：记录并跳过"
+  ```
+- 压缩截图（保持仓库小，每张目标 < 300 KB）：
+  ```bash
+  for f in "$REPO/$SCREENS"/*.png "$REPO/$SCREENS"/xcresult/*.png; do [ -f "$f" ] && sips -Z 1200 "$f" >/dev/null; done
+  du -sh "$REPO/$SCREENS"
+  ```
+- 指标：从日志里取 `XCTMemoryMetric` 的 `Memory Physical` 与 `XCTApplicationLaunchMetric` 的 `Duration`：
+  ```bash
+  grep -E "measured \[(Memory|Duration|Clock)" "$WORK/t4_ui.log" | head -10
+  ```
+- UI 测试失败时：允许修**测试代码本身**的定位问题（如等待时间、`textFields` vs `textViews`），必须记录；App 行为与预期不符（例如阻断弹窗没出现）**不要改 App 掩盖**，记为缺陷。
+- **成功标准**：包测试与 UI 测试 `TEST SUCCEEDED`；`$SCREENS` 下至少 01–07 共 7 张截图 + simctl 截图。
+- **记录**：每个 UI 测试 pass/fail、失败原文、截图清单、内存与启动时间、你**亲眼看截图发现的 UX 问题**（文字截断、重叠、深色模式对比度、按钮太小、中文显示不全等，每条写截图文件名）。
+
+### 4.5 基本内存检查（无需 Instruments）
+
+```bash
+xcrun simctl launch "$SIM" app.tripunderstand.demo -UITestMode mock-ready; sleep 8
+PID=$(xcrun simctl spawn "$SIM" launchctl list | awk '/app.tripunderstand.demo/{print $1}' | head -1)
+echo "PID=$PID"; ps -o pid,rss,vsz,command -p "$PID" 2>/dev/null | tail -1     # 模拟器 App 是主机进程，rss 单位 KB
+xcrun simctl spawn "$SIM" log show --last 2m --style compact --predicate 'process == "TripUnderstand" AND (messageType == error OR messageType == fault)' | tail -30
+```
+
+记录 RSS（注意：模拟器内存 ≠ 真机内存，只作趋势参考）和错误/故障日志。
+
+### 4.6（可选）模拟器里的真实模型端到端
+
+模拟器里正常（非测试模式）启动需要 Apple Translation 语言包与语音资源，模拟器上可能装不了，所以**不保证可行**：
+
+```bash
+xcrun simctl terminate "$SIM" app.tripunderstand.demo; xcrun simctl launch "$SIM" app.tripunderstand.demo
+sleep 8; xcrun simctl io "$SIM" screenshot "$REPO/$SCREENS/live_onboarding.png"
+```
+
+在引导页点「全部准备」（可用 UI 测试或手动，若代理无法点击就只记录截图）。若能下载模型并进入对话：粘贴 `udh sampe blm?` 并记录从发送到理解行出现的时间（秒表或日志时间戳）。若卡在系统语言包：记录卡住的项与截图，标「模拟器不支持，需真机（T7）」，不要绕过。真实模型的 Mac 速度以 T5 为准。
 
 ---
 
@@ -321,43 +400,104 @@ PY
 
 ---
 
-## 提交与反馈
+## 提交与反馈（每轮）
 
 ```bash
 cd "$REPO"
+REPORT=reports/mac_run_${RUN_DATE}_r${ROUND}.md
 git status --short
-# 检查不该提交的东西：
-git status --short | grep -E "\.gguf|\.safetensors|\.bin|finetune/runs/" && echo "STOP: 有模型文件，不要提交"
-git add reports/ finetune/results/eval_mac_*.json finetune/results/public_mac_*.json
-git add -u App TripCore            # 仅 T3 的编译修复（如有）
+git status --short | grep -E "\.gguf|\.safetensors|\.bin|finetune/runs/|\.xcresult" && echo "STOP: 有模型/大文件，不要提交"
+du -sh "$SCREENS"                                         # 截图总量应 < 5 MB
+git add "$REPORT" "$SCREENS" finetune/results/eval_mac_*.json finetune/results/public_mac_*.json 2>/dev/null
+git add -u App TripCore                                   # 仅 T3/T4 允许的最小修复 + xcodegen 重新生成的工程
 git diff --cached --stat
-git commit -m "mac run $RUN_DATE: 环境/编译/测试/Metal 冒烟/MLX LoRA 评测报告"
-git push -u origin "mac-run-$RUN_DATE"
-gh auth status && gh pr create --base master --head "mac-run-$RUN_DATE" \
-  --title "Mac run $RUN_DATE" --body-file "reports/mac_run_${RUN_DATE}.md"
+git commit -m "Mac run r$ROUND ($RUN_DATE): 报告、截图、评测结果"
+git push -u origin "$BR"
+gh auth status && gh pr create --base master --head "$BR" --title "Mac run r$ROUND" --body-file "$REPORT"
 ```
 
-- `xcodegen generate` 会改写 `App/TripUnderstand.xcodeproj`；如果 T3 编译成功，把重新生成的工程一起提交（它是从 `project.yml` 生成的）。
-- `gh` 未登录：不要自己处理令牌；记录「gh 未登录」，并在最终回复里给出手动建 PR 链接：`https://github.com/xhq52465840/offline-trip-translator/compare/master...mac-run-<日期>`。
+- **不要合并 PR**（不要 `gh pr merge`，也不要推 master）。
+- `xcodegen generate` 会改写 `App/TripUnderstand.xcodeproj`；编译成功时把重新生成的工程一起提交。
+- `gh` 未登录：不要自己处理令牌；记录「gh 未登录」，并在最终回复里给出手动建 PR 链接：`https://github.com/xhq52465840/offline-trip-translator/compare/master...<分支名>`。
 - push 被拒（无权限）：记录原文，报告留在本机，最终回复里贴报告全文。
 
 ---
 
-## 报告模板（复制到 `reports/mac_run_<日期>.md` 并填写）
+## 迭代循环（两个代理）
+
+角色：
+- **Mac 代理（你）**：每轮拉最新 master，执行 T0–T6（T0/T5/T6 见下方「每轮跑哪些」），写报告、推分支、开 PR。不合并。
+- **盒子代理（Linux，审阅方）**：看 PR 报告与截图，修复问题推到 master（保证 Linux 上 `swift test` 全绿、UI 文件 `swiftc -parse` 通过），然后在 PR 上评论 `next round`（可能附带说明，如「r3 只跑 T2–T4」）。
+
+### 每轮跑哪些
+
+| 任务 | r1 | 之后每轮 |
+|---|---|---|
+| T0 环境 | 全做 | 只记录 `xcodebuild -version`、磁盘 |
+| T1–T4 | 全做 | 全做 |
+| T5 Metal 冒烟 | 做 | 模型文件已在则跳过下载；llama.cpp 版本未变则跳过 |
+| T6 LoRA 训练 | 做（长任务） | 仅当 PR 评论或 master 改动了 `finetune/`（`git diff --stat <上轮commit>..origin/master -- finetune/`）时重做 |
+| T7 | 只列出 | 只列出 |
+
+### 等待下一轮
+
+开完 PR 后，每 10 分钟检查一次（最多等 24 小时）：
+
+```bash
+PR=$(gh pr list --head "$BR" --json number -q '.[0].number'); echo "PR=$PR"
+LAST=$(git rev-parse origin/master)
+while true; do
+  git fetch -q origin
+  gh pr view "$PR" --comments --json comments -q '.comments[].body' | tail -5 > "$WORK/pr_comments.txt"
+  STATE=$(gh pr view "$PR" --json state -q .state)
+  if grep -qiE "^\s*stop\b" "$WORK/pr_comments.txt" || [ "$STATE" = "MERGED" ]; then echo STOP; break; fi
+  if grep -qi "next round" "$WORK/pr_comments.txt" && [ "$(git rev-parse origin/master)" != "$LAST" ]; then echo NEXT; break; fi
+  sleep 600
+done
+```
+
+- 看到 `next round` **且** master 有新提交：读完整评论（`gh pr view "$PR" --comments`），把评论里的要求写进下一轮报告开头「本轮输入」，然后：
+  ```bash
+  export ROUND=$((ROUND+1)); export BR=mac-run-$RUN_DATE-r$ROUND; export SCREENS=reports/screens/$RUN_DATE-r$ROUND
+  cd "$REPO" && git checkout master && git pull --ff-only && git checkout -B "$BR"
+  ```
+  从 T1 重新开始（日期变了就用新日期，轮次继续累加）。
+- 只有 `next round` 但 master 没新提交：继续等（审阅方可能还在推）。
+- 上一轮 PR 不用关闭；审阅方负责关闭/合并。
+
+### 停止条件（满足任一即停，在最后的 PR 上评论总结）
+
+1. PR 评论出现 `stop`（独占一行）或 PR 被审阅方合并后没有新的 `next round`；
+2. 连续两轮：T2/T4 全部通过、无新编译错误、无新 UX 问题（报告里写明「连续两轮全绿」）；
+3. 达到 8 轮；
+4. 等待超过 24 小时没有新评论；
+5. 出现需要用户本人的阻塞（Apple ID、签名、付费、真机）：评论说明并停止。
+
+停止时的最终评论：
+```bash
+gh pr comment "$PR" --body "Mac 代理停止：<原因>。最后一轮 r$ROUND，报告 reports/mac_run_${RUN_DATE}_r${ROUND}.md。"
+```
+
+---
+
+## 报告模板（复制到 `reports/mac_run_<日期>_r<轮次>.md` 并填写）
 
 ```markdown
-# Mac 运行报告 <日期>
+# Mac run r<N>（<日期>）
+
+## 本轮输入
+- 基于 master commit：
+- 上一轮 PR 评论要求：（r1 写「无」）
 
 ## 环境
 | 项 | 值 |
 |---|---|
 | macOS | |
 | 芯片 / RAM / 可用磁盘 | |
-| Xcode / iOS SDK / 模拟器 | |
+| Xcode / iOS SDK / 模拟器（机型 + runtime） | |
 | Swift | |
 | python / mlx-lm / llama-cpp-python | |
 | llama.cpp 版本 | b11541 |
-| 仓库 commit | |
 
 ## 任务状态
 | 任务 | 状态（✅/⚠️/❌/跳过） | 备注 |
@@ -366,44 +506,60 @@ gh auth status && gh pr create --base master --head "mac-run-$RUN_DATE" \
 | T1 代码 | | |
 | T2 swift test | | 测试数 / 失败数 |
 | T3 Xcode 编译 | | |
-| T4 模拟器测试 | | |
+| T4.2 包测试（模拟器） | | |
+| T4.4 UI 测试 | | |
+| T4.5 内存检查 | | |
+| T4.6 模拟器真实模型 | | |
 | T5 Metal 冒烟 | | |
 | T6 LoRA 训练+评测 | | |
 | T7 | 未执行（需用户） | |
 
+## UI 测试结果
+| 测试 | 结果 | 耗时 | 失败原文 |
+|---|---|---|---|
+| testOnboardingShows | | | |
+| testBlockingSheetOnLaunchWhenNotReady | | | |
+| testPhraseBookFromBlockingSheetAndPresent | | | |
+| testPurchasePageOpens | | | |
+| testHomeAndChatWithMockEngine | | | |
+| testLaunchMemoryMetric | | | |
+
+## 截图
+| 文件（reports/screens/<日期>-r<N>/） | 画面 | 观察到的问题 |
+|---|---|---|
+
+## UX 问题（亲眼看截图）
+| # | 截图 | 问题 | 严重度（高/中/低） | 建议 |
+|---|---|---|---|---|
+
+## 指标
+| 项 | 值 | 说明 |
+|---|---|---|
+| 启动内存（XCTMemoryMetric） | | 模拟器，非真机 |
+| 启动时间（XCTApplicationLaunchMetric） | | |
+| RSS（ps） | | |
+| T5 load / TTFT / tok/s | | Mac Metal，非 iPhone |
+
 ## 错误原文
 （每个错误：任务、命令、完整输出，用代码块）
 
-## 代码修复清单（仅 T3/T4）
+## 代码修复清单（仅 T3/T4 允许的最小修复）
 | # | 文件:行 | 错误原文 | 修改 | 原因 |
 |---|---|---|---|---|
 
-## T5 Metal 冒烟（Mac，非 iPhone）
-| 模型 | 来源（HF/hf-mirror） | sha256 校验 | load (ms) | TTFT (ms) | 生成 tok/s | pp512 | tg128 |
-|---|---|---|---|---|---|---|---|
-
-## T6 训练
+## T6 训练与评测（本轮做了才填）
 | 项 | 值 |
 |---|---|
-| 配置 | mlx/lora.yaml（或 lora_mac_small.yaml） |
-| 耗时 | |
-| 峰值内存 | |
-| 最终 Train / Val loss | |
+| 配置 / 耗时 / 峰值内存 / 最终 Train·Val loss | |
 
-### 60 条 App 格式评测
-（粘贴 6.5 的第一张表）
-
-### 公开集 chrF++
-（粘贴 6.5 的第二张表）
+（粘贴 6.5 的两张对比表）
 
 ## 产出文件
 | 文件 | 说明 | 是否提交 |
 |---|---|---|
-| finetune/runs/trip-qwen2.5-1.5b-lora-Q4_K_M.gguf | 微调模型（本机路径：…） | 否 |
-| 字节数 / sha256 | | — |
-| finetune/results/eval_mac_base.json, eval_mac_lora.json | | 是 |
-| finetune/results/public_mac_base.json, public_mac_lora.json | | 是 |
+| finetune/runs/trip-qwen2.5-1.5b-lora-Q4_K_M.gguf | 本机路径：… ；字节数：… ；sha256：… | 否 |
+| finetune/results/*_mac_*.json | | 是 |
+| reports/screens/<日期>-r<N>/*.png | | 是 |
 
-## 需要用户处理
-（T7 清单 + 本次发现的问题）
+## 需要用户处理 / 给审阅方的问题
 ```
