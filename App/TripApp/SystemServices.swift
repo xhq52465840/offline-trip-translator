@@ -27,12 +27,14 @@ final class SystemPackProbe: LanguagePackProbing {
 
     func speechReadiness(locale: String) async -> Readiness {
         let loc = Locale(identifier: locale)
+        #if compiler(>=6.2)
         if #available(iOS 26.0, *) {
             let installed = await SpeechTranscriber.installedLocales
             if installed.contains(where: { $0.identifier(.bcp47) == loc.identifier(.bcp47) }) { return .ready }
             let supported = await SpeechTranscriber.supportedLocales
             if supported.contains(where: { $0.identifier(.bcp47) == loc.identifier(.bcp47) }) { return .needsDownload(bytes: nil) }
         }
+        #endif
         if let r = SFSpeechRecognizer(locale: loc), r.supportsOnDeviceRecognition { return .ready }
         // 只有对方语言听写可以是「暂不可用」；中文听写缺失视为需要下载（由 AppGate 阻断）
         return locale.hasPrefix("zh") ? .needsDownload(bytes: nil) : .unavailable("听\(Lang.displayName(String(locale.prefix(2))))暂不可用")
@@ -45,12 +47,14 @@ protocol SpeechAssetInstalling { func install(locale: String) async throws }
 
 final class SystemSpeechInstaller: SpeechAssetInstalling {
     func install(locale: String) async throws {
+        #if compiler(>=6.2)
         if #available(iOS 26.0, *) {
             let t = SpeechTranscriber(locale: Locale(identifier: locale), preset: .transcription)
             if let req = try await AssetInventory.assetInstallationRequest(supporting: [t]) {
                 try await req.downloadAndInstall()
             }
         }
+        #endif
     }
 }
 
@@ -61,10 +65,12 @@ final class SystemSpeechInstaller: SpeechAssetInstalling {
 final class SystemTranslator: Translating {
     func translate(_ text: String, from: String, to: String) async throws -> String {
         #if canImport(Translation)
+        #if compiler(>=6.2)
         if #available(iOS 26.0, *) {
             let s = TranslationSession(installedSource: Locale.Language(identifier: from), target: Locale.Language(identifier: to))
             return try await s.translate(text).targetText
         }
+        #endif
         if #available(iOS 18.0, *) {
             return try await TranslationBridge.shared.translate(text, from: from, to: to)
         }

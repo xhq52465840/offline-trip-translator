@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0BFAD96939A80C1905407CF5 /* SystemServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA0367D284B500F9C51C4102 /* SystemServices.swift */; };
+		39B0A84E09223D3889183DDB /* TripUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00F629217860D26056F8327C /* TripUITests.swift */; };
 		42887FE0258A4AE29A584769 /* ConversationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 318D03296EA26BE6B9E65AB0 /* ConversationView.swift */; };
 		53C0A6FB7F11F92E89D41645 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = E89F4EE04750EDEEF15BBAFA /* AppState.swift */; };
 		5C9E3F4E3A7D39379E0FA12A /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EA28FC65F858807C558D6E /* OnboardingView.swift */; };
@@ -15,19 +16,33 @@
 		60F0A77C971A3D043789BFB4 /* OtherViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE0A60527FC2D4688F43C4C3 /* OtherViews.swift */; };
 		87F055598C4FAF198A1EC008 /* TripCore in Frameworks */ = {isa = PBXBuildFile; productRef = 6EB80A3ED1AAA16A48D92DFC /* TripCore */; };
 		8A2DA98CD6B1E097310CABE8 /* Previews.swift in Sources */ = {isa = PBXBuildFile; fileRef = D35281CB79141DF980D0F53E /* Previews.swift */; };
+		9C3E2794DA524C3EE8C252EF /* Products.storekit in Resources */ = {isa = PBXBuildFile; fileRef = 07629C0EC6DDE05834AD3CF1 /* Products.storekit */; };
 		AFB632D3AD432D1AAF8E033E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1743984A85C30C23FF5E44EE /* Assets.xcassets */; };
 		C21826B1196DB3AE0220F33F /* TripAppModel in Frameworks */ = {isa = PBXBuildFile; productRef = FBC9A0BB7CCE92E39BC36D52 /* TripAppModel */; };
 		CC7586870FE1E4024C3F9146 /* TripLLM in Frameworks */ = {isa = PBXBuildFile; productRef = FBE101A72727720609E17809 /* TripLLM */; };
 		E216D74EC43854AF3517F46B /* Speech.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EB91516FDF2AF190302150 /* Speech.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		05CCF5F89F3AC7C9B597973C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 74652763F617FF63AB12C341 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D8EEC73533C9E8B08A0AF372;
+			remoteInfo = TripUnderstand;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
+		00F629217860D26056F8327C /* TripUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TripUITests.swift; sourceTree = "<group>"; };
+		07629C0EC6DDE05834AD3CF1 /* Products.storekit */ = {isa = PBXFileReference; path = Products.storekit; sourceTree = "<group>"; };
 		1743984A85C30C23FF5E44EE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		306BF6FCAF93E013EA263939 /* TripUnderstand.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = TripUnderstand.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		318D03296EA26BE6B9E65AB0 /* ConversationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationView.swift; sourceTree = "<group>"; };
 		43EB91516FDF2AF190302150 /* Speech.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Speech.swift; sourceTree = "<group>"; };
 		5F12BFA0D303661C0CF06F4D /* TripApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TripApp.swift; sourceTree = "<group>"; };
 		80EA28FC65F858807C558D6E /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
+		8631AE48CBD4ABA1066C6590 /* TripUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = TripUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		9E9C92A92FB7E3E252C15978 /* TripCore */ = {isa = PBXFileReference; lastKnownFileType = folder; name = TripCore; path = ../TripCore; sourceTree = SOURCE_ROOT; };
 		BA0367D284B500F9C51C4102 /* SystemServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemServices.swift; sourceTree = "<group>"; };
 		BC9D945A3DEB971D15E8554E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
@@ -59,11 +74,20 @@
 			name = Packages;
 			sourceTree = "<group>";
 		};
+		4B8CB5AFA2D68A3B845D82FD /* TripUITests */ = {
+			isa = PBXGroup;
+			children = (
+				00F629217860D26056F8327C /* TripUITests.swift */,
+			);
+			path = TripUITests;
+			sourceTree = "<group>";
+		};
 		B0E4DEFBEBEDD146B31A95D1 = {
 			isa = PBXGroup;
 			children = (
 				292E1AF5AE7BEF9D1E8F7152 /* Packages */,
 				BE9D8F250B532AD7ABCB0B4B /* TripApp */,
+				4B8CB5AFA2D68A3B845D82FD /* TripUITests */,
 				D6C1223F3ED36B4E37BCF296 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -78,6 +102,7 @@
 				80EA28FC65F858807C558D6E /* OnboardingView.swift */,
 				BE0A60527FC2D4688F43C4C3 /* OtherViews.swift */,
 				D35281CB79141DF980D0F53E /* Previews.swift */,
+				07629C0EC6DDE05834AD3CF1 /* Products.storekit */,
 				43EB91516FDF2AF190302150 /* Speech.swift */,
 				BA0367D284B500F9C51C4102 /* SystemServices.swift */,
 				5F12BFA0D303661C0CF06F4D /* TripApp.swift */,
@@ -89,6 +114,7 @@
 		D6C1223F3ED36B4E37BCF296 /* Products */ = {
 			isa = PBXGroup;
 			children = (
+				8631AE48CBD4ABA1066C6590 /* TripUITests.xctest */,
 				306BF6FCAF93E013EA263939 /* TripUnderstand.app */,
 			);
 			name = Products;
@@ -97,6 +123,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		9F8521BD329C6261B9AD700F /* TripUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B30D2B4E23254E4CB70D0CAE /* Build configuration list for PBXNativeTarget "TripUITests" */;
+			buildPhases = (
+				0CE0533783399FB46A242301 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				1B24DDB2CBB1BC8C75E5997B /* PBXTargetDependency */,
+			);
+			name = TripUITests;
+			packageProductDependencies = (
+			);
+			productName = TripUITests;
+			productReference = 8631AE48CBD4ABA1066C6590 /* TripUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 		D8EEC73533C9E8B08A0AF372 /* TripUnderstand */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = BB1CC3F0A3E07F6301B7C450 /* Build configuration list for PBXNativeTarget "TripUnderstand" */;
@@ -128,6 +172,11 @@
 				BuildIndependentTargetsInParallel = YES;
 				LastUpgradeCheck = 1430;
 				TargetAttributes = {
+					9F8521BD329C6261B9AD700F = {
+						DevelopmentTeam = "";
+						ProvisioningStyle = Automatic;
+						TestTargetID = D8EEC73533C9E8B08A0AF372;
+					};
 					D8EEC73533C9E8B08A0AF372 = {
 						DevelopmentTeam = "";
 						ProvisioningStyle = Automatic;
@@ -135,7 +184,6 @@
 				};
 			};
 			buildConfigurationList = 4DB0EE4C6BA60D6264D248AD /* Build configuration list for PBXProject "TripUnderstand" */;
-			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -148,10 +196,12 @@
 				E64FF1BA39AEFFEBEA6B380D /* XCLocalSwiftPackageReference "../TripCore" */,
 			);
 			preferredProjectObjectVersion = 77;
+			productRefGroup = D6C1223F3ED36B4E37BCF296 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
 				D8EEC73533C9E8B08A0AF372 /* TripUnderstand */,
+				9F8521BD329C6261B9AD700F /* TripUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -162,12 +212,21 @@
 			buildActionMask = 2147483647;
 			files = (
 				AFB632D3AD432D1AAF8E033E /* Assets.xcassets in Resources */,
+				9C3E2794DA524C3EE8C252EF /* Products.storekit in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		0CE0533783399FB46A242301 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				39B0A84E09223D3889183DDB /* TripUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		DB35ABF627AC6CEAACF4C015 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -184,6 +243,14 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		1B24DDB2CBB1BC8C75E5997B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D8EEC73533C9E8B08A0AF372 /* TripUnderstand */;
+			targetProxy = 05CCF5F89F3AC7C9B597973C /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		01074D24A236CFDFE6BD5FD5 /* Debug */ = {
@@ -305,6 +372,26 @@
 			};
 			name = Release;
 		};
+		3754689F7099E8D949F39C48 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = "";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = app.tripunderstand.demo.uitests;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				TEST_TARGET_NAME = TripUnderstand;
+			};
+			name = Debug;
+		};
 		7B209C6FA939811487DDE0F1 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -345,6 +432,26 @@
 			};
 			name = Debug;
 		};
+		AA87FBB6BA3A46109DE0A181 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = "";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = app.tripunderstand.demo.uitests;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				TEST_TARGET_NAME = TripUnderstand;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -353,6 +460,15 @@
 			buildConfigurations = (
 				01074D24A236CFDFE6BD5FD5 /* Debug */,
 				30917DD0636D57A7736BBECB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		B30D2B4E23254E4CB70D0CAE /* Build configuration list for PBXNativeTarget "TripUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3754689F7099E8D949F39C48 /* Debug */,
+				AA87FBB6BA3A46109DE0A181 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;

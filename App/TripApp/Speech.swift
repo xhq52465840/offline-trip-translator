@@ -28,7 +28,10 @@ final class LiveTranscriber: Transcribing {
         try session.setCategory(.record, mode: .measurement, options: [])
         try session.setActive(true, options: [])
 
+        // Xcode 16.2（Swift 6.0）的 SDK 没有 SpeechAnalyzer。编译器 ≥ 6.2 才编译这条路径。
+        #if compiler(>=6.2)
         if #available(iOS 26.0, *), try await startAnalyzer(locale: Locale(identifier: locale)) { return }
+        #endif
         try await startSF(locale: Locale(identifier: locale))
     }
 
@@ -80,7 +83,9 @@ final class LiveTranscriber: Transcribing {
     }
 
     // MARK: SpeechAnalyzer（iOS 26）
+    // 这些类型在 iOS 26 SDK 才有。@available 挡不住旧 SDK 的类型检查，所以再加编译器条件。
 
+    #if compiler(>=6.2)
     @available(iOS 26.0, *)
     private func startAnalyzer(locale: Locale) async throws -> Bool {
         guard let supported = await SpeechTranscriber.supportedLocale(equivalentTo: locale) else { return false }
@@ -124,4 +129,5 @@ final class LiveTranscriber: Transcribing {
         cancelAnalyzer = { continuation.finish(); Task { await analyzer.cancelAndFinishNow() } }
         return true
     }
+    #endif
 }

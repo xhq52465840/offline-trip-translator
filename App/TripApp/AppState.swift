@@ -85,9 +85,10 @@ final class AppState: ObservableObject {
         understander = Understander(engine: engine)
         conversation = ConversationModel(translator: translator, understander: understander,
                                          trial: TrialCounter(store: store), metrics: MetricsSettings())
-        conversation.onChange = { [weak self] in self?.tick += 1 }
         talk = HoldToTalk(transcriber: transcriber)
         self.sessions = sessions
+        // 闭包捕获 self 之前，所有 let 存储属性必须先完成初始化（Swift 6 确定初始化检查）。
+        conversation.onChange = { [weak self] in self?.tick += 1 }
         talk.onChange = { [weak self] in self?.tick += 1 }
         conversation.onPersist = { [weak self] msgs in
             guard let self else { return }
