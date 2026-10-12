@@ -57,6 +57,7 @@ struct HomeView: View {
                     }
                 }
                 .padding()
+                .padding(.bottom, 24)   // 最后一行场景卡不被 Home 指示条压住（Mac run r1/r2）
             }
             .navigationTitle("离线行程理解")
             .accessibilityIdentifier("home")

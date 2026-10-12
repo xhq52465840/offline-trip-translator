@@ -14,3 +14,5 @@
 | 社区语料（`community_cases.jsonl`） | 仅评测，短引用 | 各网站条款；合理使用 | 保留来源网址；不进训练、不进 App |
 | 微调训练数据（`finetune/out`） | 模板生成，自有 | 自有 | — |
 | Hy-MT1.5（腾讯） | 仅评测过，未采用 | Tencent HY Community License（非 Apache） | 不分发 |
+
+- `finetune/out_mix/`：含通用回放样本，来自 Tatoeba（CC BY 2.0 FR，https://tatoeba.org ）与 STIF-Indonesia train（MIT，https://github.com/haryoa/stif-indonesia ），由 `finetune/data/build_replay.py` 生成，与评测集不相交。

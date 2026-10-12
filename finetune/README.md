@@ -72,3 +72,10 @@ CUDA 备选：`python peft/train_peft.py --model Qwen/Qwen2.5-1.5B-Instruct --da
 - 已改 `mlx/lora.yaml`：400 步、lr 5e-5、dropout 0.1、每 100 步存检查点、每 50 步验证。
 - 选模型规则：App 格式 strict 不低于基座 **且** 公开集 chrF++ 下降不超过 3 分；否则不采用该检查点。
 - 后续（待做）：混入通用翻译回放数据（从 Tatoeba 训练侧取，与 public_eval 不相交）以防遗忘。
+
+## r3：通用回放防遗忘（2026-10-12）
+
+r2 的 400 步 s200/s400：App 格式 strict 105/102（基座 85），但公开集三项下降 15–49 分，按规则不采用。原因是只训场景模板数据，通用翻译/口语规范化能力被覆盖。
+- `data/build_replay.py`：从 Tatoeba ind↔cmn 与 STIF train 取回放样本（与 public_eval 原文零重叠，脚本内校验），按约 30% 混入 → `out_mix/`（场景 2244 + 回放 961，验证另加 60）。
+- `mlx/lora_mix.yaml`：data=out_mix，600 步，适配器 `runs/mlx_adapters_mix`，其余同 lora.yaml。
+- 注意：回放用的提示词与 eval_public 相同（同任务不同句子），公开集分数会偏乐观，报告里需注明。

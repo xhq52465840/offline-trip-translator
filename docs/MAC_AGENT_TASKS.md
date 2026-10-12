@@ -206,7 +206,7 @@ grep -E "Test Case .*(passed|failed)|error:|TEST (SUCCEEDED|FAILED)" "$WORK/t4_u
 ls -la "$REPO/$SCREENS"
 ```
 
-- `TEST_RUNNER_SCREEN_DIR` 会以 `SCREEN_DIR` 传给测试进程，测试把截图 PNG 直接写到该目录（模拟器可写主机路径）。若目录为空，从 xcresult 导出：
+- 截图以 xcresult 导出为准（r1/r2 实测 `TEST_RUNNER_SCREEN_DIR` 直写为空，可忽略）：
   ```bash
   xcrun xcresulttool export attachments --path "$WORK/ui_r$ROUND.xcresult" --output-path "$REPO/$SCREENS/xcresult" 2>&1 | tail -3 \
     || echo "xcresulttool 版本不支持 export attachments：记录并跳过"
@@ -362,6 +362,18 @@ ls runs/mlx_adapters_s*/
 
 6.4 中把 `--adapter-path runs/mlx_adapters` 换成 `runs/mlx_adapters_s$S`、输出前缀换成 `runs/trip-lora-s$S`，6.5 的 tag 换成 `mac_lora_s$S`。采用规则：App 格式 strict ≥ 基座，且公开集各任务 chrF 下降 ≤ 3。
 
+### 6.3c 回放混合训练（r3 起，优先于 6.3b）
+
+r2 结论：只训场景数据会遗忘通用能力。r3 起用 `mlx/lora_mix.yaml`（数据 `out_mix/` = 场景 + Tatoeba/STIF 回放，600 步，适配器 `runs/mlx_adapters_mix`）。先确认数据存在（已提交；如需重建：`bash public_data/fetch.sh && python3 data/build_replay.py`）：
+
+```bash
+cd "$REPO/finetune" && cat out_mix/stats.json
+nohup caffeinate -dimsu python -m mlx_lm lora -c mlx/lora_mix.yaml > runs/mlx_mix_train.log 2>&1 &
+echo $! > runs/mlx_mix_train.pid
+```
+
+检查点挑选同 6.3b，但用 300 与 600 步：`runs/mlx_adapters_mix/0000300_adapters.safetensors`、`0000600_…`，目录 `runs/mlx_adapters_mix_s$S`，GGUF 前缀 `runs/trip-mix-s$S`，tag `mac_mix_s$S`。报告里注明：回放与 eval_public 同提示词（不同句子），公开集分数偏乐观。
+
 ### 6.4 融合 → GGUF Q4_K_M → sha256
 
 ```bash
@@ -393,7 +405,7 @@ python3 - <<'PY'
 import json, os
 print("| tag | score | strict | 原30 strict | 扩30 strict | 金额错 | App 接受 | TTFT 中位 |")
 print("|---|---|---|---|---|---|---|---|")
-for t in ["base", "short", "mac_base", "mac_lora", "mac_lora_s200", "mac_lora_s400"]:
+for t in ["base", "short", "mac_base", "mac_lora", "mac_lora_s200", "mac_lora_s400", "mac_mix_s300", "mac_mix_s600"]:
     p = f"eval_{t}.json"
     if os.path.exists(p):
         s = json.load(open(p))["summary"]
@@ -401,7 +413,7 @@ for t in ["base", "short", "mac_base", "mac_lora", "mac_lora_s200", "mac_lora_s4
 print()
 print("| tag | n | mt_id_zh chrF | mt_id_en chrF++ | slang_norm chrF++ |")
 print("|---|---|---|---|---|")
-for t in ["base", "short", "mac_base", "mac_lora", "mac_lora_s200", "mac_lora_s400"]:
+for t in ["base", "short", "mac_base", "mac_lora", "mac_lora_s200", "mac_lora_s400", "mac_mix_s300", "mac_mix_s600"]:
     p = f"public_{t}.json"
     if os.path.exists(p):
         d = json.load(open(p)); s = d["summary"]

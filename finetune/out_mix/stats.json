@@ -1,0 +1,8 @@
+{
+ "scene_train": 2244,
+ "replay_train": 961,
+ "replay_valid": 60,
+ "replay_mt": 203,
+ "replay_norm": 758,
+ "banned_eval_src": 509
+}

@@ -1,0 +1,22 @@
+# mlx-lm LoRA 配置（Apple Silicon）。用法见 ../README.md
+model: "Qwen/Qwen2.5-1.5B-Instruct"
+train: true
+data: "out_mix"        # 场景数据 + 通用回放（data/build_replay.py）
+fine_tune_type: lora
+mask_prompt: true      # 只对最后一条 assistant 计算 loss
+batch_size: 4
+iters: 600              # 数据量约 1.4 倍
+learning_rate: 5.0e-5
+num_layers: -1         # 全部层挂 LoRA
+max_seq_length: 1024
+grad_checkpoint: true
+steps_per_report: 20
+steps_per_eval: 50
+save_every: 100          # 每 100 步存检查点，便于挑公开集不掉分的那个
+adapter_path: "runs/mlx_adapters_mix"
+lora_parameters:
+  rank: 16
+  scale: 20.0
+  dropout: 0.1
+  keys: ["self_attn.q_proj", "self_attn.k_proj", "self_attn.v_proj", "self_attn.o_proj", "mlp.gate_proj", "mlp.up_proj", "mlp.down_proj"]
+seed: 0
