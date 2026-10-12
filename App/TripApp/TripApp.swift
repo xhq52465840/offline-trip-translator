@@ -4,7 +4,7 @@ import TripAppModel
 
 @main
 struct TripApp: App {
-    @StateObject private var state = AppState.live()
+    @StateObject private var state = AppState.make()
     @Environment(\.scenePhase) private var scenePhase
 
     var body: some Scene {

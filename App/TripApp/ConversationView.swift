@@ -46,6 +46,7 @@ struct HomeView: View {
                         .background(Color.accentColor, in: RoundedRectangle(cornerRadius: 20))
                     }
                     .accessibilityHint("进入通用对话")
+                    .accessibilityIdentifier("startChat")
 
                     Text("在哪儿？选一个，会多一些常用句").font(.headline).foregroundStyle(.secondary)
                     LazyVGrid(columns: columns, spacing: 12) {
@@ -58,6 +59,7 @@ struct HomeView: View {
                 .padding()
             }
             .navigationTitle("离线行程理解")
+            .accessibilityIdentifier("home")
             .navigationDestination(for: Scenario?.self) { _ in ConversationView() }
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
@@ -223,6 +225,7 @@ struct ConversationView: View {
                     .padding(10)
                     .background(Color(.secondarySystemBackground), in: RoundedRectangle(cornerRadius: 12))
                     .onChange(of: input) { _, v in if v.count > 500 { input = String(v.prefix(500)) } }
+                    .accessibilityIdentifier("chatInput")
                 Button {
                     let text = input
                     Task {
@@ -234,6 +237,7 @@ struct ConversationView: View {
                 } label: { Image(systemName: "arrow.up.circle.fill").font(.system(size: 36)) }
                 .disabled(!model.canSend || input.trimmingCharacters(in: .whitespaces).isEmpty)
                 .accessibilityLabel("发送")
+                .accessibilityIdentifier("sendButton")
             }
             // 单手操作：两颗大按钮占满底部，拇指可达
             HStack(spacing: 10) {
@@ -490,12 +494,13 @@ struct PresentView: View {
                     .padding(20)
                     .frame(maxWidth: .infinity, minHeight: 600)
                     .accessibilityAddTraits(.isHeader)
+                    .accessibilityIdentifier("presentText")
                 if let a = amountLine {
                     Text(a).font(.system(size: 44, weight: .heavy).monospacedDigit())
                         .foregroundStyle(.yellow).padding(.horizontal, 20).frame(maxWidth: .infinity, alignment: .leading)
                 }
             }
-            Button("关闭") { dismiss() }.font(.system(size: 15)).foregroundStyle(.white.opacity(0.8)).padding(.top, 8)
+            Button("关闭") { dismiss() }.accessibilityIdentifier("presentClose").font(.system(size: 15)).foregroundStyle(.white.opacity(0.8)).padding(.top, 8)
         }
         .contentShape(Rectangle())
         .onTapGesture { dismiss() }

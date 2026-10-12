@@ -40,11 +40,30 @@ targets:
         PRODUCT_BUNDLE_IDENTIFIER: app.tripunderstand.demo
         TARGETED_DEVICE_FAMILY: "1"
         SWIFT_VERSION: "5.0"
+  TripUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources: [TripUITests]
+    dependencies:
+      - target: TripUnderstand
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: app.tripunderstand.demo.uitests
+        CODE_SIGN_STYLE: Automatic
+        DEVELOPMENT_TEAM: ""
+        TARGETED_DEVICE_FAMILY: "1"
+        SWIFT_VERSION: "5.0"
+        GENERATE_INFOPLIST_FILE: YES
+        TEST_TARGET_NAME: TripUnderstand
 schemes:
   TripUnderstand:
     build:
       targets:
         TripUnderstand: all
+        TripUITests: [test]
+    test:
+      config: Debug
+      targets: [TripUITests]
     run:
       config: Debug
       # 本地 StoreKit 沙盒（决策 D4，价格为提案）

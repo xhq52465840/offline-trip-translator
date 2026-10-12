@@ -127,6 +127,7 @@ struct PurchaseView: View {
             if let m = p.message { Text(m).foregroundStyle(.secondary) }
         }
         .navigationTitle("购买")
+        .accessibilityIdentifier("purchase")
         .task { await p.load(); sync() }
     }
     private func sync() {
@@ -161,11 +162,13 @@ struct PhraseBookView: View {
                             }
                         }
                         .accessibilityHint("全屏出示给对方")
+                        .accessibilityIdentifier("phrase_\(p.zh)")
                     }
                 }
             }
         }
         .navigationTitle("常用句（离线可用）")
+        .accessibilityIdentifier("phraseBook")
         .fullScreenCover(item: $showing) { p in
             PresentView(text: PhraseBook.present(p, lang: lang).big, amountLine: nil)
         }

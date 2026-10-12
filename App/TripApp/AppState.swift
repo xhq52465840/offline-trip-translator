@@ -69,15 +69,18 @@ final class AppState: ObservableObject {
 
     init(tier: DeviceTier, probe: LanguagePackProbing, translator: Translating, engine: LLMEngine,
          downloader: ModelDownloader?, env: SystemDownloadEnvironment, speechInstaller: SpeechAssetInstalling,
-         transcriber: Transcribing, sessions: SessionStore) {
+         transcriber: Transcribing, sessions: SessionStore,
+         modelReadinessOverride: (() -> Readiness)? = nil, defaults: UserDefaults = .standard, trialStore: TrialStore? = nil) {
         self.probe = probe; self.engine = engine; self.downloader = downloader; self.env = env; self.speechInstaller = speechInstaller
         let dl = downloader
-        gate = AppGate(tier: tier, probe: probe, modelReadiness: { dl?.readiness ?? .unavailable("没有适合这台手机的理解能力") })
+        gate = AppGate(tier: tier, probe: probe,
+                       modelReadiness: modelReadinessOverride ?? { dl?.readiness ?? .unavailable("没有适合这台手机的理解能力") },
+                       defaults: defaults)
         let store: TrialStore
         #if canImport(Security)
-        store = KeychainTrialStore()
+        store = trialStore ?? KeychainTrialStore()
         #else
-        store = InMemoryTrialStore()
+        store = trialStore ?? InMemoryTrialStore()
         #endif
         understander = Understander(engine: engine)
         conversation = ConversationModel(translator: translator, understander: understander,
@@ -134,6 +137,35 @@ final class AppState: ObservableObject {
             #endif
         }
         tick += 1
+    }
+
+    #if DEBUG
+    /// 模拟器 / XCUITest：`-UITestMode mock-ready|mock-not-ready|mock-onboarding`（TripAppModel.UITestMode，有单测）。
+    /// MockEngine + 假翻译 + 假就绪；独立 UserDefaults 域与内存试用记录，每次启动清空，不碰真实数据。仅 DEBUG。
+    static func uiTest(_ mode: UITestMode) -> AppState {
+        UserDefaults.standard.removePersistentDomain(forName: UITestMode.defaultsSuite)
+        let defaults = UserDefaults(suiteName: UITestMode.defaultsSuite) ?? .standard
+        defaults.set(mode.onboardingCompleted, forKey: "onboarding.completed")
+        let engine = MockEngine(pieceDelayNanos: 10_000_000) { _ in UITestMode.fakeUnderstanding }
+        let dir = FileManager.default.temporaryDirectory.appendingPathComponent("uitest-sessions")
+        try? FileManager.default.removeItem(at: dir)
+        let s = AppState(tier: .a8GB, probe: UITestProbe(mode: mode), translator: UITestTranslator(), engine: engine,
+                         downloader: nil, env: SystemDownloadEnvironment(network: .wifi), speechInstaller: PreviewSpeechInstaller(),
+                         transcriber: PreviewTranscriber(), sessions: SessionStore(directory: dir),
+                         modelReadinessOverride: { mode.modelReadiness }, defaults: defaults, trialStore: InMemoryTrialStore())
+        Task { try? await engine.load(modelURL: URL(fileURLWithPath: "/dev/null")) }
+        return s
+    }
+    #endif
+
+    /// 正常启动；DEBUG 构建带 `-UITestMode` 参数时走 uiTest。
+    static func make() -> AppState {
+        #if DEBUG
+        if let m = UITestMode.from(arguments: ProcessInfo.processInfo.arguments, environment: ProcessInfo.processInfo.environment) {
+            return uiTest(m)
+        }
+        #endif
+        return live()
     }
 
     private func loadModelIfNeeded() async {

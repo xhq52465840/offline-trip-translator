@@ -11,7 +11,7 @@ struct OnboardingView: View {
             List {
                 Section {
                     VStack(alignment: .leading, spacing: 8) {
-                        Text("先准备好，再出发").font(.title2.bold())
+                        Text("先准备好，再出发").font(.title2.bold()).accessibilityIdentifier("onboardingTitle")
                         Text("这个应用全部在手机上运行，不联网也能用。第一次需要在 Wi‑Fi 下准备好语言和理解能力，\(totalSize)，下载完成后才能开始用。")
                             .foregroundStyle(.secondary)
                         Label(state.etaText, systemImage: "house.fill")
@@ -88,7 +88,7 @@ struct BlockingSheet: View {
     var body: some View {
         VStack(spacing: 20) {
             Image(systemName: "arrow.down.circle").font(.system(size: 48))
-            Text("还没准备好，暂时不能用").font(.title3.bold())
+            Text("还没准备好，暂时不能用").font(.title3.bold()).accessibilityIdentifier("blockingTitle")
             Text("缺少：\(state.missingText)。请连上 Wi‑Fi 下载离线语言和理解能力，完成后就能断网使用。")
                 .multilineTextAlignment(.center).foregroundStyle(.secondary)
             Button {
@@ -99,6 +99,7 @@ struct BlockingSheet: View {
             NavigationLink { PhraseBookView() } label: {
                 Label("下载期间先用：常用句（出示给对方）", systemImage: "text.bubble")
             }
+            .accessibilityIdentifier("blockingPhraseBook")
             NavigationLink("查看隐私说明") { PrivacyView() }
         }
         .padding(24)
