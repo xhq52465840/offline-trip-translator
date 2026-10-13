@@ -374,6 +374,12 @@ echo $! > runs/mlx_mix_train.pid
 
 检查点挑选同 6.3b，但用 300 与 600 步：`runs/mlx_adapters_mix/0000300_adapters.safetensors`、`0000600_…`，目录 `runs/mlx_adapters_mix_s$S`，GGUF 前缀 `runs/trip-mix-s$S`，tag `mac_mix_s$S`。报告里注明：回放与 eval_public 同提示词（不同句子），公开集分数偏乐观。
 
+### 6.3d 回放 v2（r4 起，优先于 6.3c）
+
+`out_mix/` 已重建：回放约 45%，新增 FLORES-200 **dev** 的 印→中、印→英（评测只用 devtest，零重叠已校验）。`mlx/lora_mix.yaml` 改为 800 步，适配器 `runs/mlx_adapters_mix2`。命令同 6.3c，日志 `runs/mlx_mix2_train.log`；评测 s400 与 s800（目录 `runs/mlx_adapters_mix2_s$S`，GGUF 前缀 `runs/trip-mix2-s$S`，tag `mac_mix2_s$S`）。公开集照旧注明「同提示词偏乐观」，并对最好的检查点各任务抽 2 条输出。
+
+App 侧（r2、r3 已连续两轮全绿）：本轮 T3/T4 只需编译 + UI 测试 + 06_home 截图确认底行副标题不被遮挡。
+
 ### 6.4 融合 → GGUF Q4_K_M → sha256
 
 ```bash
@@ -405,7 +411,7 @@ python3 - <<'PY'
 import json, os
 print("| tag | score | strict | 原30 strict | 扩30 strict | 金额错 | App 接受 | TTFT 中位 |")
 print("|---|---|---|---|---|---|---|---|")
-for t in ["base", "short", "mac_base", "mac_lora", "mac_lora_s200", "mac_lora_s400", "mac_mix_s300", "mac_mix_s600"]:
+for t in ["base", "short", "mac_base", "mac_lora", "mac_lora_s200", "mac_lora_s400", "mac_mix_s300", "mac_mix_s600", "mac_mix2_s400", "mac_mix2_s800"]:
     p = f"eval_{t}.json"
     if os.path.exists(p):
         s = json.load(open(p))["summary"]
@@ -413,7 +419,7 @@ for t in ["base", "short", "mac_base", "mac_lora", "mac_lora_s200", "mac_lora_s4
 print()
 print("| tag | n | mt_id_zh chrF | mt_id_en chrF++ | slang_norm chrF++ |")
 print("|---|---|---|---|---|")
-for t in ["base", "short", "mac_base", "mac_lora", "mac_lora_s200", "mac_lora_s400", "mac_mix_s300", "mac_mix_s600"]:
+for t in ["base", "short", "mac_base", "mac_lora", "mac_lora_s200", "mac_lora_s400", "mac_mix_s300", "mac_mix_s600", "mac_mix2_s400", "mac_mix2_s800"]:
     p = f"public_{t}.json"
     if os.path.exists(p):
         d = json.load(open(p)); s = d["summary"]
