@@ -36,7 +36,7 @@ final class UXTests: XCTestCase {
         m.scene = .restaurant
         m.sendPhrase(Scenario.restaurant.phrases[1])
         XCTAssertEqual(m.messages.count, 1)
-        XCTAssertEqual(m.messages[0].foreign, "Tidak pedas, ya.")
+        XCTAssertEqual(m.messages[0].foreign, "Jangan pedas, ya.")
         XCTAssertEqual(m.messages[0].status, .ready)
         XCTAssertTrue(tr.calls.isEmpty, "短语不调用翻译")
         XCTAssertEqual(trial.state, .notStarted, "短语不开始试用计时")

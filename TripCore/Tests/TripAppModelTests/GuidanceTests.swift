@@ -74,7 +74,7 @@ final class LockedAccessTests: XCTestCase {
         XCTAssertFalse(ride.first!.needsNativeReview, "已审校在前")
         XCTAssertTrue(ride.last!.needsNativeReview)
         let p = PhraseBook.present(Scenario.restaurant.phrases[1], lang: "id")
-        XCTAssertEqual(p.big, "Tidak pedas, ya.")
+        XCTAssertEqual(p.big, "Jangan pedas, ya.")
     }
     func testPhrasesNeedNoTrialOrModel() {
         let trial = TrialCounter(store: InMemoryTrialStore())

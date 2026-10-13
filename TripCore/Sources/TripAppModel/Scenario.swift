@@ -51,7 +51,7 @@ public enum Scenario: String, CaseIterable, Identifiable, Codable, Sendable {
     }
     public var subtitle: String {
         switch self {
-        case .arrival: return "落地签、海关二维码、回程票"
+        case .arrival: return "落地签、入境卡二维码、回程票"
         case .ride: return "接车点、还要多久、按 App 价"
         case .delivery: return "放门口、找不到门、换菜"
         case .restaurant: return "不要辣、过敏、打包、买单"
@@ -106,7 +106,7 @@ public enum Scenario: String, CaseIterable, Identifiable, Codable, Sendable {
     public var phrases: [Phrase] {
         switch self {
         case .arrival: return [
-            Phrase("这是我的海关申报二维码", id: "Ini QR e-CD saya.", en: "This is my e-CD QR code."),
+            Phrase("这是我的入境卡二维码（All Indonesia）", id: "Ini QR All Indonesia saya.", en: "This is my All Indonesia arrival card QR code."),
             Phrase("这是我的回程机票", id: "Ini tiket pulang saya.", en: "This is my return ticket."),
             Phrase("落地签在哪里办？", id: "Bayar VOA di mana?", en: "Where do I pay for the visa on arrival?"),
             Phrase("我住在这家酒店", id: "Saya menginap di hotel ini.", en: "I'm staying at this hotel."),
@@ -135,7 +135,7 @@ public enum Scenario: String, CaseIterable, Identifiable, Codable, Sendable {
         ]
         case .restaurant: return [
             Phrase("可以看看菜单吗？", id: "Boleh lihat menunya?", en: "Can I see the menu?"),
-            Phrase("不要辣", id: "Tidak pedas, ya.", en: "Not spicy, please."),
+            Phrase("不要辣", id: "Jangan pedas, ya.", en: "Not spicy, please."),
             Phrase("我对花生过敏", id: "Saya alergi kacang tanah.", en: "I'm allergic to peanuts."),
             Phrase("含税和服务费吗？", id: "Sudah termasuk pajak dan servis?", en: "Are tax and service included?"),
             Phrase("打包", id: "Dibungkus, ya.", en: "To go, please."),
@@ -168,7 +168,7 @@ public enum Scenario: String, CaseIterable, Identifiable, Codable, Sendable {
             Phrase("请等我十分钟", id: "Tolong tunggu sepuluh menit.", en: "Please wait ten minutes."),
         ]
         case .spa: return [
-            Phrase("轻一点", id: "Pelan sedikit, ya.", en: "A bit softer, please."),
+            Phrase("轻一点", id: "Pelan-pelan saja, ya.", en: "A bit softer, please."),
             Phrase("重一点", id: "Lebih keras sedikit.", en: "A bit harder, please."),
             Phrase("六十分钟多少钱？", id: "Enam puluh menit berapa?", en: "How much for sixty minutes?"),
         ]
