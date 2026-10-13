@@ -1,0 +1,5167 @@
+{
+ "model": "trip-mix2-s400-Q4_K_M.gguf",
+ "tag": "mac_mix2_s400",
+ "n": 513,
+ "summary": {
+  "source:FLORES-200 devtest/mt_id_zh": {
+   "n": 60,
+   "chrf": 21.11
+  },
+  "source:STIF-Indonesia test/slang_norm": {
+   "n": 226,
+   "chrf": 70.52
+  },
+  "source:Tatoeba/mt_id_zh": {
+   "n": 93,
+   "chrf": 32.97
+  },
+  "source:Wikivoyage Indonesian phrasebook/mt_id_en": {
+   "n": 134,
+   "chrf": 47.41
+  },
+  "task:mt_id_en": {
+   "n": 134,
+   "chrf": 47.41
+  },
+  "task:mt_id_zh": {
+   "n": 153,
+   "chrf": 23.36
+  },
+  "task:slang_norm": {
+   "n": 226,
+   "chrf": 70.52
+  }
+ },
+ "rows": [
+  {
+   "id": "P0001",
+   "task": "mt_id_zh",
+   "source_dataset": "Tatoeba",
+   "scene": "restaurant",
+   "src": "Aku ingin minum kopi.",
+   "ref": "我想要一杯咖啡。",
+   "hyp": "我想喝咖啡。",
+   "sec": 0.29
+  },
+  {
+   "id": "P0002",
+   "task": "mt_id_zh",
+   "source_dataset": "Tatoeba",
+   "scene": "time",
+   "src": "John tiba di Jepang kemarin.",
+   "ref": "约翰昨天来到了日本。",
+   "hyp": "约翰昨天到日本。",
+   "sec": 0.19
+  },
+  {
+   "id": "P0003",
+   "task": "mt_id_zh",
+   "source_dataset": "Tatoeba",
+   "scene": "restaurant",
+   "src": "Minum obat ini setiap 6 jam.",
+   "ref": "每六个小时吃一次这个药。",
+   "hyp": "每6小时吃一次这种药。",
+   "sec": 0.26
+  },
+  {
+   "id": "P0004",
+   "task": "mt_id_zh",
+   "source_dataset": "Tatoeba",
+   "scene": "restaurant",
+   "src": "Saya tidak suka minum kopi.",
+   "ref": "我不喜欢喝咖啡。",
+   "hyp": "我不喜欢喝咖啡。",
+   "sec": 0.18
+  },
+  {
+   "id": "P0005",
+   "task": "mt_id_zh",
+   "source_dataset": "Tatoeba",
+   "scene": "ride",
+   "src": "Polisi berkata pada mereka, \"Berhenti!\"",
+   "ref": "警察对他们说：“住手”。",
+   "hyp": "警察对他们说：“停下！”",
+   "sec": 0.2
+  },
+  {
+   "id": "P0006",
+   "task": "mt_id_zh",
+   "source_dataset": "Tatoeba",
+   "scene": "hotel",
+   "src": "Saya telah melihatnya menyapu kamar.",
+   "ref": "我看见了她打扫房间。",
+   "hyp": "我看到他冲进房间。",
+   "sec": 0.23
+  },
+  {
+   "id": "P0007",
+   "task": "mt_id_zh",
+   "source_dataset": "Tatoeba",
+   "scene": "emergency",
+   "src": "Tolong perlihatkan kepada saya, lengan kamu yang terluka.",
+   "ref": "请让我看看你受伤的手臂。",
+   "hyp": "请看我的手伤。",
+   "sec": 0.24
+  },
+  {
+   "id": "P0008",
+   "task": "mt_id_zh",
+   "source_dataset": "Tatoeba",
+   "scene": "directions",
+   "src": "Di mana bumi dipijak, di situlah langit dijunjung.",
+   "ref": "入乡随俗。",
+   "hyp": "谁把天捅破，谁就是赢家。",
+   "sec": 0.31
+  },
+  {
+   "id": "P0009",
+   "task": "mt_id_zh",
+   "source_dataset": "Tatoeba",
+   "scene": "directions",
+   "src": "Kamu harus memperhatikan kendaraan ketika akan menyeberang jalan.",
+   "ref": "当你过马路的时候要当心汽车。",
+   "hyp": "你应该注意汽车过马路的情况。",
+   "sec": 0.26
+  },
+  {
+   "id": "P0010",
+   "task": "mt_id_zh",
+   "source_dataset": "Tatoeba",
+   "scene": "shopping",
+   "src": "Saya membeli jam tangan di toko itu.",
+   "ref": "我在这家店买了这支手表。",
+   "hyp": "我在这家商店买了一块手表。",
+   "sec": 0.28
+  },
+  {
+   "id": "P0011",
+   "task": "mt_id_zh",
+   "source_dataset": "Tatoeba",
+   "scene": "directions",
+   "src": "Silakan kamu jalan lurus ke depan, setelah melewati lampu lalu lintas maka akan sampai.",
+   "ref": "你一路往前走，过了红绿灯就到了。",
+   "hyp": "请一直向前走，到红绿灯处会到。",
+   "sec": 0.43
+  },
+  {
+   "id": "P0012",
+   "task": "mt_id_zh",
+   "source_dataset": "Tatoeba",
+   "scene": "time",
+   "src": "Kemarin, dia tidak melakukan apa-apa.",
+   "ref": "她昨天没事干。",
+   "hyp": "昨天，他什么也没做。",
+   "sec": 0.22
+  },
+  {
+   "id": "P0013",
+   "task": "mt_id_zh",
+   "source_dataset": "Tatoeba",
+   "scene": "shopping",
+   "src": "Masih kurang sebuah kotak lagi.",
+   "ref": "还缺一个箱子。",
+   "hyp": "它还差一个盒子。",
+   "sec": 0.2
+  },
+  {
+   "id": "P0014",
+   "task": "mt_id_zh",
+   "source_dataset": "Tatoeba",
+   "scene": "money",
+   "src": "Saya meminjam uang.",
+   "ref": "我借钱。",
+   "hyp": "我借了钱。",
+   "sec": 0.17
+  },
+  {
+   "id": "P0015",
+   "task": "mt_id_zh",
+   "source_dataset": "Tatoeba",
+   "scene": "hotel",
+   "src": "Tidak ada barang lain di dalam kamar, kecuali hanya sebuah ranjang yang sudah lapuk.",
+   "ref": "房间除了一张破旧的床以外，就甚么也没有了。",
+   "hyp": "房间里除了床之外，没有其他东西。",
+   "sec": 0.33
+  },
+  {
+   "id": "P0016",
+   "task": "mt_id_zh",
+   "source_dataset": "Tatoeba",
+   "scene": "health",
+   "src": "Saya pikir dia sakit.",
+   "ref": "我想他是病了。",
+   "hyp": "我猜想他可能病了。",
+   "sec": 0.21
+  },
+  {
+   "id": "P0017",
+   "task": "mt_id_zh",
+   "source_dataset": "Tatoeba",
+   "scene": "time",
+   "src": "Pada jam berapa kereta akan sampai di Yokohama?",
+   "ref": "火车什么时候到达横滨？",
+   "hyp": "火车将在几点到 Yokohama？",
+   "sec": 0.27
+  },
+  {
+   "id": "P0018",
+   "task": "mt_id_zh",
+   "source_dataset": "Tatoeba",
+   "scene": "time",
+   "src": "Pekerjaannya sekarang sudah selesai.",
+   "ref": "他的工作现在完成了。",
+   "hyp": "他现在的工作已经完成了。",
+   "sec": 0.21
+  },
+  {
+   "id": "P0019",
+   "task": "mt_id_zh",
+   "source_dataset": "Tatoeba",
+   "scene": "shopping",
+   "src": "Biarkan saya pergi ke toko.",
+   "ref": "让我去商店吧。",
+   "hyp": "让我去商店。",
+   "sec": 0.18
+  },
+  {
+   "id": "P0020",
+   "task": "mt_id_zh",
+   "source_dataset": "Tatoeba",
+   "scene": "restaurant",
+   "src": "Tom mengirimkan sebuah pesan pendek yang sangat menarik untukku.",
+   "ref": "汤姆给我发了一条有趣的短信。",
+   "hyp": "汤姆给我发了一条非常有趣的消息。",
+   "sec": 0.31
+  },
+  {
+   "id": "P0021",
+   "task": "mt_id_zh",
+   "source_dataset": "Tatoeba",
+   "scene": "shopping",
+   "src": "Mengapa kamu mau belanja di sini? Semuanya mahal.",
+   "ref": "你为什么要在这里买？都好贵啊。",
+   "hyp": "你为什么想在这里买东西？所有的商品都很贵。",
+   "sec": 0.33
+  },
+  {
+   "id": "P0022",
+   "task": "mt_id_zh",
+   "source_dataset": "Tatoeba",
+   "scene": "hotel",
+   "src": "Kamu harus selalu ketuk pintu sebelum masuk ke kamar saya.",
+   "ref": "你进入我的房间之前都要敲门。",
+   "hyp": "你应该先敲我房间的门。",
+   "sec": 0.28
+  },
+  {
+   "id": "P0023",
+   "task": "mt_id_zh",
+   "source_dataset": "Tatoeba",
+   "scene": "money",
+   "src": "Dia meminjam banyak uang darinya.",
+   "ref": "他从他那里借了很多钱。",
+   "hyp": "他借了很多钱。",
+   "sec": 0.19
+  },
+  {
+   "id": "P0024",
+   "task": "mt_id_zh",
+   "source_dataset": "Tatoeba",
+   "scene": "money",
+   "src": "Aku membutuhkan uang.",
+   "ref": "我需要钱",
+   "hyp": "我需要钱。",
+   "sec": 0.16
+  },
+  {
+   "id": "P0025",
+   "task": "mt_id_zh",
+   "source_dataset": "Tatoeba",
+   "scene": "health",
+   "src": "Tom sakit perut.",
+   "ref": "汤姆胃痛",
+   "hyp": "汤姆肚子疼。",
+   "sec": 0.17
+  },
+  {
+   "id": "P0026",
+   "task": "mt_id_zh",
+   "source_dataset": "Tatoeba",
+   "scene": "money",
+   "src": "Uang bukanlah segala-galanya.",
+   "ref": "钱不是万能的。",
+   "hyp": "金钱不是一切。",
+   "sec": 0.16
+  },
+  {
+   "id": "P0027",
+   "task": "mt_id_zh",
+   "source_dataset": "Tatoeba",
+   "scene": "health",
+   "src": "Saat sakit sangat membosankan.",
+   "ref": "生病很无聊。",
+   "hyp": "当病人无聊时。",
+   "sec": 0.18
+  },
+  {
+   "id": "P0028",
+   "task": "mt_id_zh",
+   "source_dataset": "Tatoeba",
+   "scene": "restaurant",
+   "src": "Beri tahu mereka aku tidak minum alkohol.",
+   "ref": "告诉她们我不喝酒。",
+   "hyp": "告诉他，我不会喝酒。",
+   "sec": 0.22
+  },
+  {
+   "id": "P0029",
+   "task": "mt_id_zh",
+   "source_dataset": "Tatoeba",
+   "scene": "time",
+   "src": "Sekarang lewat jam delapan.",
+   "ref": "八点多了。",
+   "hyp": "现在八点。",
+   "sec": 0.17
+  },
+  {
+   "id": "P0030",
+   "task": "mt_id_zh",
+   "source_dataset": "Tatoeba",
+   "scene": "shopping",
+   "src": "Pasar itu besar.",
+   "ref": "市场很大。",
+   "hyp": "那里的市场很大。",
+   "sec": 0.16
+  },
+  {
+   "id": "P0031",
+   "task": "mt_id_zh",
+   "source_dataset": "Tatoeba",
+   "scene": "restaurant",
+   "src": "Siapa yang sedang minum bir?",
+   "ref": "谁在喝啤酒？",
+   "hyp": "谁在喝啤酒？",
+   "sec": 0.18
+  },
+  {
+   "id": "P0032",
+   "task": "mt_id_zh",
+   "source_dataset": "Tatoeba",
+   "scene": "restaurant",
+   "src": "Besok kamu akan makan di mana?",
+   "ref": "你明天在哪里吃？",
+   "hyp": "你明天吃什么？",
+   "sec": 0.17
+  },
+  {
+   "id": "P0033",
+   "task": "mt_id_zh",
+   "source_dataset": "Tatoeba",
+   "scene": "time",
+   "src": "Pekerjaan dia sekarang sudah selesai.",
+   "ref": "他的工作现在完成了。",
+   "hyp": "他现在的工作已经完成了。",
+   "sec": 0.2
+  },
+  {
+   "id": "P0034",
+   "task": "mt_id_zh",
+   "source_dataset": "Tatoeba",
+   "scene": "time",
+   "src": "Pekerjaannya sudah selesai sekarang.",
+   "ref": "他的工作现在完成了。",
+   "hyp": "他今天的工作已经完成了。",
+   "sec": 0.2
+  },
+  {
+   "id": "P0035",
+   "task": "mt_id_zh",
+   "source_dataset": "Tatoeba",
+   "scene": "time",
+   "src": "Pekerjaan dia sudah selesai sekarang.",
+   "ref": "他的工作现在完成了。",
+   "hyp": "他现在的工作已经完成了。",
+   "sec": 0.19
+  },
+  {
+   "id": "P0036",
+   "task": "mt_id_zh",
+   "source_dataset": "Tatoeba",
+   "scene": "directions",
+   "src": "Aku tidak tahu dia di mana.",
+   "ref": "我不知道他在哪。",
+   "hyp": "我不知道他在哪里。",
+   "sec": 0.16
+  },
+  {
+   "id": "P0037",
+   "task": "mt_id_zh",
+   "source_dataset": "Tatoeba",
+   "scene": "restaurant",
+   "src": "Aku minum air.",
+   "ref": "我喝水。",
+   "hyp": "我喝水。",
+   "sec": 0.13
+  },
+  {
+   "id": "P0038",
+   "task": "mt_id_zh",
+   "source_dataset": "Tatoeba",
+   "scene": "directions",
+   "src": "Di mana aku?",
+   "ref": "我在哪里？",
+   "hyp": "我是谁？",
+   "sec": 0.12
+  },
+  {
+   "id": "P0039",
+   "task": "mt_id_zh",
+   "source_dataset": "Tatoeba",
+   "scene": "health",
+   "src": "Saya dokter.",
+   "ref": "我是医生。",
+   "hyp": "我是医生。",
+   "sec": 0.13
+  },
+  {
+   "id": "P0040",
+   "task": "mt_id_zh",
+   "source_dataset": "Tatoeba",
+   "scene": "directions",
+   "src": "Di mana dia membeli barang-barang ini?",
+   "ref": "她去哪买了这些东西？",
+   "hyp": "他买这些东西在哪里？",
+   "sec": 0.18
+  },
+  {
+   "id": "P0041",
+   "task": "mt_id_zh",
+   "source_dataset": "Tatoeba",
+   "scene": "restaurant",
+   "src": "Aku lapar setengah mati! Aku sudah dua hari dua malam tidak makan.",
+   "ref": "我要饿死了！我两天两夜没吃了。",
+   "hyp": "我饿得要死！我已经两天两夜没吃东西了。",
+   "sec": 0.44
+  },
+  {
+   "id": "P0042",
+   "task": "mt_id_zh",
+   "source_dataset": "Tatoeba",
+   "scene": "directions",
+   "src": "Sakitnya di mana?",
+   "ref": "哪里疼?",
+   "hyp": "哪里疼？",
+   "sec": 0.17
+  },
+  {
+   "id": "P0043",
+   "task": "mt_id_zh",
+   "source_dataset": "Tatoeba",
+   "scene": "directions",
+   "src": "Di mana talinya?",
+   "ref": "绳子在哪里？",
+   "hyp": "它在哪里？",
+   "sec": 0.16
+  },
+  {
+   "id": "P0044",
+   "task": "mt_id_zh",
+   "source_dataset": "Tatoeba",
+   "scene": "directions",
+   "src": "Dia menulis dengan tangan kiri.",
+   "ref": "她用左手写字。",
+   "hyp": "他用右手写字。",
+   "sec": 0.18
+  },
+  {
+   "id": "P0045",
+   "task": "mt_id_zh",
+   "source_dataset": "Tatoeba",
+   "scene": "health",
+   "src": "Anda bukan dokter.",
+   "ref": "您不是医生。",
+   "hyp": "你不是医生。",
+   "sec": 0.15
+  },
+  {
+   "id": "P0046",
+   "task": "mt_id_zh",
+   "source_dataset": "Tatoeba",
+   "scene": "health",
+   "src": "Aku bukan dokter.",
+   "ref": "我不是医生。",
+   "hyp": "我不是医生。",
+   "sec": 0.13
+  },
+  {
+   "id": "P0047",
+   "task": "mt_id_zh",
+   "source_dataset": "Tatoeba",
+   "scene": "directions",
+   "src": "Di mana mobilku?",
+   "ref": "我的车在哪儿?",
+   "hyp": "我的车在哪里？",
+   "sec": 0.14
+  },
+  {
+   "id": "P0048",
+   "task": "mt_id_zh",
+   "source_dataset": "Tatoeba",
+   "scene": "health",
+   "src": "Anakku sakit.",
+   "ref": "我的孩子病了。",
+   "hyp": "我的儿子生病了。",
+   "sec": 0.17
+  },
+  {
+   "id": "P0049",
+   "task": "mt_id_zh",
+   "source_dataset": "Tatoeba",
+   "scene": "time",
+   "src": "Kemarin aku membantu ayahku.",
+   "ref": "昨天我帮了我爸爸。",
+   "hyp": "昨天我帮爸爸。",
+   "sec": 0.19
+  },
+  {
+   "id": "P0050",
+   "task": "mt_id_zh",
+   "source_dataset": "Tatoeba",
+   "scene": "money",
+   "src": "Jika ingin mendapatkan uang, belajarlah bahasa Inggris; tetapi jika ingin mendapatkan teman, belajarlah bahasa Esperanto.",
+   "ref": "想赚钱的话就学英语，但想交朋友的话就该学世界语。",
+   "hyp": "如果你想得到钱，就学习英语；如果你想交朋友，就学习世界语。",
+   "sec": 0.52
+  },
+  {
+   "id": "P0051",
+   "task": "mt_id_zh",
+   "source_dataset": "Tatoeba",
+   "scene": "restaurant",
+   "src": "Aku makan tahu.",
+   "ref": "我吃豆腐。",
+   "hyp": "我吃。",
+   "sec": 0.12
+  },
+  {
+   "id": "P0052",
+   "task": "mt_id_zh",
+   "source_dataset": "Tatoeba",
+   "scene": "health",
+   "src": "Aku bekerja di rumah sakit.",
+   "ref": "我在医院工作。",
+   "hyp": "我在医院工作。",
+   "sec": 0.15
+  },
+  {
+   "id": "P0053",
+   "task": "mt_id_zh",
+   "source_dataset": "Tatoeba",
+   "scene": "money",
+   "src": "Punya uang pun tidak cukup.",
+   "ref": "有钱还不够。",
+   "hyp": "他没有足够的钱。",
+   "sec": 0.18
+  },
+  {
+   "id": "P0054",
+   "task": "mt_id_zh",
+   "source_dataset": "Tatoeba",
+   "scene": "restaurant",
+   "src": "Kenapa kamu tidak makan?",
+   "ref": "你为什么不吃？",
+   "hyp": "为什么你吃？",
+   "sec": 0.15
+  },
+  {
+   "id": "P0055",
+   "task": "mt_id_zh",
+   "source_dataset": "Tatoeba",
+   "scene": "directions",
+   "src": "Boston tidak jauh dari sini.",
+   "ref": "波士顿离这里不远。",
+   "hyp": "波士顿并不远。",
+   "sec": 0.23
+  },
+  {
+   "id": "P0056",
+   "task": "mt_id_zh",
+   "source_dataset": "Tatoeba",
+   "scene": "health",
+   "src": "Apakah dia masih sakit?",
+   "ref": "他还在生病吗 ?",
+   "hyp": "他是否还在生病？",
+   "sec": 0.16
+  },
+  {
+   "id": "P0057",
+   "task": "mt_id_zh",
+   "source_dataset": "Tatoeba",
+   "scene": "directions",
+   "src": "Di mana sepatunya?",
+   "ref": "鞋子在哪儿？",
+   "hyp": "他的鞋子在哪里？",
+   "sec": 0.15
+  },
+  {
+   "id": "P0058",
+   "task": "mt_id_zh",
+   "source_dataset": "Tatoeba",
+   "scene": "restaurant",
+   "src": "Aku belum pernah makan makanan Cina.",
+   "ref": "我从来没吃过中国菜。",
+   "hyp": "我还没有吃过中国菜。",
+   "sec": 0.22
+  },
+  {
+   "id": "P0059",
+   "task": "mt_id_zh",
+   "source_dataset": "Tatoeba",
+   "scene": "emergency",
+   "src": "Mulai sekarang, tolong panggil aku Tom.",
+   "ref": "从现在开始，请叫我汤姆。",
+   "hyp": "请马上叫我汤姆。",
+   "sec": 0.21
+  },
+  {
+   "id": "P0060",
+   "task": "mt_id_zh",
+   "source_dataset": "Tatoeba",
+   "scene": "hotel",
+   "src": "Tidak ada meja di dalam kamar.",
+   "ref": "房子里没有桌子。",
+   "hyp": "房间里没有桌子。",
+   "sec": 0.17
+  },
+  {
+   "id": "P0061",
+   "task": "mt_id_zh",
+   "source_dataset": "Tatoeba",
+   "scene": "directions",
+   "src": "Di mana rumahnya?",
+   "ref": "她家在哪儿？",
+   "hyp": "他住在哪里？",
+   "sec": 0.16
+  },
+  {
+   "id": "P0062",
+   "task": "mt_id_zh",
+   "source_dataset": "Tatoeba",
+   "scene": "directions",
+   "src": "Di mana sekolahmu?",
+   "ref": "你的学校在哪里？",
+   "hyp": "你在哪里上学？",
+   "sec": 0.14
+  },
+  {
+   "id": "P0063",
+   "task": "mt_id_zh",
+   "source_dataset": "Tatoeba",
+   "scene": "money",
+   "src": "Aku tak punya uang.",
+   "ref": "我没有钱。",
+   "hyp": "我没有钱。",
+   "sec": 0.13
+  },
+  {
+   "id": "P0064",
+   "task": "mt_id_zh",
+   "source_dataset": "Tatoeba",
+   "scene": "restaurant",
+   "src": "Aku tidak makan siang hari ini.",
+   "ref": "我今天没吃午餐。",
+   "hyp": "我今天下午没吃饭。",
+   "sec": 0.2
+  },
+  {
+   "id": "P0065",
+   "task": "mt_id_zh",
+   "source_dataset": "Tatoeba",
+   "scene": "restaurant",
+   "src": "Aku suka makan.",
+   "ref": "我喜欢吃。",
+   "hyp": "我喜欢吃饭。",
+   "sec": 0.12
+  },
+  {
+   "id": "P0066",
+   "task": "mt_id_zh",
+   "source_dataset": "Tatoeba",
+   "scene": "restaurant",
+   "src": "Aku kebanyakan minum kopi.",
+   "ref": "我喝了太多咖啡。",
+   "hyp": "我大多数时候喝咖啡。",
+   "sec": 0.2
+  },
+  {
+   "id": "P0067",
+   "task": "mt_id_zh",
+   "source_dataset": "Tatoeba",
+   "scene": "health",
+   "src": "Dia dokter gigi.",
+   "ref": "他是牙科医生。",
+   "hyp": "他是牙医。",
+   "sec": 0.18
+  },
+  {
+   "id": "P0068",
+   "task": "mt_id_zh",
+   "source_dataset": "Tatoeba",
+   "scene": "directions",
+   "src": "Tehku di mana?",
+   "ref": "我的茶在哪里？",
+   "hyp": "我在哪里？",
+   "sec": 0.13
+  },
+  {
+   "id": "P0069",
+   "task": "mt_id_zh",
+   "source_dataset": "Tatoeba",
+   "scene": "time",
+   "src": "Ibu saya sekarang sedang menulis surat.",
+   "ref": "我母亲现在正在写一封信。",
+   "hyp": "我妈妈现在正在写信。",
+   "sec": 0.23
+  },
+  {
+   "id": "P0070",
+   "task": "mt_id_zh",
+   "source_dataset": "Tatoeba",
+   "scene": "time",
+   "src": "Kemarin aku bermain sepak bola.",
+   "ref": "我昨天踢了足球。",
+   "hyp": "昨天我踢足球。",
+   "sec": 0.19
+  },
+  {
+   "id": "P0071",
+   "task": "mt_id_zh",
+   "source_dataset": "Tatoeba",
+   "scene": "time",
+   "src": "Kemarin hari Kamis.",
+   "ref": "昨天是星期四。",
+   "hyp": "昨天星期四。",
+   "sec": 0.13
+  },
+  {
+   "id": "P0072",
+   "task": "mt_id_zh",
+   "source_dataset": "Tatoeba",
+   "scene": "time",
+   "src": "Jam berapa sekarang?",
+   "ref": "现在几点了？",
+   "hyp": "现在几点？",
+   "sec": 0.13
+  },
+  {
+   "id": "P0073",
+   "task": "mt_id_zh",
+   "source_dataset": "Tatoeba",
+   "scene": "directions",
+   "src": "Kamu di mana?",
+   "ref": "你在哪儿?",
+   "hyp": "你在哪儿？",
+   "sec": 0.19
+  },
+  {
+   "id": "P0074",
+   "task": "mt_id_zh",
+   "source_dataset": "Tatoeba",
+   "scene": "health",
+   "src": "Kemarin aku sakit.",
+   "ref": "我昨天生病了。",
+   "hyp": "昨天我头疼。",
+   "sec": 0.15
+  },
+  {
+   "id": "P0075",
+   "task": "mt_id_zh",
+   "source_dataset": "Tatoeba",
+   "scene": "money",
+   "src": "Masalahnya adalah uang kita tidak cukup.",
+   "ref": "问题是我们钱不够。",
+   "hyp": "问题是，我们没有足够的钱。",
+   "sec": 0.22
+  },
+  {
+   "id": "P0076",
+   "task": "mt_id_zh",
+   "source_dataset": "Tatoeba",
+   "scene": "money",
+   "src": "Masalahnya adalah kita tidak punya cukup uang.",
+   "ref": "问题是我们钱不够。",
+   "hyp": "问题是，我们没有足够的钱。",
+   "sec": 0.22
+  },
+  {
+   "id": "P0077",
+   "task": "mt_id_zh",
+   "source_dataset": "Tatoeba",
+   "scene": "time",
+   "src": "Kamu harus menelepon Tom besok.",
+   "ref": "你明天应该给汤姆打电话。",
+   "hyp": "你应该明天打电话给汤姆。",
+   "sec": 0.22
+  },
+  {
+   "id": "P0078",
+   "task": "mt_id_zh",
+   "source_dataset": "Tatoeba",
+   "scene": "time",
+   "src": "Dia sekarang bekerja di Prancis.",
+   "ref": "他现在在法国工作.",
+   "hyp": "他现在在法国工作。",
+   "sec": 0.2
+  },
+  {
+   "id": "P0079",
+   "task": "mt_id_zh",
+   "source_dataset": "Tatoeba",
+   "scene": "directions",
+   "src": "Dia bekerja di bandara.",
+   "ref": "她在机场工作。",
+   "hyp": "他是一名机场工作人员。",
+   "sec": 0.17
+  },
+  {
+   "id": "P0080",
+   "task": "mt_id_zh",
+   "source_dataset": "Tatoeba",
+   "scene": "restaurant",
+   "src": "Aku lapar.",
+   "ref": "我饿了！",
+   "hyp": "我饿了。",
+   "sec": 0.14
+  },
+  {
+   "id": "P0081",
+   "task": "mt_id_zh",
+   "source_dataset": "Tatoeba",
+   "scene": "restaurant",
+   "src": "Aku lapar!",
+   "ref": "我饿了！",
+   "hyp": "我饿了。",
+   "sec": 0.13
+  },
+  {
+   "id": "P0082",
+   "task": "mt_id_zh",
+   "source_dataset": "Tatoeba",
+   "scene": "money",
+   "src": "Aku perlu uang.",
+   "ref": "我需要钱。",
+   "hyp": "我需要钱。",
+   "sec": 0.15
+  },
+  {
+   "id": "P0083",
+   "task": "mt_id_zh",
+   "source_dataset": "Tatoeba",
+   "scene": "health",
+   "src": "Aku sakit kepala.",
+   "ref": "我头痛。",
+   "hyp": "我头疼。",
+   "sec": 0.12
+  },
+  {
+   "id": "P0084",
+   "task": "mt_id_zh",
+   "source_dataset": "Tatoeba",
+   "scene": "health",
+   "src": "Kepalaku sakit.",
+   "ref": "我头痛。",
+   "hyp": "我的头很疼。",
+   "sec": 0.17
+  },
+  {
+   "id": "P0085",
+   "task": "mt_id_zh",
+   "source_dataset": "Tatoeba",
+   "scene": "restaurant",
+   "src": "Di mana ada alat makan?",
+   "ref": "哪里有餐具啊？",
+   "hyp": "在哪里有餐具？",
+   "sec": 0.15
+  },
+  {
+   "id": "P0086",
+   "task": "mt_id_zh",
+   "source_dataset": "Tatoeba",
+   "scene": "directions",
+   "src": "Halte busnya ada di dekat sekolah kita.",
+   "ref": "巴士站离我们的学校近。",
+   "hyp": "他停在我们学校的附近。",
+   "sec": 0.22
+  },
+  {
+   "id": "P0087",
+   "task": "mt_id_zh",
+   "source_dataset": "Tatoeba",
+   "scene": "time",
+   "src": "Besok hari ulang tahunnya.",
+   "ref": "明天是她的生日。",
+   "hyp": "他的生日是星期天。",
+   "sec": 0.2
+  },
+  {
+   "id": "P0088",
+   "task": "mt_id_zh",
+   "source_dataset": "Tatoeba",
+   "scene": "time",
+   "src": "Kemarin adalah hari ulang tahunku.",
+   "ref": "昨天是我的生日。",
+   "hyp": "昨天是我的生日。",
+   "sec": 0.16
+  },
+  {
+   "id": "P0089",
+   "task": "mt_id_zh",
+   "source_dataset": "Tatoeba",
+   "scene": "health",
+   "src": "Dia sakit.",
+   "ref": "他生病了。",
+   "hyp": "他很疼。",
+   "sec": 0.14
+  },
+  {
+   "id": "P0090",
+   "task": "mt_id_zh",
+   "source_dataset": "Tatoeba",
+   "scene": "health",
+   "src": "Dia sedang sakit.",
+   "ref": "他生病了。",
+   "hyp": "他很疼。",
+   "sec": 0.14
+  },
+  {
+   "id": "P0091",
+   "task": "mt_id_zh",
+   "source_dataset": "Tatoeba",
+   "scene": "restaurant",
+   "src": "Tom makan nasi setiap hari.",
+   "ref": "汤姆每天都吃米饭。",
+   "hyp": "汤姆每天吃米饭。",
+   "sec": 0.19
+  },
+  {
+   "id": "P0092",
+   "task": "mt_id_zh",
+   "source_dataset": "Tatoeba",
+   "scene": "health",
+   "src": "Aku sakit perut.",
+   "ref": "我肚子疼。",
+   "hyp": "我肚子疼。",
+   "sec": 0.15
+  },
+  {
+   "id": "P0093",
+   "task": "mt_id_zh",
+   "source_dataset": "Tatoeba",
+   "scene": "health",
+   "src": "Aku sakit.",
+   "ref": "我生病了。",
+   "hyp": "我疼。",
+   "sec": 0.11
+  },
+  {
+   "id": "P0094",
+   "task": "mt_id_zh",
+   "source_dataset": "FLORES-200 devtest",
+   "scene": "restaurant",
+   "src": "Walau kebanyakan hewan di taman ini sudah terbiasa bertemu manusia, satwa liar tetap liar dan tidak boleh diberi makan atau diganggu.",
+   "ref": "虽然公园里许多动物都见惯了人类，但野生动物毕竟是野生动物，我们不应该去喂养或打扰它们。",
+   "hyp": "尽管大多数动物园里的动物已经习惯了与人类接触，但野生动物们仍然保持警惕，它们不能被喂食，也不能被骚扰。",
+   "sec": 1.01
+  },
+  {
+   "id": "P0095",
+   "task": "mt_id_zh",
+   "source_dataset": "FLORES-200 devtest",
+   "scene": "directions",
+   "src": "Jika Anda ingin berada dekat dengan pertunjukannya, maka Anda harus datang lebih awal agar mendapatkan tempat berkemah yang dekat dengan musiknya.",
+   "ref": "如果想近距离观看演出，你得早点到，在靠近舞台的地方占好营地。",
+   "hyp": "如果您想近距离地观看演出，那么最好早点到场，以便靠近音乐家。",
+   "sec": 0.56
+  },
+  {
+   "id": "P0096",
+   "task": "mt_id_zh",
+   "source_dataset": "FLORES-200 devtest",
+   "scene": "directions",
+   "src": "Dalam kurun waktu setahun, seseorang yang terinfeksi dapat menularkan 10 sampai 15 kontak jarak dekat.",
+   "ref": "一年内，一个感染者可能会感染 10 至 15 名密切接触者。",
+   "hyp": "在一年的时间内，一个人感染了艾滋病病毒，平均可以传染10到15个密切接触者。",
+   "sec": 0.65
+  },
+  {
+   "id": "P0097",
+   "task": "mt_id_zh",
+   "source_dataset": "FLORES-200 devtest",
+   "scene": "directions",
+   "src": "Ketika pembelajaran berbasis proyek seharusnya membuat pembelajaran lebih mudah dan lebih menarik, perancah melangkah lebih jauh.",
+   "ref": "虽然项目学习法应该使学习变得更容易、更有趣，但支架式学习法却更进一步。",
+   "hyp": "基于项目的教学应该使学习变得更简单、更有趣。因此，它应该使学生更远地跨越障碍。",
+   "sec": 0.67
+  },
+  {
+   "id": "P0098",
+   "task": "mt_id_zh",
+   "source_dataset": "FLORES-200 devtest",
+   "scene": "shopping",
+   "src": "Jalan raya yang lebar, bangunan dengan muka dari kaca dan pusat perbelanjaan modern dihiasi oleh atap keramik merah tradisional, pasar dari abad ke 18, dan masjid dan gereja tua, walaupun kota lebih memiliki suasana Mediterania Eropa daripada suasana tradisional Turki. ",
+   "ref": "在宽阔的林荫大道、玻璃外墙的建筑和现代化的购物中心之间，散布着传统的红瓦屋顶、18 世纪的市场以及古老的清真寺和教堂，不过这座城市比传统的土耳其更有地中海欧洲的氛围。",
+   "hyp": "宽大的节日市场，由传统的红砖和现代的购物中心的中心，以及18世纪的市场、清真寺和教堂，尽管如此，这座城市更像一个地中海风格的欧洲，而不是传统的土耳其风格。",
+   "sec": 1.3
+  },
+  {
+   "id": "P0099",
+   "task": "mt_id_zh",
+   "source_dataset": "FLORES-200 devtest",
+   "scene": "shopping",
+   "src": "Beberapa kapal pesiar menyertakan Berlin, Jerman ke dalam brosur. Seperti yang bisa Anda lihat dari peta di atas, Berlin tidak dekat sama sekali dengan laut dan kunjungan ke kota tersebut tidak termasuk dalam harga perjalanan dari kapal pesiarnya.",
+   "ref": "有些邮轮在宣传手册上以德国柏林为亮点。正如从上面地图中看到的那样，柏林并没有靠近大海的地方，而且游船价格并不包括游览这座城市的费用。",
+   "hyp": "一些邮轮公司把柏林，德国列入了他们的宣传册。从上面的地图上看，柏林和海没有关系，而且从邮轮的价格上看，柏林的访问并不含在票价之内。",
+   "sec": 1.09
+  },
+  {
+   "id": "P0100",
+   "task": "mt_id_zh",
+   "source_dataset": "FLORES-200 devtest",
+   "scene": "directions",
+   "src": "Ubur-ubur kotak muncul dekat pantai dan dekat muara sungai dari Oktober hingga April di atas tahun 1770. Ubur-ubur ini kadang dapat ditemukan di luar waktu-waktu ini.",
+   "ref": "箱型水母会在每年十月到次年四月间出现在 1770 镇的海滩和河口附近。偶尔也能在其他时间点发现它们的身影。",
+   "hyp": "在1770年代，乌布箱出现在10月到4月期间，通常在这些时间之外也能找到它们。",
+   "sec": 0.84
+  },
+  {
+   "id": "P0101",
+   "task": "mt_id_zh",
+   "source_dataset": "FLORES-200 devtest",
+   "scene": "directions",
+   "src": "Relasi ini membantu dalam hal perencanaan, perancangan, dan pengoperasian fasilitas-fasilitas jalan raya.",
+   "ref": "这些关系对道路设施的规划、设计和运营有帮助。",
+   "hyp": "这些关系有助于规划、设计和运营这些设施。",
+   "sec": 0.41
+  },
+  {
+   "id": "P0102",
+   "task": "mt_id_zh",
+   "source_dataset": "FLORES-200 devtest",
+   "scene": "directions",
+   "src": "Pemeriksaan di pos keamanan juga menjadi jauh lebih mengganggu pasca-era 11 September 2001.",
+   "ref": "在 2001 年 9 月 11 日之后的时代，安全检查站的搜查也变得更烦扰。",
+   "hyp": "在 911 事件之后，安全检查员的工作变得异常艰难。",
+   "sec": 0.51
+  },
+  {
+   "id": "P0103",
+   "task": "mt_id_zh",
+   "source_dataset": "FLORES-200 devtest",
+   "scene": "money",
+   "src": "Mata uang resmi Falkland adalah pound Falkland (FKP) yang nilainya diatur senilai dengan pound Inggris (GBP).",
+   "ref": "福克兰群岛的官方货币是福克兰英镑，与英镑等值。",
+   "hyp": "马尔维群岛货币的官方货币是福尔维克货币（FKP），其价值与英镑（GBP）相同。",
+   "sec": 0.73
+  },
+  {
+   "id": "P0104",
+   "task": "mt_id_zh",
+   "source_dataset": "FLORES-200 devtest",
+   "scene": "ride",
+   "src": "Dalam antar-jemput yang merupakan angkutan dinamis ini setiap orang terhubung dengan, dan mendukung, sebuah sistem transportasi yang didasarkan pada mobil pribadi.",
+   "ref": "在这种动态交通穿梭中，每个人都以某种方式与基于私家车的交通系统相连接，并对其提供支持。",
+   "hyp": "在这些动态的交通模式中，每个人都是其中一员，他们共同支持着私人汽车运输系统。",
+   "sec": 0.67
+  },
+  {
+   "id": "P0105",
+   "task": "mt_id_zh",
+   "source_dataset": "FLORES-200 devtest",
+   "scene": "directions",
+   "src": "Bentangan antara Point Marion dan Fairmont menghadirkan kondisi berkendara yang paling menantang di jalan raya Buffalo-Pittsburgh, yang sering melewati daerah pedalaman terpencil.",
+   "ref": "在布法罗-匹兹堡高速公路上，行车条件最具挑战性的是波特马里恩 (Point Marion) 到费尔蒙特 (Fairmont) 之间的路段，这段路频繁地途径多处偏僻的边远地区。",
+   "hyp": "从蒙马龙 (Point Marion) 到费尔蒙特 (Fairmont) 的路段是布鲁克林至匹兹堡 (Buffalo-Pittsburgh) 路线上的一个非常危险的路段，因为这条路线经常穿越沼泽地带。",
+   "sec": 1.33
+  },
+  {
+   "id": "P0106",
+   "task": "mt_id_zh",
+   "source_dataset": "FLORES-200 devtest",
+   "scene": "restaurant",
+   "src": "Banyak makanan panggang Jerman juga menyajikan badam, hazelnut, dan kacang pohon lainnya. Kue-kue populer sering kali cocok dipadukan dengan secangkir kopi kental.",
+   "ref": "许多德国烘焙食品也以杏仁、榛子和其他坚果为特色。受欢迎的蛋糕与浓咖啡往往是绝配。",
+   "hyp": "德国的许多菜肴都含有奶油、核桃和其它坚果。受欢迎的糕点通常与一杯热咖啡搭配。",
+   "sec": 0.72
+  },
+  {
+   "id": "P0107",
+   "task": "mt_id_zh",
+   "source_dataset": "FLORES-200 devtest",
+   "scene": "health",
+   "src": "\"Kisah yang dihadirkan dalam opera Prancis, oleh Camille Saint-Saens, bercerita tentang seorang seniman \"yang hidupnya ditentukan oleh kecintaan terhadap obat-obatan dan Jepang.\"",
+   "ref": "卡米尔·圣桑 (Camille Saint-Saens) 创作的法国歌剧讲述的是一名艺术家的故事，“他一生沉迷于毒品和对日本的热爱”。",
+   "hyp": "这部由让-克洛尔·圣桑德松（Camille Saint-Saens）创作的法国歌剧讲述了这样一位画家，他的一生都致力于药物和日本。",
+   "sec": 1.05
+  },
+  {
+   "id": "P0108",
+   "task": "mt_id_zh",
+   "source_dataset": "FLORES-200 devtest",
+   "scene": "directions",
+   "src": "Walau demikian, jaringan jalan raya nasional tidak layak secara ekonomi untuk segelintir mobil saja, sehingga metode produksi baru dikembangkan untuk mengurangi biaya kepemilikan mobil.",
+   "ref": "然而，仅为少数汽车架设全国公路网，这在经济上并不可行，因此新的生产方式应运而生，以求降低汽车的拥有成本。",
+   "hyp": "然而，尽管如此，该国的全国性公路网并不适合运输一辆车，因此，新的生产方法被开发出来以降低汽车的拥有成本。",
+   "sec": 0.91
+  },
+  {
+   "id": "P0109",
+   "task": "mt_id_zh",
+   "source_dataset": "FLORES-200 devtest",
+   "scene": "directions",
+   "src": "\"Orang yang bekerja di garasi dekat lokasi kecelakaan terjadi mengatakan: \"Ada anak-anak yang menunggu untuk menyeberang jalan dan mereka semua berteriak dan menangis.\"",
+   "ref": "一名在事故发生地附近的车库立的工作人员说：“孩子们正等着过马路，并且都在大声尖叫，哭个不停。”",
+   "hyp": "在事故现场附近的一家停车场里，一名停车场工作人员说：“孩子们正在路上等着，他们尖叫着哭。”",
+   "sec": 0.72
+  },
+  {
+   "id": "P0110",
+   "task": "mt_id_zh",
+   "source_dataset": "FLORES-200 devtest",
+   "scene": "directions",
+   "src": "Rekan setimnya Fernando Alonso memimpin di sebagian besar balapan, tapi mengakhirinya tepat setelah pit-stop, mungkin karena roda depan kanan yang terselip dengan buruk.",
+   "ref": "他的队友费尔南多·阿隆索（Fernando Alonso）在比赛中的绝大多数时间里都处于领先地位，但却在进站后就退出了比赛，大概是因为其右前轮实在塞得厉害。",
+   "hyp": "他的队友法拉利的车手法拉利的车手法拉利的车手法拉利的车手法拉利的车手法拉利的车手法拉利的车手法拉利的车手法拉利的车手法拉利的车手法拉利的车手法拉利的车手法拉利的车手法拉利的车手法拉利的车手法拉利的车手法拉利的车手法拉利的车手法拉利的车手法拉利的车手法拉利的车手法拉利的车手法拉利的车手法拉利的车手法拉利的车手法拉利的车手法拉",
+   "sec": 3.35
+  },
+  {
+   "id": "P0111",
+   "task": "mt_id_zh",
+   "source_dataset": "FLORES-200 devtest",
+   "scene": "directions",
+   "src": "Pelajaran umumnya akan membahas semua persoalan yang didiskusikan di sini secara jauh lebih terperinci, biasanya disertai pengalaman praktis.",
+   "ref": "这门课程通常会涵盖在此讨论到的所有问题，经常会以实战经验的方式加以深入。",
+   "hyp": "通常，一般课程会详细讨论这些问题，通常会结合实际案例。",
+   "sec": 0.5
+  },
+  {
+   "id": "P0112",
+   "task": "mt_id_zh",
+   "source_dataset": "FLORES-200 devtest",
+   "scene": "ride",
+   "src": "Musim dingin bisa teramat dingin: suhu jarang turun di bawah titik beku, tetapi gabungan angin dan kelembapan membuatnya terasa lebih dingin ketimbang yang angka yang tertera di termometer.",
+   "ref": "冬天可能会比看上去显得更冷：温度很少低于零度，但当风和湿度结合在一起，会让人感觉比温度计显示的温度要冷。",
+   "hyp": "冬天的季节可以很冷，但通常不会低于零度。尽管如此，它仍然能让人感到很冷，因为风和雨的结合使它感觉不到温度计上的数字。",
+   "sec": 1.05
+  },
+  {
+   "id": "P0113",
+   "task": "mt_id_zh",
+   "source_dataset": "FLORES-200 devtest",
+   "scene": "health",
+   "src": "Dr. Malar Balasubramanian, 29 tahun, ditemukan di Blue Ash, Ohio, wilayah pedesaan berjarak sekitar 15 mil ke utara Cincinnati. Dia terbaring di tanah pinggir jalanan mengenakan kaos dan pakaian dalam dengan kondisi mengonsumsi obat berat.",
+   "ref": "29 岁的 Malar Balasubramanian 医生在俄亥俄州辛辛那提市以北约 15 英里的郊区布鲁艾施被发现，她被找到时身穿 T 恤衫和内裤，躺在路边的地上，看上去服用了大量药物。",
+   "hyp": "29 岁的马拉·巴尔萨姆·拉瓦特（Dr. Malar Balasubramanian）在俄亥俄州蓝山（Blue Ash）的蓝山镇（Blue Ash）被发现。他躺在路边，穿着内衣和内裤服着镇痛药。",
+   "sec": 1.65
+  },
+  {
+   "id": "P0114",
+   "task": "mt_id_zh",
+   "source_dataset": "FLORES-200 devtest",
+   "scene": "directions",
+   "src": "Kemungkinan ada lebih banyak area gelap di sisi dekat karena keraknya lebih tipis. Lahar lebih mudah naik ke permukaan.",
+   "ref": "因为地壳更薄，所以近的一面可能会有更多的阴暗部，熔岩更容易上升到地表。",
+   "hyp": "可能是因为火山喷发的岩浆更少，所以近处的区域更暗。因此，火山灰更容易在地面上移动。",
+   "sec": 0.75
+  },
+  {
+   "id": "P0115",
+   "task": "mt_id_zh",
+   "source_dataset": "FLORES-200 devtest",
+   "scene": "shopping",
+   "src": "Cokelat panas itu memenuhi standar Belgia. Jus buah mahal tetapi lezat.",
+   "ref": "热巧克力达到了比利时的标准。果汁价格昂贵，但品质很好。",
+   "hyp": "那块比利时巧克力标准价很高，但很美味。",
+   "sec": 0.38
+  },
+  {
+   "id": "P0116",
+   "task": "mt_id_zh",
+   "source_dataset": "FLORES-200 devtest",
+   "scene": "health",
+   "src": "Rumah sakit telah mengikuti protokol untuk pengendalian infeksi, termasuk memisahkan pasien dari orang lain untuk mencegah kemungkinan menulari mereka.",
+   "ref": "医院遵循了感染控制规定，包括把患者与他人隔离，以防感染到其他人。",
+   "hyp": "医院已经采取了预防措施，包括将病人与其他病人分开，以防止病人之间可能的交叉感染。",
+   "sec": 0.68
+  },
+  {
+   "id": "P0117",
+   "task": "mt_id_zh",
+   "source_dataset": "FLORES-200 devtest",
+   "scene": "restaurant",
+   "src": "Pilihan lain berbasis bioritme melibatkan meminum banyak cairan (khususnya air atau teh, diuretik yang dikenal) sebelum tidur, memaksa orang untuk bangun dan buang air kecil.",
+   "ref": "其他基于生物节律的选择包括睡前大量饮用液体（尤其是水或茶——众所周知有利尿作用），强迫自己起来小便。",
+   "hyp": "另一种生物钟型别的选择是在睡前大量饮水，迫使人们起床小便。",
+   "sec": 0.62
+  },
+  {
+   "id": "P0118",
+   "task": "mt_id_zh",
+   "source_dataset": "FLORES-200 devtest",
+   "scene": "ride",
+   "src": "Taksi bersama adalah cara yang cepat dan nyaman untuk bepergian ke tempat-tempat terdekat, seperti Paro (Nu 150) dan Punakha (Nu 200).",
+   "ref": "要前往附近地方，如帕罗 (Nu 150) 和普那卡 (Nu 200)，共享出租车是一种快捷舒适的方式。",
+   "hyp": "出租车是一种方便快捷的出行方式，可以快速地到达附近的地点，如帕罗（150）和班塔（200）。",
+   "sec": 0.84
+  },
+  {
+   "id": "P0119",
+   "task": "mt_id_zh",
+   "source_dataset": "FLORES-200 devtest",
+   "scene": "directions",
+   "src": "\"Walaupun sering kali ini hanya stereotip yang tidak akurat, cara terbaik untuk tetap bergaul di Paris adalah dengan berperilaku terbaik, bertindak seperti seseorang yang \"bien Ã©levÃ©\" (dibesarkan dengan baik). Hal tersebut membuat perjalanan berkeliling Anda jauh lebih mudah. \"",
+   "ref": "虽然这通常只是一种不准确的刻板印象，但在巴黎生活的最佳方式仍然是尽量举止得当，表现得像一个有 “bien élevé”（教养良好）的人。这会让参加社会活动变得容易得多。",
+   "hyp": "尽管如此，这并不意味着巴黎的社交生活是虚假的。巴黎最好的方式是与最好的人交往，就像“好孩子”一样。这使您的旅行环游变得简单得多。",
+   "sec": 1.26
+  },
+  {
+   "id": "P0120",
+   "task": "mt_id_zh",
+   "source_dataset": "FLORES-200 devtest",
+   "scene": "money",
+   "src": "Ä°zmir adalah kota terbesar ketiga di Turki dengan populasi sekitar 3,7 juta jiwa, pelabuhan kedua terbesar setelah Istanbul, dan sebuah pusat transportasi yang sangat baik.",
+   "ref": "伊兹密尔是土耳其第三大城市，人口约 370 万，它是土耳其第二大港口，仅次于伊斯坦布尔，它也是一个繁忙的交通枢纽。",
+   "hyp": "伊斯坦布尔是土耳其第三大城市，也是仅次于伊斯坦布尔的第二大港口，拥有良好的交通系统。",
+   "sec": 0.71
+  },
+  {
+   "id": "P0121",
+   "task": "mt_id_zh",
+   "source_dataset": "FLORES-200 devtest",
+   "scene": "money",
+   "src": "Uang tersebut bisa digunakan untuk membeli rumah tahan banjir, pengelolaan air yang lebih baik, dan diversifikasi tanaman.",
+   "ref": "这些资金可以用于建造防洪房屋、改善水资源管理以及促进农作物多样化。",
+   "hyp": "这些钱可以用来购买洪水保险、改善水资源管理、种植更多种类的植物。",
+   "sec": 0.53
+  },
+  {
+   "id": "P0122",
+   "task": "mt_id_zh",
+   "source_dataset": "FLORES-200 devtest",
+   "scene": "directions",
+   "src": "Tiga bom lagi meledak di dekat gedung pemerintah dalam waktu dua jam.",
+   "ref": "两小时内，政府大楼附近又发生了三起炸弹爆炸事件。",
+   "hyp": "在两小时之内，又有三枚炸弹在政府大楼附近爆炸。",
+   "sec": 0.42
+  },
+  {
+   "id": "P0123",
+   "task": "mt_id_zh",
+   "source_dataset": "FLORES-200 devtest",
+   "scene": "directions",
+   "src": "Hal ini terkait tetapi biasanya tidak ada hubungannya dengan tur ski atau pendakian gaya alpine, yang terakhir dilakukan di medan curam dan dibutuhkan sepatu boot dan ski yang jauh lebih kokoh.",
+   "ref": "这项活动与阿尔卑斯式滑雪旅行或登山运动相关，但通常不会进行这两项活动。这两项活动要在陡峭的地形上进行，而且需要更硬的滑雪板和靴子。",
+   "hyp": "这与滑雪或高山滑雪运动无关，但后者通常需要更坚固的滑雪靴和滑雪板。",
+   "sec": 0.71
+  },
+  {
+   "id": "P0124",
+   "task": "mt_id_zh",
+   "source_dataset": "FLORES-200 devtest",
+   "scene": "directions",
+   "src": "Pound Inggris umumnya diterima di mana pun di seluruh pulau, di kota Stanley kartu kredit dan dolar Amerika Serikat juga biasanya diterima.",
+   "ref": "英镑一般在岛上所有地方都通用，斯坦利境内也往往可以用信用卡和美元付款。",
+   "hyp": "英镑通常在大西洋上的任何地方都受欢迎，万事达卡和美元卡通常也受欢迎。",
+   "sec": 0.64
+  },
+  {
+   "id": "P0125",
+   "task": "mt_id_zh",
+   "source_dataset": "FLORES-200 devtest",
+   "scene": "health",
+   "src": "Sebagian pasien kemungkinan ketularan penyakit itu di rumah sakit, menurut perkiraan Dr. Moll, dan paling sedikit dua orang adalah petugas kesehatan di rumah sakit.",
+   "ref": "莫尔 (Moll) 博士认为，有些病人可能是在医院感染了病菌，而且至少有两名病人是医院的医护人员。",
+   "hyp": "据马尔洛尔医生（Dr. Moll）的估计，该名患者可能感染了某种病毒，目前尚不清楚是哪种病毒。目前，该名患者住在医院的两名医护人员中至少有一人感染了该病毒。",
+   "sec": 1.22
+  },
+  {
+   "id": "P0126",
+   "task": "mt_id_zh",
+   "source_dataset": "FLORES-200 devtest",
+   "scene": "directions",
+   "src": "\"Berkaitan dengan tempatnya yang relatif sulit untuk diakses, \"Timbuktu\" telah digunakan sebagai metafora untuk negeri yang eksotis dan jauh.\"",
+   "ref": "又因为相对偏僻，“廷巴克图”被用来比喻遥远的异国他乡。",
+   "hyp": "“鉴于它相对难以访问，”研究人员说，“‘Timbuktu’一词被用来象征一个遥远、异国情调的国度。”",
+   "sec": 0.82
+  },
+  {
+   "id": "P0127",
+   "task": "mt_id_zh",
+   "source_dataset": "FLORES-200 devtest",
+   "scene": "health",
+   "src": "Ia awalnya dirawat di Rumah Sakit James Paget di Great Yarmouth.",
+   "ref": "起初，他被送往位于大雅茅斯的詹姆斯·佩吉特医院进行救治。",
+   "hyp": "最初，他被送往格兰姆沃恩（Great Yarmouth）的詹姆斯帕格特医院（James Paget Hospital）接受治疗。",
+   "sec": 0.75
+  },
+  {
+   "id": "P0128",
+   "task": "mt_id_zh",
+   "source_dataset": "FLORES-200 devtest",
+   "scene": "money",
+   "src": "Otoritas pusat gereja telah berada di Roma selama lebih dari seribu tahun, dan pemusatan kekuasaan dan uang ini membuat banyak orang mempertanyakan apakah ajaran ini telah terpenuhi.",
+   "ref": "教会中央集权制在罗马存在了一千多年，这种权力和金钱的集中让许多人开始质疑，他们是否遵守了这一信条。",
+   "hyp": "罗马教廷的总部位于罗马，已有超过三千年的历史。这些权力和金钱的问题引发了人们对这些教义是否已得到充分的履行的质疑。",
+   "sec": 0.89
+  },
+  {
+   "id": "P0129",
+   "task": "mt_id_zh",
+   "source_dataset": "FLORES-200 devtest",
+   "scene": "money",
+   "src": "Spesialisasi bipedal ditemukan di fosil Australopithcus dari 4,2-3,9 juta tahun lalu, meski Sahelanthropus mungkin sudah berjalan dengan dua kaki sejak tujuh juta tahun silam.",
+   "ref": "人们在 420 万至 390 万年前的南方古猿化石中发现了双足特化的现象，尽管乍得沙赫人（Sahelanthropus）可能早在 700 万年前就已经用双腿行走了。",
+   "hyp": "在距今约四百万至三百万年之间，早期猿人化石的发现显示，早期直立行走的猿人可能早在七百万年前就已经用两条腿行走。",
+   "sec": 1.03
+  },
+  {
+   "id": "P0130",
+   "task": "mt_id_zh",
+   "source_dataset": "FLORES-200 devtest",
+   "scene": "directions",
+   "src": "Periksa apakah bus yang ingin Anda tumpangi melewati Hebron dan tidak hanya ke pemukiman Yahudi di dekat Kiryat Arba.",
+   "ref": "请确认你打算乘坐的公交车将会进入希伯伦，而不仅仅是去附近的基亚特·阿巴 (Kiryat Arba) 犹太定居点。",
+   "hyp": "如果您想把巴士开到赫尔班特（Hebron）而不经过耶路撒冷（Jerusalem），您需要绕过耶路撒冷（Jerusalem）的犹太人定居点。",
+   "sec": 1.03
+  },
+  {
+   "id": "P0131",
+   "task": "mt_id_zh",
+   "source_dataset": "FLORES-200 devtest",
+   "scene": "health",
+   "src": "Dia terlatih sebagai dokter kandungan dan mulai bekerja di Rumah Sakit Wanita Nasional Auckland pada tahun 1959.",
+   "ref": "他接受过产科医生培训，从 1959 年开始在奥克兰国家妇女医院工作。",
+   "hyp": "他开始在奥克兰妇女医院工作，成为该医院的妇科医生。",
+   "sec": 0.52
+  },
+  {
+   "id": "P0132",
+   "task": "mt_id_zh",
+   "source_dataset": "FLORES-200 devtest",
+   "scene": "shopping",
+   "src": "Tidak ada hutan besar di Tanah Kanaan, itu sebabnya harga kayu sangat mahal.",
+   "ref": "迦南没有大森林，所以木材非常昂贵。",
+   "hyp": "坦桑尼亚没有热带雨林，因此木材的价格很高。",
+   "sec": 0.39
+  },
+  {
+   "id": "P0133",
+   "task": "mt_id_zh",
+   "source_dataset": "FLORES-200 devtest",
+   "scene": "health",
+   "src": "Senjata Uka gagal saat diarahkan ke kepala orang kelima. Schneider merasakan sakit yang berkelanjutan, kebutaan di satu mata, bagian tengkorak yang hilang, dan wajah yang dibuat ulang dari titanium.",
+   "ref": "乌卡 (Uka) 的武器在指着第五个人的头时失灵了。施耐德（Schneider）疼痛不已，一只眼睛失明，一块头骨缺失，利用钛板才重塑了脸部。",
+   "hyp": "在试图把枪口对准第五名嫌疑人时，苏尔坦·辛格（Suttan Singh）的枪走火了。他感到疼痛，一只眼睛失明，一只耳朵不见了，钛制的面部重塑手术让他看起来像换了个人。",
+   "sec": 1.35
+  },
+  {
+   "id": "P0134",
+   "task": "mt_id_zh",
+   "source_dataset": "FLORES-200 devtest",
+   "scene": "restaurant",
+   "src": "Orang-orang sekarang menulis pesan di layar komputer, tidak pernah harus menggunakan rautan.",
+   "ref": "人们现在在电脑屏幕上写信息，永远不必接触卷笔刀了。",
+   "hyp": "现在人们正在键盘上写信，再也不必用草稿。",
+   "sec": 0.43
+  },
+  {
+   "id": "P0135",
+   "task": "mt_id_zh",
+   "source_dataset": "FLORES-200 devtest",
+   "scene": "shopping",
+   "src": "Blog juga dapat membantu meningkatkan kemampuan menulis siswa. Sementara itu, siswa biasanya mulai merasakan pengalaman membuat blog dengan tata bahasa dan ejaan yang kurang baik, keberadaan audiens secara umum mengubah itu.",
+   "ref": "博客还能帮助学生提高写作能力。尽管学生们开始写博客时，用的语法和拼写往往都很马虎，读者的出现通常会改变这一状况。",
+   "hyp": "博客可以帮助学生提高写作能力。然而，学生通常开始时会感到博客写作能力较差，而且普遍认为博客的总体质量不如网页。",
+   "sec": 0.89
+  },
+  {
+   "id": "P0136",
+   "task": "mt_id_zh",
+   "source_dataset": "FLORES-200 devtest",
+   "scene": "directions",
+   "src": "Jenis flu burung yang mematikan bagi manusia, H5N1, dipastikan telah menginfeksi bebek liar yang bangkainya ditemukan pada Senin, di rawa-rawa dekat Lyon di timur Prancis.",
+   "ref": "周一，法国东部里昂附近的沼泽内发现了一只死野鸭。经证实，这只野鸭感染了对人类致命的 H5N1 型禽流感病毒。",
+   "hyp": "致命的H5N1型禽流感病毒，已证实感染了在法国东部的里昂地区发现的野生鸟类。",
+   "sec": 0.8
+  },
+  {
+   "id": "P0137",
+   "task": "mt_id_zh",
+   "source_dataset": "FLORES-200 devtest",
+   "scene": "money",
+   "src": "Transportasi pertama yang dikenal adalah berjalan kaki. Dengan kemunculan Homo Erectus (yang berarti manusia tegak) dua juta tahun yang lalu, manusia mulai berjalan tegak.",
+   "ref": "已知的第一种交通方式是步行。200 万年前，随着直立人（Homo Erectus，意思是直立的人）的出现，人类开始直立行走。",
+   "hyp": "第一种被识别的运输方式是步行。大约20万年前，直立行走的直立人（Homo erectus）的出现使人类开始行走直立。",
+   "sec": 1.04
+  },
+  {
+   "id": "P0138",
+   "task": "mt_id_zh",
+   "source_dataset": "FLORES-200 devtest",
+   "scene": "ride",
+   "src": "\"Tanda \"busur naik\" tampak seperti huruf V dan \"tanda busur turun\" seperti staples atau persegi yang tidak memiliki sisi bawahnya.\"",
+   "ref": "“上弓”符号像字母 V，“下弓”符号像是钉书钉或是缺少了底边的正方形。",
+   "hyp": "“上弦”和“下弦”这两个词看起来像“V”字和“正方形”一样。",
+   "sec": 0.72
+  },
+  {
+   "id": "P0139",
+   "task": "mt_id_zh",
+   "source_dataset": "FLORES-200 devtest",
+   "scene": "directions",
+   "src": "Jika Anda pernah menonton film National Treasure, Anda mungkin berpikir peta harta karun ditulis di belakang Deklarasi Kemerdekaan. ",
+   "ref": "如果你看过电影《国家宝藏》，你可能会以为《独立宣言》背面会画着一份藏宝图。",
+   "hyp": "如果你看过《国家宝藏》这部电影，你可能会认为，这份地图是在《独立宣言》发表之前绘制的。",
+   "sec": 0.7
+  },
+  {
+   "id": "P0140",
+   "task": "mt_id_zh",
+   "source_dataset": "FLORES-200 devtest",
+   "scene": "restaurant",
+   "src": "Makan malam sederhana yang populer, terutama selama musim panas adalah Pa amb Oli: Roti dengan minyak zaitun, tomat, dan bumbu apa pun yang tersedia seperti keju, tuna, dan lain-lain.",
+   "ref": "Pa amb Oli 是一种在夏天尤为流行的简单晚餐：面包搭配橄榄油、番茄，手头上任何佐料都可加入，比如奶酪、金枪鱼等。",
+   "hyp": "夏季期间，流行的晚餐通常是用橄榄油、西红柿和任何可用的香料（如奶酪、沙爹和其它）调味的烤面包。",
+   "sec": 0.9
+  },
+  {
+   "id": "P0141",
+   "task": "mt_id_zh",
+   "source_dataset": "FLORES-200 devtest",
+   "scene": "ride",
+   "src": "Sepanjang tahun 1980-an dia bekerja di pertunjukan-pertunjukan seperti Taxi, Cheers, dan The Tracey Ullman Show. ",
+   "ref": "20 世纪 80 年代，他在《出租车》、《欢呼》以及《特蕾西·厄尔曼秀》等节目工作。",
+   "hyp": "他于1980年代在出租车、《欢乐时光》和《乌尔曼秀》等节目中工作。",
+   "sec": 0.69
+  },
+  {
+   "id": "P0142",
+   "task": "mt_id_zh",
+   "source_dataset": "FLORES-200 devtest",
+   "scene": "directions",
+   "src": "Empat belas sekolah di Hawaii yang terletak di atau dekat garis pantai ditutup sepanjang hari Rabu meskipun peringatannya dicabut.",
+   "ref": "尽管警报已解除，坐落于夏威夷海岸线或附近的 14 所学校在整个周三都关闭了。",
+   "hyp": "尽管如此，星期三，位于或靠近海岸的夏威夷四十四所小学的校长们仍表示，他们将关闭这些学校，直到星期六。",
+   "sec": 0.88
+  },
+  {
+   "id": "P0143",
+   "task": "mt_id_zh",
+   "source_dataset": "FLORES-200 devtest",
+   "scene": "hotel",
+   "src": "Setiap perubahan atau permintaan harus diatur lewat agen perjalanan terlebih dahulu dan bukan secara langsung dengan hotel.",
+   "ref": "如果需要进行任何修改或有任何要求，应该首先通过旅行代理商进行办理，而不是直接与酒店接洽。",
+   "hyp": "酒店预订或旅游需求的变更或增加，应先通过旅行社，而不是直接通过酒店。",
+   "sec": 0.6
+  },
+  {
+   "id": "P0144",
+   "task": "mt_id_zh",
+   "source_dataset": "FLORES-200 devtest",
+   "scene": "shopping",
+   "src": "Semakin kecil angka Rossby-nya, semakin kurang aktif bintang tersebut terkait pembalikan magnetik.",
+   "ref": "罗斯贝数越小，恒星在磁场倒转方面就越不活跃。",
+   "hyp": "Rossby number is a measure of the strength of the magnetic reversal associated with the star's rotation.",
+   "sec": 0.55
+  },
+  {
+   "id": "P0145",
+   "task": "mt_id_zh",
+   "source_dataset": "FLORES-200 devtest",
+   "scene": "health",
+   "src": "Seorang dokter yang bekerja di Rumah Sakit Anak di Pittsburgh, Pennsylvania akan didakwa atas pembunuhan disengaja setelah ibunya ditemukan meninggal dalam bagasi mobilnya pada hari Rabu, sebut pihak berwajib Ohio.",
+   "ref": "俄亥俄州当局表示，因星期三于一名医生的汽车后备箱中发现其母尸体，这位在宾夕法尼亚州匹兹堡儿童医院工作的医生将面临情节严重的谋杀罪指控。",
+   "hyp": "一名在匹兹堡的儿童医院工作的小医生将因涉嫌谋杀一名在车里去世的婴儿而被起诉。",
+   "sec": 0.8
+  },
+  {
+   "id": "P0146",
+   "task": "mt_id_zh",
+   "source_dataset": "FLORES-200 devtest",
+   "scene": "restaurant",
+   "src": "Ocelot suka makan binatang kecil. Ocelot akan menangkap monyet, ular, hewan pengerat dan burung jika bisa. Hampir semua hewan yang diburu ocelot berukuran jauh lebih kecil.",
+   "ref": "豹猫喜欢吃小动物。如果条件允许，他们会捕捉猴子、蛇、啮齿动物和鸟类。豹猫的猎物几乎都比自身要小得多。",
+   "hyp": "猫科动物喜欢吃小动物。猫科动物能捕捉到蛇、蛇、鸟和鸟类。猫科动物捕捉的大多数动物都很小。",
+   "sec": 0.95
+  },
+  {
+   "id": "P0147",
+   "task": "mt_id_zh",
+   "source_dataset": "FLORES-200 devtest",
+   "scene": "directions",
+   "src": "Data neurobiologis memberikan bukti fisik untuk pendekatan teoritis terhadap penyelidikan kognisi. Oleh karena itu, data ini mempersempit area penelitian dan membuatnya jauh lebih tepat.",
+   "ref": "神经生物学数据为认知研究的理论方法提供了物理证据。因此，它缩小了研究范围，并使研究更加精确。",
+   "hyp": "神经生物学数据为认知研究提供了物理证据，从而为理论研究提供了新的视角。因此，这些数据使研究范围更广，更精确。",
+   "sec": 0.88
+  },
+  {
+   "id": "P0148",
+   "task": "mt_id_zh",
+   "source_dataset": "FLORES-200 devtest",
+   "scene": "health",
+   "src": "Walau ada satu vaksin eksperimental yang tampaknya mampu mengurangi kematian akibat Ebola, sampai saat ini belum ada obat yang jelas-jelas terbukti cocok untuk mengobati infeksi yang ada.",
+   "ref": "虽然有一种实验性疫苗看似能够降低埃博拉病毒的死亡率，但迄今为止，还没明确证明任何药物适合治疗现有的感染。",
+   "hyp": "尽管如此，一种实验性疫苗似乎能降低埃博拉病毒的死亡率，但目前还没有一种药物能有效治疗这种疾病。",
+   "sec": 0.84
+  },
+  {
+   "id": "P0149",
+   "task": "mt_id_zh",
+   "source_dataset": "FLORES-200 devtest",
+   "scene": "directions",
+   "src": "Saat kondisinya baik, Anda dapat berkelana lebih jauh ketimbang berjalan kaki â€“ tetapi jarang sekali Anda bisa secepat ski lintas alam tanpa membawa tas punggung yang berat di trek yang rapi. ",
+   "ref": "条件良好的时候，你可以比步行走得更远——但只有在极少数情况下，你才能获得与不背着沉重背包、在平整的轨道上越野滑雪相同的速度。",
+   "hyp": "当情况良好时，你可以走得更远，但要小心不要走得太快。因为当你在雪道上行走时，背包会很重。",
+   "sec": 0.94
+  },
+  {
+   "id": "P0150",
+   "task": "mt_id_zh",
+   "source_dataset": "FLORES-200 devtest",
+   "scene": "directions",
+   "src": "Misalnya, seseorang dapat mengatakan bahwa mobil seharusnya mengarah pada pengembangan jalan raya.",
+   "ref": "例如，有人可能会说，汽车必然会促进道路的发展。",
+   "hyp": "例如，有人可能会说，应该让汽车驶向公路建设。",
+   "sec": 0.43
+  },
+  {
+   "id": "P0151",
+   "task": "mt_id_zh",
+   "source_dataset": "FLORES-200 devtest",
+   "scene": "health",
+   "src": "Hama dapat merusak makanan, mengakibatkan iritasi, atau dalam kasus yang lebih parah, mengakibatkan reaksi alergi, menyebarkan racun atau menularkan penyakit.",
+   "ref": "害虫会破坏食物，引起刺激性反应，在更严重的情况下会引起过敏反应，传播毒液或传染病。",
+   "hyp": "这种害虫能破坏食物，引起皮肤过敏，严重时会引起过敏反应、中毒或传染疾病。",
+   "sec": 0.71
+  },
+  {
+   "id": "P0152",
+   "task": "mt_id_zh",
+   "source_dataset": "FLORES-200 devtest",
+   "scene": "health",
+   "src": "Hamilton mengonfirmasi Rumah Sakit Universitas Howard mengakui pasien dalam kondisi stabil. ",
+   "ref": "汉密尔顿（Hamilton）确认，霍华德大学医院收治的病人情况稳定。",
+   "hyp": "霍华德大学医院确认，一名患者病情稳定。",
+   "sec": 0.37
+  },
+  {
+   "id": "P0153",
+   "task": "mt_id_zh",
+   "source_dataset": "FLORES-200 devtest",
+   "scene": "directions",
+   "src": "Jalan yang menjadi lokasi kecelakaan ditutup sementara dan layanan darurat mengeluarkan pengemudi dari Audi TT merah.",
+   "ref": "事故发生的道路暂时封闭，紧急救援人员将司机从红色奥迪 TT 中救了出来。",
+   "hyp": "事故现场已被封锁，事故现场的救援人员将红色的奥迪TT驾驶员从事故现场救出。",
+   "sec": 0.64
+  },
+  {
+   "id": "P0154",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "chat",
+   "src": "Assalamu 'alaikum",
+   "ref": "Hello.",
+   "hyp": "Assalamualaikum",
+   "sec": 0.2
+  },
+  {
+   "id": "P0155",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "chat",
+   "src": "Apa kabar?",
+   "ref": "How are you?",
+   "hyp": "What's going on?",
+   "sec": 0.17
+  },
+  {
+   "id": "P0156",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "chat",
+   "src": "Baik, terima kasih.",
+   "ref": "Fine, thank you.",
+   "hyp": "Well, take care of yourself.",
+   "sec": 0.24
+  },
+  {
+   "id": "P0157",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "chat",
+   "src": "Siapa nama?",
+   "ref": "What is your name?",
+   "hyp": "Who is this?",
+   "sec": 0.14
+  },
+  {
+   "id": "P0158",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "chat",
+   "src": "Senang bertemu Anda.",
+   "ref": "Nice to meet you.",
+   "hyp": "It's good to meet you.",
+   "sec": 0.21
+  },
+  {
+   "id": "P0159",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "chat",
+   "src": "Terima kasih.",
+   "ref": "Thank you.",
+   "hyp": "Give love.",
+   "sec": 0.12
+  },
+  {
+   "id": "P0160",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "chat",
+   "src": "Maafkan saya.",
+   "ref": "I'm sorry.",
+   "hyp": "Sorry.",
+   "sec": 0.1
+  },
+  {
+   "id": "P0161",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "chat",
+   "src": "Selamat tinggal.",
+   "ref": "Goodbye",
+   "hyp": "Congratulations.",
+   "sec": 0.1
+  },
+  {
+   "id": "P0162",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "chat",
+   "src": "Selamat jalan.",
+   "ref": "Goodbye",
+   "hyp": "Have a nice trip.",
+   "sec": 0.15
+  },
+  {
+   "id": "P0163",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "chat",
+   "src": "Sampai jumpa",
+   "ref": "See you",
+   "hyp": "Until we meet",
+   "sec": 0.13
+  },
+  {
+   "id": "P0164",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "chat",
+   "src": "Adakah orang yang bisa bahasa Inggris?",
+   "ref": "Is there someone here who speaks English?",
+   "hyp": "Is there anyone who speaks English?",
+   "sec": 0.27
+  },
+  {
+   "id": "P0165",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "chat",
+   "src": "Saya bisa bicara bahasa Indonesia [dengan baik].",
+   "ref": "I can speak Indonesian [well].",
+   "hyp": "I can speak Indonesian [well].",
+   "sec": 0.23
+  },
+  {
+   "id": "P0166",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "chat",
+   "src": "Selamat pagi.",
+   "ref": "Good morning.",
+   "hyp": "Good morning.",
+   "sec": 0.12
+  },
+  {
+   "id": "P0167",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "chat",
+   "src": "Selamat siang.",
+   "ref": "Good afternoon.",
+   "hyp": "Good afternoon.",
+   "sec": 0.11
+  },
+  {
+   "id": "P0168",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "chat",
+   "src": "Selamat sore.",
+   "ref": "Good afternoon.",
+   "hyp": "Good evening.",
+   "sec": 0.12
+  },
+  {
+   "id": "P0169",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "chat",
+   "src": "Selamat malam.",
+   "ref": "Good evening/night.",
+   "hyp": "Good evening.",
+   "sec": 0.11
+  },
+  {
+   "id": "P0170",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "chat",
+   "src": "Selamat tidur.",
+   "ref": "Good night",
+   "hyp": "Good night.",
+   "sec": 0.11
+  },
+  {
+   "id": "P0171",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "chat",
+   "src": "Ini/itu disebut apa?",
+   "ref": "What is this/that called?",
+   "hyp": "What is this/that called?",
+   "sec": 0.22
+  },
+  {
+   "id": "P0172",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "chat",
+   "src": "Saya tidak mengerti.",
+   "ref": "I don't understand.",
+   "hyp": "I don't know.",
+   "sec": 0.17
+  },
+  {
+   "id": "P0173",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "chat",
+   "src": "Di mana kamar kecil?",
+   "ref": "Where is the toilet?",
+   "hyp": "Where is the small room?",
+   "sec": 0.18
+  },
+  {
+   "id": "P0174",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "chat",
+   "src": "Berapa harganya?",
+   "ref": "How much?",
+   "hyp": "What is its price?",
+   "sec": 0.17
+  },
+  {
+   "id": "P0175",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "chat",
+   "src": "Jam berapa?",
+   "ref": "What time is it?",
+   "hyp": "What time?",
+   "sec": 0.13
+  },
+  {
+   "id": "P0176",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "emergency",
+   "src": "Warga Negara Asing",
+   "ref": "Foreigner",
+   "hyp": "Foreigners",
+   "sec": 0.12
+  },
+  {
+   "id": "P0177",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "emergency",
+   "src": "Jangan ganggu saya!",
+   "ref": "Leave me alone.",
+   "hyp": "Don't bother me!",
+   "sec": 0.17
+  },
+  {
+   "id": "P0178",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "emergency",
+   "src": "Jangan pegang saya!",
+   "ref": "Don't touch me!",
+   "hyp": "Don't hold me!",
+   "sec": 0.15
+  },
+  {
+   "id": "P0179",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "emergency",
+   "src": "Saya akan panggil polisi.",
+   "ref": "I'll call the police.",
+   "hyp": "I will call the police.",
+   "sec": 0.19
+  },
+  {
+   "id": "P0180",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "emergency",
+   "src": "Berhenti! Maling!",
+   "ref": "Stop! Thief!",
+   "hyp": "Stop! Bad!",
+   "sec": 0.15
+  },
+  {
+   "id": "P0181",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "emergency",
+   "src": "Hey! Copet!",
+   "ref": "Hey! Pickpocket!",
+   "hyp": "Hey! Copet!",
+   "sec": 0.17
+  },
+  {
+   "id": "P0182",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "emergency",
+   "src": "Saya minta tolong.",
+   "ref": "I need your help.",
+   "hyp": "I want to ask.",
+   "sec": 0.16
+  },
+  {
+   "id": "P0183",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "emergency",
+   "src": "Ini darurat.",
+   "ref": "It's an emergency.",
+   "hyp": "This is an emergency.",
+   "sec": 0.16
+  },
+  {
+   "id": "P0184",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "emergency",
+   "src": "Saya tersesat.",
+   "ref": "I'm lost.",
+   "hyp": "I'm lost.",
+   "sec": 0.16
+  },
+  {
+   "id": "P0185",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "emergency",
+   "src": "Saya kehilangan tas saya.",
+   "ref": "I lost my bag.",
+   "hyp": "I lost my bag.",
+   "sec": 0.2
+  },
+  {
+   "id": "P0186",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "emergency",
+   "src": "Saya kehilangan dompet saya.",
+   "ref": "I lost my wallet.",
+   "hyp": "I lost my wallet.",
+   "sec": 0.16
+  },
+  {
+   "id": "P0187",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "emergency",
+   "src": "Saya sakit.",
+   "ref": "I'm sick.",
+   "hyp": "I'm sick.",
+   "sec": 0.13
+  },
+  {
+   "id": "P0188",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "emergency",
+   "src": "Saya terluka.",
+   "ref": "I've been injured.",
+   "hyp": "I was hurt.",
+   "sec": 0.14
+  },
+  {
+   "id": "P0189",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "emergency",
+   "src": "Saya perlu dokter.",
+   "ref": "I need a doctor.",
+   "hyp": "I need a doctor.",
+   "sec": 0.16
+  },
+  {
+   "id": "P0190",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "emergency",
+   "src": "Bolehkah saya pakai telepon Anda?",
+   "ref": "May I use your phone?",
+   "hyp": "May I call you?",
+   "sec": 0.18
+  },
+  {
+   "id": "P0191",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "health",
+   "src": "Saya sakit",
+   "ref": "I am sick.",
+   "hyp": "I'm sick.",
+   "sec": 0.14
+  },
+  {
+   "id": "P0192",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "health",
+   "src": "jari kaki",
+   "ref": "Toes",
+   "hyp": "foot jari",
+   "sec": 0.12
+  },
+  {
+   "id": "P0193",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "ride",
+   "src": "Kereta/bus ini ke mana?",
+   "ref": "Where does this train/bus go?",
+   "hyp": "Where are these trains/buses going?",
+   "sec": 0.23
+  },
+  {
+   "id": "P0194",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "directions",
+   "src": "Bisakah Anda tunjukkan di peta?",
+   "ref": "Can you show me on the map?",
+   "hyp": "Can you show me on the map?",
+   "sec": 0.36
+  },
+  {
+   "id": "P0195",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "directions",
+   "src": "timur laut",
+   "ref": "north-east",
+   "hyp": "east side of the river",
+   "sec": 0.15
+  },
+  {
+   "id": "P0196",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "directions",
+   "src": "barat laut",
+   "ref": "north-west",
+   "hyp": "The barat laut is a term used to refer to the western part of the world.",
+   "sec": 0.4
+  },
+  {
+   "id": "P0197",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "directions",
+   "src": "barat daya",
+   "ref": "south-west",
+   "hyp": "barter value",
+   "sec": 0.12
+  },
+  {
+   "id": "P0198",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "ride",
+   "src": "Which side are you on?",
+   "ref": "Sebelah mana?",
+   "hyp": "Which side are you on?",
+   "sec": 0.19
+  },
+  {
+   "id": "P0199",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "ride",
+   "src": "The right side",
+   "ref": "Sebelah kanan",
+   "hyp": "The right side.",
+   "sec": 0.13
+  },
+  {
+   "id": "P0200",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "ride",
+   "src": "The left side",
+   "ref": "Sebelah kiri",
+   "hyp": "The left side.",
+   "sec": 0.14
+  },
+  {
+   "id": "P0201",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "ride",
+   "src": "Please wait",
+   "ref": "Tunggu ya",
+   "hyp": "Please wait.",
+   "sec": 0.11
+  },
+  {
+   "id": "P0202",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "ride",
+   "src": "Just a second",
+   "ref": "Sebentar",
+   "hyp": "Just a second.",
+   "sec": 0.13
+  },
+  {
+   "id": "P0203",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "ride",
+   "src": "Belok kiri.",
+   "ref": "Turn left.",
+   "hyp": "Turn right.",
+   "sec": 0.12
+  },
+  {
+   "id": "P0204",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "ride",
+   "src": "Belok kanan.",
+   "ref": "Turn right.",
+   "hyp": "Turn right.",
+   "sec": 0.11
+  },
+  {
+   "id": "P0205",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "ride",
+   "src": "Putar balik.",
+   "ref": "Turn around.",
+   "hyp": "Turn around.",
+   "sec": 0.13
+  },
+  {
+   "id": "P0206",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "ride",
+   "src": "Berhenti di sini.",
+   "ref": "Stop here.",
+   "hyp": "Stop here.",
+   "sec": 0.13
+  },
+  {
+   "id": "P0207",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "ride",
+   "src": "Tunggu di sini.",
+   "ref": "Wait here.",
+   "hyp": "Wait here.",
+   "sec": 0.12
+  },
+  {
+   "id": "P0208",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "hotel",
+   "src": "Apakah Anda punya kamar kosong?",
+   "ref": "Do you have any rooms available?",
+   "hyp": "Do you have a spare room?",
+   "sec": 0.22
+  },
+  {
+   "id": "P0209",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "hotel",
+   "src": "Berapa harga kamar untuk satu/dua orang?",
+   "ref": "How much is a room for one person/two people?",
+   "hyp": "How much is the room for one or two people?",
+   "sec": 0.31
+  },
+  {
+   "id": "P0210",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "hotel",
+   "src": "Bolehkah saya lihat kamarnya dulu?",
+   "ref": "May I see the room first?",
+   "hyp": "May I see his room?",
+   "sec": 0.21
+  },
+  {
+   "id": "P0211",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "hotel",
+   "src": "Apakah ada kamar yang lebih tenang?",
+   "ref": "Do you have anything quieter?",
+   "hyp": "Is there a more peaceful room?",
+   "sec": 0.22
+  },
+  {
+   "id": "P0212",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "hotel",
+   "src": "Baik saya ambil.",
+   "ref": "OK, I'll take it.",
+   "hyp": "I'll take it.",
+   "sec": 0.17
+  },
+  {
+   "id": "P0213",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "hotel",
+   "src": "Bisakah Anda menyarankan hotel lainnya?",
+   "ref": "Can you suggest another hotel?",
+   "hyp": "Can you suggest another hotel?",
+   "sec": 0.2
+  },
+  {
+   "id": "P0214",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "hotel",
+   "src": "Apakah Anda punya brankas?",
+   "ref": "Do you have a safe?",
+   "hyp": "Do you have a safe?",
+   "sec": 0.2
+  },
+  {
+   "id": "P0215",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "hotel",
+   "src": "Apakah sudah termasuk sarapan/makan malam?",
+   "ref": "Is breakfast/supper included?",
+   "hyp": "Is breakfast included?",
+   "sec": 0.16
+  },
+  {
+   "id": "P0216",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "hotel",
+   "src": "Jam berapa mulai sarapan/makan malam?",
+   "ref": "What time is breakfast/supper?",
+   "hyp": "What time does breakfast/supper start?",
+   "sec": 0.25
+  },
+  {
+   "id": "P0217",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "hotel",
+   "src": "Tolong bersihkan kamar saya.",
+   "ref": "Please clean my room.",
+   "hyp": "Please clean my room.",
+   "sec": 0.19
+  },
+  {
+   "id": "P0218",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "hotel",
+   "src": "Saya mau check out.",
+   "ref": "I want to check out.",
+   "hyp": "I want to check out.",
+   "sec": 0.19
+  },
+  {
+   "id": "P0219",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "money",
+   "src": "Apakah Anda menerima dollar Amerika/Australia/Kanada?",
+   "ref": "Do you accept American/Australian/Canadian dollars?",
+   "hyp": "Are you receiving dollars American/Australian/Canadian?",
+   "sec": 0.3
+  },
+  {
+   "id": "P0220",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "money",
+   "src": "Apakah Anda menerima poundsterling Inggris?",
+   "ref": "Do you accept British pounds?",
+   "hyp": "Do you accept British pounds sterling?",
+   "sec": 0.2
+  },
+  {
+   "id": "P0221",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "money",
+   "src": "Apakah Anda menerima kartu kredit?",
+   "ref": "Do you accept credit cards?",
+   "hyp": "Do you accept a credit card?",
+   "sec": 0.21
+  },
+  {
+   "id": "P0222",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "money",
+   "src": "Bisakah Anda tukar uang untuk saya?",
+   "ref": "Can you change money for me?",
+   "hyp": "Can you exchange my money for yours?",
+   "sec": 0.25
+  },
+  {
+   "id": "P0223",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "money",
+   "src": "Di mana saya bisa tukar uang?",
+   "ref": "Where can I get money changed?",
+   "hyp": "Where can I exchange money?",
+   "sec": 0.2
+  },
+  {
+   "id": "P0224",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "money",
+   "src": "Bisakah Anda tukar cek perjalanan?",
+   "ref": "Can you change a traveler's check for me?",
+   "hyp": "Can you exchange a check for cash?",
+   "sec": 0.26
+  },
+  {
+   "id": "P0225",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "money",
+   "src": "Di mana saya bisa tukar cek perjalanan?",
+   "ref": "Where can I get a traveler's check changed?",
+   "hyp": "Where can I exchange a check?",
+   "sec": 0.23
+  },
+  {
+   "id": "P0226",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "money",
+   "src": "Berapa kursnya?",
+   "ref": "What is the exchange rate?",
+   "hyp": "What is the exchange rate?",
+   "sec": 0.19
+  },
+  {
+   "id": "P0227",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "money",
+   "src": "Di mana ada ATM?",
+   "ref": "Where is an automatic teller machine?",
+   "hyp": "Where is the ATM?",
+   "sec": 0.16
+  },
+  {
+   "id": "P0228",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "restaurant",
+   "src": "Tolong beri saya satu meja untuk satu/dua orang.",
+   "ref": "A table for one person/two people, please.",
+   "hyp": "Please give me one table for one or two people.",
+   "sec": 0.33
+  },
+  {
+   "id": "P0229",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "restaurant",
+   "src": "Bolehkah saya lihat menunya?",
+   "ref": "Can I look at the menu, please?",
+   "hyp": "May I see the menu?",
+   "sec": 0.21
+  },
+  {
+   "id": "P0230",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "restaurant",
+   "src": "Adakah makanan istimewa?",
+   "ref": "Is there a house specialty?",
+   "hyp": "Is there an unusual food?",
+   "sec": 0.2
+  },
+  {
+   "id": "P0231",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "restaurant",
+   "src": "Adakah makanan khas daerah ini?",
+   "ref": "Is there a local specialty?",
+   "hyp": "Is there a local food?",
+   "sec": 0.19
+  },
+  {
+   "id": "P0232",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "restaurant",
+   "src": "Saya vegetarian.",
+   "ref": "I'm a vegetarian.",
+   "hyp": "I am vegetarian.",
+   "sec": 0.14
+  },
+  {
+   "id": "P0233",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "restaurant",
+   "src": "Saya tidak makan babi.",
+   "ref": "I don't eat pork.",
+   "hyp": "I do not eat pork.",
+   "sec": 0.2
+  },
+  {
+   "id": "P0234",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "restaurant",
+   "src": "Saya tidak makan sapi.",
+   "ref": "I don't eat beef.",
+   "hyp": "I do not eat beef.",
+   "sec": 0.18
+  },
+  {
+   "id": "P0235",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "restaurant",
+   "src": "Saya tidak makan hasil laut",
+   "ref": "I don't eat seafood.",
+   "hyp": "I do not eat the fish results.",
+   "sec": 0.22
+  },
+  {
+   "id": "P0236",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "restaurant",
+   "src": "Bisakah dibuat dengan minyak sedikit saja?",
+   "ref": "Can you make it \"lite\", please?",
+   "hyp": "Can it be made with a little bit of oil?",
+   "sec": 0.31
+  },
+  {
+   "id": "P0237",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "restaurant",
+   "src": "daging sapi",
+   "ref": "beef",
+   "hyp": "pork meat",
+   "sec": 0.11
+  },
+  {
+   "id": "P0238",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "restaurant",
+   "src": "daging babi",
+   "ref": "pork",
+   "hyp": "pork belly",
+   "sec": 0.12
+  },
+  {
+   "id": "P0239",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "restaurant",
+   "src": "daging kambing",
+   "ref": "lamb",
+   "hyp": "pork chop",
+   "sec": 0.11
+  },
+  {
+   "id": "P0240",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "restaurant",
+   "src": "kembang kol",
+   "ref": "cauliflower",
+   "hyp": "The development of the col is a good example of how the development of a new technology can be a good example of how the development of a new technology can be a good example of how the development of a new technology can be a good example of how the development of a new technology can be a good example of how the development of a new technology can be a good example of how the development of a new technology can be a good example of how the development of a new technology can be a good example of how the development of a new technology can be a good example of how the development of a new technology can be a good example of how the development of a new technology can be a good example of how the development of a new technology can be a good example of how the development of a new technology",
+   "sec": 3.16
+  },
+  {
+   "id": "P0241",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "restaurant",
+   "src": "ubi jalar",
+   "ref": "sweet potato",
+   "hyp": "The banana tree.",
+   "sec": 0.13
+  },
+  {
+   "id": "P0242",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "restaurant",
+   "src": "bawang bombay",
+   "ref": "onion",
+   "hyp": "bengal onion",
+   "sec": 0.15
+  },
+  {
+   "id": "P0243",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "restaurant",
+   "src": "bawang putih",
+   "ref": "garlic",
+   "hyp": "garlic (white)",
+   "sec": 0.15
+  },
+  {
+   "id": "P0244",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "restaurant",
+   "src": "bawang merah",
+   "ref": "shallot",
+   "hyp": "red onion",
+   "sec": 0.09
+  },
+  {
+   "id": "P0245",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "restaurant",
+   "src": "Roti bakar",
+   "ref": "Toast",
+   "hyp": "Baked bread",
+   "sec": 0.13
+  },
+  {
+   "id": "P0246",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "restaurant",
+   "src": "Air soda",
+   "ref": "Sparkling water",
+   "hyp": "Soda water",
+   "sec": 0.11
+  },
+  {
+   "id": "P0247",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "restaurant",
+   "src": "Anggur merah/putih",
+   "ref": "Red/white wine",
+   "hyp": "The red/white beans.",
+   "sec": 0.2
+  },
+  {
+   "id": "P0248",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "restaurant",
+   "src": "Lada hitam",
+   "ref": "Black pepper",
+   "hyp": "Black pepper",
+   "sec": 0.1
+  },
+  {
+   "id": "P0249",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "restaurant",
+   "src": "Saus sambal",
+   "ref": "Chili sauce",
+   "hyp": "Sambal sauce",
+   "sec": 0.15
+  },
+  {
+   "id": "P0250",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "restaurant",
+   "src": "Saus tomat",
+   "ref": "Tomato sauce",
+   "hyp": "Tomato sauce",
+   "sec": 0.11
+  },
+  {
+   "id": "P0251",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "restaurant",
+   "src": "Saya sudah selesai",
+   "ref": "I'm finished.",
+   "hyp": "I'm finished.",
+   "sec": 0.14
+  },
+  {
+   "id": "P0252",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "restaurant",
+   "src": "Saya kenyang",
+   "ref": "I'm full.",
+   "hyp": "I am the one.",
+   "sec": 0.15
+  },
+  {
+   "id": "P0253",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "restaurant",
+   "src": "Tadi enak rasanya.",
+   "ref": "It was delicious.",
+   "hyp": "It was delicious.",
+   "sec": 0.15
+  },
+  {
+   "id": "P0254",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "restaurant",
+   "src": "Tolong ambil piringnya.",
+   "ref": "Please clear the plates.",
+   "hyp": "Please take the cup.",
+   "sec": 0.18
+  },
+  {
+   "id": "P0255",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "restaurant",
+   "src": "Tolong bersihkan mejanya.",
+   "ref": "Please clean the table.",
+   "hyp": "Please clean his face.",
+   "sec": 0.18
+  },
+  {
+   "id": "P0256",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "restaurant",
+   "src": "Minta bon.",
+   "ref": "The check/bill, please.",
+   "hyp": "Please give a bon.",
+   "sec": 0.15
+  },
+  {
+   "id": "P0257",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "restaurant",
+   "src": "Apakah menyajikan alkohol?",
+   "ref": "Do you serve alcohol?",
+   "hyp": "Does it serve alcohol?",
+   "sec": 0.18
+  },
+  {
+   "id": "P0258",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "restaurant",
+   "src": "Saya mau minta satu/dua bir.",
+   "ref": "I want a beer/two beers.",
+   "hyp": "I want to ask for one or two bir.",
+   "sec": 0.31
+  },
+  {
+   "id": "P0259",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "restaurant",
+   "src": "Saya mau minta satu gelas anggur merah/putih.",
+   "ref": "I want a glass of red/white wine",
+   "hyp": "I want to have a glass of red or white wine.",
+   "sec": 0.32
+  },
+  {
+   "id": "P0260",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "restaurant",
+   "src": "Saya mau minta satu botol.",
+   "ref": "I want a bottle",
+   "hyp": "I want one bottle.",
+   "sec": 0.15
+  },
+  {
+   "id": "P0261",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "restaurant",
+   "src": "Air putih/Aqua",
+   "ref": "Bottled water",
+   "hyp": "Water/Aqua",
+   "sec": 0.12
+  },
+  {
+   "id": "P0262",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "restaurant",
+   "src": "Air soda",
+   "ref": "Sparkling water",
+   "hyp": "Soda water",
+   "sec": 0.11
+  },
+  {
+   "id": "P0263",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "restaurant",
+   "src": "Air tonik",
+   "ref": "Tonic water",
+   "hyp": "Tonic water",
+   "sec": 0.11
+  },
+  {
+   "id": "P0264",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "restaurant",
+   "src": "Coca Cola",
+   "ref": "Coca Cola",
+   "hyp": "Coca-Cola",
+   "sec": 0.12
+  },
+  {
+   "id": "P0265",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "restaurant",
+   "src": "Apakah ada makanan kecil?",
+   "ref": "Do you have any bar snacks?",
+   "hyp": "Is there a small food?",
+   "sec": 0.19
+  },
+  {
+   "id": "P0266",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "restaurant",
+   "src": "Saya mau minta satu lagi.",
+   "ref": "One more, please.",
+   "hyp": "I want to ask for another one.",
+   "sec": 0.25
+  },
+  {
+   "id": "P0267",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "restaurant",
+   "src": "Saya mau minta satu ronde lagi.",
+   "ref": "Another round, please.",
+   "hyp": "I want to play one more round.",
+   "sec": 0.22
+  },
+  {
+   "id": "P0268",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "restaurant",
+   "src": "Jam berapa tutup?",
+   "ref": "When is closing time?",
+   "hyp": "What time is it?",
+   "sec": 0.17
+  },
+  {
+   "id": "P0269",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "shopping",
+   "src": "Terima kasih, saya tidak perlu kresek",
+   "ref": "No thanks, I don't need a plastic bag",
+   "hyp": "I will not need a re-employment.",
+   "sec": 0.26
+  },
+  {
+   "id": "P0270",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "shopping",
+   "src": "Saya tidak mau pakai sedotan",
+   "ref": "I don't want to use a straw",
+   "hyp": "I don't want to use a condom.",
+   "sec": 0.26
+  },
+  {
+   "id": "P0271",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "shopping",
+   "src": "Apakah ini ada yang ukuran saya?",
+   "ref": "Do you have this in my size?",
+   "hyp": "Is this a size of mine?",
+   "sec": 0.22
+  },
+  {
+   "id": "P0272",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "shopping",
+   "src": "Berapa harganya?",
+   "ref": "How much is this?",
+   "hyp": "What is its price?",
+   "sec": 0.17
+  },
+  {
+   "id": "P0273",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "shopping",
+   "src": "Saya tidak mampu beli itu.",
+   "ref": "I can't afford it.",
+   "hyp": "I cannot afford that.",
+   "sec": 0.18
+  },
+  {
+   "id": "P0274",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "shopping",
+   "src": "Saya tidak mau",
+   "ref": "I don't want it.",
+   "hyp": "I don't want to .",
+   "sec": 0.17
+  },
+  {
+   "id": "P0275",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "shopping",
+   "src": "Kau menipu saya",
+   "ref": "You're cheating me.",
+   "hyp": "You cheated me.",
+   "sec": 0.16
+  },
+  {
+   "id": "P0276",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "shopping",
+   "src": "Saya tidak tertarik.",
+   "ref": "I'm not interested.",
+   "hyp": "I'm not interested.",
+   "sec": 0.18
+  },
+  {
+   "id": "P0277",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "shopping",
+   "src": "Baiklah, saya beli.",
+   "ref": "OK, I'll buy it.",
+   "hyp": "Well, I'll buy it.",
+   "sec": 0.21
+  },
+  {
+   "id": "P0278",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "shopping",
+   "src": "Bisakah dikirim?",
+   "ref": "Do you ship?",
+   "hyp": "Can it be sent?",
+   "sec": 0.18
+  },
+  {
+   "id": "P0279",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "emergency",
+   "src": "Apa yang terjadi?",
+   "ref": "What happened?",
+   "hyp": "What is happening?",
+   "sec": 0.15
+  },
+  {
+   "id": "P0280",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "emergency",
+   "src": "Apa yang sedang Anda lakukan",
+   "ref": "What are you doing?",
+   "hyp": "What are you doing?",
+   "sec": 0.17
+  },
+  {
+   "id": "P0281",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "emergency",
+   "src": "Saya tidak berbuat salah.",
+   "ref": "I haven't done anything wrong.",
+   "hyp": "I am not guilty.",
+   "sec": 0.17
+  },
+  {
+   "id": "P0282",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "emergency",
+   "src": "Itu kesalahpahaman.",
+   "ref": "It was a misunderstanding.",
+   "hyp": "It was a misunderstanding.",
+   "sec": 0.17
+  },
+  {
+   "id": "P0283",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "emergency",
+   "src": "Apakah saya ditahan?",
+   "ref": "Am I under arrest?",
+   "hyp": "Was I detained?",
+   "sec": 0.15
+  },
+  {
+   "id": "P0284",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "emergency",
+   "src": "Saya warga negara Amerika/Australia/Inggris/Kanada.",
+   "ref": "I am an American/Australian/British/Canadian citizen.",
+   "hyp": "I'm from the USA/Australia/England/Canada.",
+   "sec": 0.35
+  },
+  {
+   "id": "P0285",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "emergency",
+   "src": "Saya ingin bicara dengan Kedutaan Besar/Konsulat Amerika/Australia/Inggris/Kanada.",
+   "ref": "I want to talk to the American/Australian/British/Canadian embassy/consulate.",
+   "hyp": "I want to speak with the President/Consul General of the United States/Canada/Australia/UK.",
+   "sec": 0.58
+  },
+  {
+   "id": "P0286",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "emergency",
+   "src": "Saya mau bicara dengan pengacara.",
+   "ref": "I want to talk to a lawyer.",
+   "hyp": "I want to talk to the lawyer.",
+   "sec": 0.23
+  },
+  {
+   "id": "P0287",
+   "task": "mt_id_en",
+   "source_dataset": "Wikivoyage Indonesian phrasebook",
+   "scene": "emergency",
+   "src": "Bisakah saya bayar denda di tempat saja?",
+   "ref": "Can I just pay a fine here now?",
+   "hyp": "Can I be fined in the place?",
+   "sec": 0.26
+  },
+  {
+   "id": "P0288",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "belum ada konfirmasi lagi kah min ?",
+   "ref": "belum ada konfirmasi lagikah , admin ?",
+   "hyp": "belum ada konfirmasi lagi min ?",
+   "sec": 0.36
+  },
+  {
+   "id": "P0289",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "ride",
+   "src": "matiin notif yg itu . kmrn jg sampah bgt notif gua isinya gojek .",
+   "ref": "matikan notifikasi yang itu . kemarin juga sampah sekali , notifikasi saya isinya gojek .",
+   "hyp": "matiin notif yang itu . kemarin justru sampah bgt notif saya isinya go - ek .",
+   "sec": 0.66
+  },
+  {
+   "id": "P0290",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "min , info resi id191432841909e dong , soalnya tujuan kiriman harusnya banjarbaru tapi di over ke banjarmasin",
+   "ref": "admin , mohon info resi id191432841909e ! karena tujuan pengiriman harusnya banjarbaru , tapi dipindahkan ke banjarmasin .",
+   "hyp": "admin , info resi id191432841909e dong , soalnya tujuan kiriman harusnya banjarbaru , tapi di over ke banjarmasin .",
+   "sec": 1.05
+  },
+  {
+   "id": "P0291",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "ride",
+   "src": "hal yang lebih cepet dari gundala : habisnya kode promo grab .",
+   "ref": "hal yang lebih cepat dari gundala , habisnya kode promo grab .",
+   "hyp": "hal yang lebih cepat dari gundala : habisnya kode promo grab .",
+   "sec": 0.46
+  },
+  {
+   "id": "P0292",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "directions",
+   "src": "geser kiri ? kita di twitter kak , buka ig .",
+   "ref": "geser ke kiri ? kita di twitter kak , bukan instagram .",
+   "hyp": "geser kiri ? kita di twitter kak , buka ig .",
+   "sec": 0.37
+  },
+  {
+   "id": "P0293",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "capek laporan pulsa kesedot mulu sialaan ️",
+   "ref": "capai laporan pulsa yang tertelan terus . sialan .",
+   "hyp": "capek laporan pulsa kesedot mulu sialan .",
+   "sec": 0.4
+  },
+  {
+   "id": "P0294",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "emergency",
+   "src": "maling yg jadi provider y begini dech jadinya",
+   "ref": "maling yang jadi penyelia , seperti ini jadinya .",
+   "hyp": "maling yang jadi provider y begini dech jadinya .",
+   "sec": 0.39
+  },
+  {
+   "id": "P0295",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "ride",
+   "src": "hal apa yang lebih cepet dari gundala ? ketika driver dan cs sama - sama ngechat \" oke \"",
+   "ref": "hal apa yang lebih cepat dari gundala ? ketika pengemudi dan costumer service sama - sama mengirim pesan \" okay .",
+   "hyp": "hal apa yang lebih cepat dari gundala ? ketika driver dan cs sama - sama ngechat \" oke \" .",
+   "sec": 0.68
+  },
+  {
+   "id": "P0296",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "sudah saya kirim dm nya ya . mohon dicek",
+   "ref": "sudah saya kirim dm - nya . mohon diperiksa .",
+   "hyp": "sudah saya kirim dm nya ya . mohon dicek .",
+   "sec": 0.4
+  },
+  {
+   "id": "P0297",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "astagaa suka bener kalo ngomong , vi !",
+   "ref": "astaga . suka sekali kalau lagi berbicara , vi .",
+   "hyp": "astagaa suka bener kalo mengomentari , vi !",
+   "sec": 0.39
+  },
+  {
+   "id": "P0298",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "ride",
+   "src": "min apakah lowongan grab driver untuk daerah tangerang sedang tutup ?",
+   "ref": "admin , apakah lowongan pengemudi grab untuk daerah tangerang sedang tutup ?",
+   "hyp": "admin , apakah lowongan grab driver untuk daerah tangerang sedang tutup ?",
+   "sec": 0.53
+  },
+  {
+   "id": "P0299",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "oh , oke kak . makasih atas jawabannya",
+   "ref": "baik kak . terima kasih atas jawabannya .",
+   "hyp": "oh , oke kak . terima kasih atas jawabanannya .",
+   "sec": 0.39
+  },
+  {
+   "id": "P0300",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "bodo dahh , males dah pake smartfren , lebih baik ganti",
+   "ref": "masa bodoh , malas sudah pakai smartfren , lebih baik ganti .",
+   "hyp": "bodo dah , malah tidak pakai smartfren , lebih baik ganti .",
+   "sec": 0.49
+  },
+  {
+   "id": "P0301",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "shopping",
+   "src": "kalo hari ini udah beli . besok bisa beli lagi min ?",
+   "ref": "kalau hari ini sudah beli , besok bisa beli lagi , admin ?",
+   "hyp": "kalau hari ini sudah beli , besok bisa beli lagi admin ?",
+   "sec": 0.43
+  },
+  {
+   "id": "P0302",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "halo kenapa simpati akhir2 ini didaerah saya lemot sekalii",
+   "ref": "halo . kenapa simpati akhir - akhir ini di daerah saya lambat sekali ?",
+   "hyp": "halo kenapa simpati akhir - akhir ini didaerah saya lambat sekali ?",
+   "sec": 0.55
+  },
+  {
+   "id": "P0303",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "shopping",
+   "src": "beli tiket nggak nih admin unova ? kalo beli tiket mohon pengertiannya soal harga ya",
+   "ref": "membeli tiket tidak , admin unova ? kalau membeli tiket , mohon pengertiannya terkait harga .",
+   "hyp": "beli tiket tidak admin unova ? kalau beli tiket mohon pengertiannya soal harga ya ?",
+   "sec": 0.64
+  },
+  {
+   "id": "P0304",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "kemaren minta bukti tfny . skrg minta email . data pribadi gk skalian cui .",
+   "ref": "kemarin meminta bukti pengirimannya . sekarang meminta email . data pribadi tidak sekalian gan ?",
+   "hyp": "kemarin minta bukti tfny . sekarang minta email . data pribadi tidak sekarang ini minta email .",
+   "sec": 0.77
+  },
+  {
+   "id": "P0305",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "mau sign up lagi jg ga bisa",
+   "ref": "mau daftar ulang lagi juga tidak bisa .",
+   "hyp": "mau sign up lagi juga tidak bisa .",
+   "sec": 0.26
+  },
+  {
+   "id": "P0306",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "dicoba nugget nya sosisnya , sapatau mau endorse",
+   "ref": "dicoba nugget dan sosisnya ! siapa tahu mau endorse .",
+   "hyp": "dicoba nugget nya sosisnya , sapatau mau endorse .",
+   "sec": 0.44
+  },
+  {
+   "id": "P0307",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "whats wrong with grabfood ? di semarang dari pagi order gaada yg nyantol loh , semua busy , ganti resto pun sama",
+   "ref": "ada masalah apa dengan grabfood ? di semarang , dari pagi pesanan tidak ada yang menempel . semua sibuk . ganti restoran pun sama .",
+   "hyp": "apakah apa yang salah dengan grabfood ? dari semarang dari pagi memesan tidak ada yang nyantol ? semua busy , ganti restoran pun sama .",
+   "sec": 0.93
+  },
+  {
+   "id": "P0308",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "mission sudah selesai tapi kok belum dapat vouchernya",
+   "ref": "misi sudah selesai , tapi kenapa belum mendapat vouchernya ?",
+   "hyp": "mission sudah selesai tetapi mengapa belum dapat vouchernya ?",
+   "sec": 0.38
+  },
+  {
+   "id": "P0309",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "kalo mau request insta cash , telepon ke halo bca yak ? ada requirement kah ?",
+   "ref": "kalau mau meminta insta cash , telepon ke halo bca ya ? ada syaratnya kah ?",
+   "hyp": "kalo mau request insta - cash , telepon ke halo bca yak ? ada syarat kah ?",
+   "sec": 0.57
+  },
+  {
+   "id": "P0310",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "bakaar terooss sampe abis tu duit",
+   "ref": "bakar terus sampai habis itu uang .",
+   "hyp": "bakaar terooss sampai habis uang .",
+   "sec": 0.35
+  },
+  {
+   "id": "P0311",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "cek dm , kalo gak kita putus",
+   "ref": "periksa dm ! kalau tidak , kita putus .",
+   "hyp": "cek dm , kalo tidak kita putus .",
+   "sec": 0.28
+  },
+  {
+   "id": "P0312",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "emergency",
+   "src": "iyah sudah tolong cek dm saya min",
+   "ref": "iya sudah . tolong periksa dm saya , admin .",
+   "hyp": "iya sudah tolong periksa dm saya admin .",
+   "sec": 0.31
+  },
+  {
+   "id": "P0313",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "ride",
+   "src": "hadeeuuhh . padahal kan udah banyak aplikasi antar makanan semacam",
+   "ref": "aduh . padahal sudah banyak aplikasi antar makanan semacam",
+   "hyp": "hadeuuuh . padahal kan sudah banyak aplikasi antar makanan semacam .",
+   "sec": 0.54
+  },
+  {
+   "id": "P0314",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "time",
+   "src": "sore min , paket saya nyangkut di dc kemayoran , sampai sekarang belum dikirim . mohon dibantu min . makasih",
+   "ref": "selamat sore , admin . paket saya tertahan di dc kemayoran , sampai sekarang belum dikirim . mohon dibantu admin . terima kasih .",
+   "hyp": "sore admin , paket saya nyangkut di dc kemayoran , sampai sekarang belum dikirim . mohon dibantu admin . terima kasih .",
+   "sec": 0.93
+  },
+  {
+   "id": "P0315",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "time",
+   "src": "oke nanti saya coba kembali , thanks sarannya min",
+   "ref": "oke . nanti saya coba kembali . terima kasih sarannya , admin .",
+   "hyp": "oke nanti saya coba kembali , terima kasih sarannya admin .",
+   "sec": 0.43
+  },
+  {
+   "id": "P0316",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "miinn paketan aku gabisa mulu mau sampe kapan ini mau ngerjain tugas jadi gabisaa",
+   "ref": "admin , paket aku tidak bisa terus . mau sampai kapan ini ? mau mengerjakan tugas jadi tidak bisa .",
+   "hyp": "miinn paketan aku tidak bisa mulu mau sampai kapan ini mau merjain tugas jadi tidak bisa ?",
+   "sec": 0.68
+  },
+  {
+   "id": "P0317",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "mana dm nya admin ? belum masuk k dm saya",
+   "ref": "mana dm - nya admin ? belum masuk ke dm saya .",
+   "hyp": "admin , mana dm nya ? belum masuk ke dm saya .",
+   "sec": 0.34
+  },
+  {
+   "id": "P0318",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "min jangan main tebak - tebakan dong kan bukan kuis tv",
+   "ref": "admin , jangan main tebak - tebakan kan bukan kuis tv .",
+   "hyp": "admin , jangan main tebak - tebakan dong . kan bukan kuis tv .",
+   "sec": 0.5
+  },
+  {
+   "id": "P0319",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "min kalau paket saya diselesaikan ( status sudah diterima ) padahal belum itu gimana ?",
+   "ref": "admin , kalau paket saya diselesaikan ( status sudah diterima ) padahal belum , itu bagaimana ?",
+   "hyp": "admin , kalau paket saya diselesaikan ( status sudah diterima ) padahal belum itu bagaimana ?",
+   "sec": 0.67
+  },
+  {
+   "id": "P0320",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "udah masuk email pemberitahuannya suruh cek lagi tetep saldo ga berubah , tapi yasudahlah tak mengapa",
+   "ref": "sudah masuk email , pemberitahuannya . disuruh cek lagi , tetap saldo tidak berubah . tapi sudahlah tak mengapa .",
+   "hyp": "sudah masuk email pemberitahuannya suruh cek lagi tetapi saldo tidak berubah , tapi yasudahlah tak mengapa .",
+   "sec": 0.82
+  },
+  {
+   "id": "P0321",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "shopping",
+   "src": "min saran shopeepay later bisa juga dong buat beli pulsa , paket data , dan listrik wkwk",
+   "ref": "admin , saran shopeepay bisa juga untuk membeli pulsa , paket data , dan listrik . hahaha .",
+   "hyp": "admin , saran shopee - pay later bisa juga dong untuk beli pulsa , paket data dan listrik . hahaha .",
+   "sec": 0.72
+  },
+  {
+   "id": "P0322",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "mau order makanan kek jungkook bisa lewat gofood ?",
+   "ref": "mau pesan makanan seperti jungkoo , bisa lewat gofood ?",
+   "hyp": "mau memesan makanan kek jungkook bisa lewat go - food ?",
+   "sec": 0.49
+  },
+  {
+   "id": "P0323",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "cek dm dari saya dongg mention juga ga dibalas gimanasii",
+   "ref": "cek dm dari saya . mention juga tidak dibalas . bagaimana ?",
+   "hyp": "cek dm dari saya dong . mention juga tidak dibalas . bagaimana ini ?",
+   "sec": 0.45
+  },
+  {
+   "id": "P0324",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "shopping",
+   "src": "jgn hanya disana yg diperbaiki . kami juga di daerah khususnya sulawesi tengah kab . banggai kepulauan sudah bayarnya kebih mahal tapi lemotnya minta ampun",
+   "ref": "jangan hanya di sana yang diperbaiki . kami juga di daerah khususnya sulawesi tengah , kab . banggai kepulauan , sudah bayarnya lebih mahal tapi lambatnya minta ampun .",
+   "hyp": "jangan hanya disana yang diperbaiki . kami juga di daerah khusunya sulawesi tengah kab . banggai kepulauan sudah bayarnya kebih mahal , tetapi lambatnya minta ampun .",
+   "sec": 1.3
+  },
+  {
+   "id": "P0325",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "ovo lagi gangguan apa gimana nih min gak bisa dipakai transaksi",
+   "ref": "ovo sedang gangguan atau bagaimana , admin ? tidak bisa dipakai transaksi .",
+   "hyp": "ovo lagi gangguan apa min , tidak bisa dipakai transaksi ?",
+   "sec": 0.42
+  },
+  {
+   "id": "P0326",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "maaf tapi saya masih bermasalah lagi",
+   "ref": "maaf tapi saya masih bermasalah lagi .",
+   "hyp": "maaf , tapi saya masih bermasalah lagi .",
+   "sec": 0.32
+  },
+  {
+   "id": "P0327",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "jarang nih dipanggil ganteng wkwk sudah cek dm ya min , thx",
+   "ref": "jarang dipanggil ganteng hahaha . sudah cek dm admin . terima kasih .",
+   "hyp": "jarang ini dipanggil ganteng wkwk sudah cek dm ya admin , terima kasih .",
+   "sec": 0.61
+  },
+  {
+   "id": "P0328",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "emergency",
+   "src": "kak tolong ini halodoc orderan saya ngga terkirim tapi di status tertulis terkirim",
+   "ref": "kak , tolong ini halodoc pesanan saya tidak terkirim , tapi di status tertulis terkirim .",
+   "hyp": "kak tolong ini halodoc orderan saya tidak terkirim , tapi di status tertulis terkirim .",
+   "sec": 0.62
+  },
+  {
+   "id": "P0329",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "sama sis , herannya rutenya berubah per hari ini . kmrn normal aja , bingung ga sih .",
+   "ref": "sama kak , herannya rutenya berubah per hari ini . kemarin normal saja . bingung tidak ?",
+   "hyp": "sama sis , herannya ruturnya berubah per hari ini . kmrn normal saja , bingung tidak .",
+   "sec": 0.63
+  },
+  {
+   "id": "P0330",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "ah elu put cek aje di hot offer",
+   "ref": "kamu , put , cek saja di penawaran menarik .",
+   "hyp": "ah elu put cek saja di hot offer .",
+   "sec": 0.3
+  },
+  {
+   "id": "P0331",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "selamat pagi , mau tanya apa jnt sediain jasa packing kayu ya ? terima kasih",
+   "ref": "selamat pagi . mau bertanya . apa jnt menyediakan jasa membungkus kayu ? terima kasih .",
+   "hyp": "selamat pagi , ingin bertanya apa jnt sediain jasa packing kayu ? terima kasih .",
+   "sec": 0.63
+  },
+  {
+   "id": "P0332",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "pagi , saya mau tanya untuk pelaporan penipuan ol shop yg menggunakan bank bni bisa secara online ?",
+   "ref": "selamat pagi . saya mau bertanya untuk pelaporan penipuan toko online yang menggunakan bank bni , apa bisa secara online ?",
+   "hyp": "pagi , saya mau bertanya untuk pelaporan penipuan ol shop yang menggunakan bank bni . apakah bisa secara online ?",
+   "sec": 0.68
+  },
+  {
+   "id": "P0333",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "folback min / follow aku soalnya mau kirim dm g bisa",
+   "ref": "follow back , admin . follow aku karena aku mau kirim dm tidak bisa .",
+   "hyp": "folback admin / follow aku soalnya mau kirim dm tidak bisa .",
+   "sec": 0.41
+  },
+  {
+   "id": "P0334",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "nomer saya aja udah di dm dari tadi ga ditangani . gimana min ?",
+   "ref": "nomor saya saja sudah di dm dari tadi tidak ditangani . bagaimana , admin ?",
+   "hyp": "nomor saya saja sudah di dm dari tadi tidak ditangani . bagaimana admin ?",
+   "sec": 0.52
+  },
+  {
+   "id": "P0335",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "iya sama , udeh gw dm dari tadi mba yg cantik , ini signal woi",
+   "ref": "iya sama , sudah saya dm dari tadi , mbak yang cantik ini . ini signalnya hai !",
+   "hyp": "iya sama , udeh gw dm dari tadi mba yang cantik . ini signal woi .",
+   "sec": 0.59
+  },
+  {
+   "id": "P0336",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "masih punya kuota tapi kenapa pulsanya ketarik ya ?",
+   "ref": "masih punya kuota , tapi kenapa pulsanya terpakai ya ?",
+   "hyp": "masih punya kuota , tapi kenapa pulsanya ketarik ?",
+   "sec": 0.42
+  },
+  {
+   "id": "P0337",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "kok dm saya belom dibuka min",
+   "ref": "kenapa dm saya belum dibuka , admin ?",
+   "hyp": "mengapa dm saya belum dibuka admin ?",
+   "sec": 0.27
+  },
+  {
+   "id": "P0338",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "bukan saya mba , saya pengguna setia telkomsel . coba mba cek tweet temen saya",
+   "ref": "bukan saya mbak . saya pengguna setia telkomsel . coba mbak cek tweet teman saya .",
+   "hyp": "bukan saya mba , saya pengguna setia telkomsel . coba mba cek tweet teman saya .",
+   "sec": 0.68
+  },
+  {
+   "id": "P0339",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "restaurant",
+   "src": "chat aja ul , pilih di menu pusat bantuan",
+   "ref": "kirim pesan saja ul . pilih di menu pusat bantuan .",
+   "hyp": "chat saja ul , pilih di menu pusat bantuan .",
+   "sec": 0.38
+  },
+  {
+   "id": "P0340",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "ha sung woon red velvet tiffany young kyu hyun sini merapat nakk",
+   "ref": "ha sung woon , red velvet , tiffany young , kyu hyun . sini merapat nak .",
+   "hyp": "ha sung woon red velvet tiffany young kyu hyun sini merapat nakk .",
+   "sec": 0.5
+  },
+  {
+   "id": "P0341",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "apakah yg bermasalah handphone saya atau aplikasinya ya kak",
+   "ref": "apakah yang bermasalah handphone saya atau aplikasinya kak ?",
+   "hyp": "apakah yang bermasalah handphone saya atau aplikasinya ya kak ?",
+   "sec": 0.43
+  },
+  {
+   "id": "P0342",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "ini smartfren knapa stiap malam kecepatan internetnya lemot mlu sih . gk jlas skali . ini knpa ?",
+   "ref": "ini smartfren kenapa setiap malam kecepatan internetnya lambat terus ? tidak jelas sekali . ini kenapa ?",
+   "hyp": "ini smartfren , mengapa stiap malam kecepatan internetnya lambat sekali ? tidak jelas sekali . ini mengapa ?",
+   "sec": 0.81
+  },
+  {
+   "id": "P0343",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "min , ini knpa kok gabisa ngecek kuota , terus gabisa bikin paket",
+   "ref": "admin , ini kenapa tidak bisa mengecek kuota , terus tidak bisa membeli paket ?",
+   "hyp": "admin , ini mengapa tidak bisa periksa kuota , terus tidak bisa membuat paket ?",
+   "sec": 0.54
+  },
+  {
+   "id": "P0344",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "selamat malam , kenapa go pay saya berkurang yaa dgn tidak seharusnya ya nominalnya ? pdhl saldo nya tidak segitu . bagaimana ini ?",
+   "ref": "selamat malam . kenapa gopay saya berkurang dengan tidak seharusnya nominalnya ? padahal saldonya tidak sebanyak itu . bagaimana ini ?",
+   "hyp": "selamat malam , kenapa go - pay saya berkurang dengan tidak seharusnya ? nominalnya padahal saldo nya tidak sebagus itu . bagaimana ini ?",
+   "sec": 0.96
+  },
+  {
+   "id": "P0345",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "tidak pernah dibalas saya chat via aplikasi",
+   "ref": "tidak pernah dibalas . saya kirim pesan via aplikasi .",
+   "hyp": "tidak pernah dibalas saya chat via aplikasi .",
+   "sec": 0.35
+  },
+  {
+   "id": "P0346",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "gimana nih . seharian gak bisa , pulsa kepotong melulu",
+   "ref": "bagaimana ini ? seharian tidak bisa , pulsa terpotong terus .",
+   "hyp": "bagaimana ini ? sebelumnya , sebelumnya tidak bisa , pulsa terpotong melulu .",
+   "sec": 0.56
+  },
+  {
+   "id": "P0347",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "mbak mau tanya , pesanan dishopee sudah ganti status blm ya , punya aku juga gitu soalnya , ngedm admin dari tadi nggak dibls juga",
+   "ref": "mbak , mau bertanya . pesanan di shopee sudah ganti status belum ya ? punya saya juga begitu soalnya , mengirim dm ke admin dari tadi tidak dibalas juga .",
+   "hyp": "mbak , ingin bertanya , pesanan dishopee sudah tidak mengganti status belum . punya aku juga gitu soalnya , menghubungi admin dari tadi tidak diblok juga .",
+   "sec": 1.05
+  },
+  {
+   "id": "P0348",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "tahun baru dan tarif baru yg sungguh bikin",
+   "ref": "tahun baru dan tarif baru yang sungguh membuat",
+   "hyp": "tahun baru dan tarif baru yang sebenarnya membuat .",
+   "sec": 0.34
+  },
+  {
+   "id": "P0349",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "bisaa kali ikutan nyanyiin dulu aja jingle nya siapa tau buldep masuk campaign nya",
+   "ref": "bisa mungkin , ikut menyanyikan dulu lagunya . siapa tahu bulan depan masuk kampanyenya .",
+   "hyp": "bisaa kali ikutan nyanyiin dulu saja jingle nya siapa tau buldep masuk campaign nya .",
+   "sec": 0.63
+  },
+  {
+   "id": "P0350",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "kenalan sama miminnya boleh kali hihihi",
+   "ref": "kenalan dengan adminnya boleh mungkin ? hahaha .",
+   "hyp": "kenalan dengan miminnya boleh kali hihihi .",
+   "sec": 0.34
+  },
+  {
+   "id": "P0351",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "di antara ini , adakah correspondent bank untuk cimb niaga dan sebaiknya yang mana yang saya gunakan",
+   "ref": "di antara ini , adakah koresponden bank untuk cimb niaga dan sebaiknya yang mana yang saya gunakan ?",
+   "hyp": "dari antara ini , adakah correspondent bank untuk cimb niaga dan sebaiknya yang mana yang saya gunakan ?",
+   "sec": 0.73
+  },
+  {
+   "id": "P0352",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "lagi eror bukan ? kok mau cari barang ga bisa mulu",
+   "ref": "sedang error bukan ? kenapa mau mencari barang tidak bisa terus ?",
+   "hyp": "lagi eror bukan ? mengapa mau cari barang tidak bisa mulu ?",
+   "sec": 0.45
+  },
+  {
+   "id": "P0353",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "lah kok nomer saya tiba2 terdaftar sih ?",
+   "ref": "kenapa nomor saya tiba - tiba terdaftar ?",
+   "hyp": "mengapa nomor saya tiba - tiba terdaftar ?",
+   "sec": 0.4
+  },
+  {
+   "id": "P0354",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "kirain serius ku uninstall juga ni aplikasi",
+   "ref": "dikira serius , ku hapus juga ini aplikasi .",
+   "hyp": "kirain serius aku uninstall juga ini aplikasi .",
+   "sec": 0.3
+  },
+  {
+   "id": "P0355",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "ku coba resto lain juga sama . jd gmn sih sistemnya ?",
+   "ref": "saya mencoba restoran lain juga sama . jadi bagaimana ini sistemnya ?",
+   "hyp": "ku coba resto lain juga sama . jd bagaimana sistemnya ?",
+   "sec": 0.39
+  },
+  {
+   "id": "P0356",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "ok , mungkin & biasa ada sla untuk penyelesaiannya . mohon dipastikan follow up nya dan tidak terjadi keterlambatan kembali",
+   "ref": "oke , mungkin & biasa ada sla untuk penyelesaiannya . mohon dipastikan tindak lanjutnya dan tidak terjadi keterlambatan kembali .",
+   "hyp": "ok , mungkin dan biasanya ada sla untuk penyelesaiannya . mohon dipastikan follow up nya dan tidak terjadi keterlambatan kembali .",
+   "sec": 0.87
+  },
+  {
+   "id": "P0357",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "ride",
+   "src": "caranya gimana min ? sy utak atik dari tadi ga nemu tombol penilaiannya , cm ada kasih bintang buat driver",
+   "ref": "caranya bagaimana , admin ? saya utak - atik dari tadi tidak menemukan tombol penilaiannya , hanya ada kasih bintang untuk pengemudi .",
+   "hyp": "caranya bagaimana admin ? saya tidak tahu bagaimana caranya untuk mengakses tombol penilaiannya . cm ada kasih bintang untuk driver .",
+   "sec": 0.9
+  },
+  {
+   "id": "P0358",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "entah kenapa emang kalo nganter orang ke rs itu ada berkah tersendiri udah sering banget dapet hasilnya",
+   "ref": "entah kenapa memang kalau mengantar orang ke rumah sakit itu ada berkah tersendiri . sudah sering sekali dapat hasilnya .",
+   "hyp": "kenapa emang kalo mengantar orang ke rs itu ada berkah tersendiri sudah sering sekali dapat hasilnya ?",
+   "sec": 0.68
+  },
+  {
+   "id": "P0359",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "waduhh emg indosat bermasalah mulu nih , mana pulsa suka kesedot tbtb . ingin rasanya ganti provider sj",
+   "ref": "aduh memang indosat bermasalah terus ini . mana pulsa terpakai tiba - tiba . ingin rasanya ganti provider saja .",
+   "hyp": "waduhh , mengapa indosat bermasalah mulu nih ? mana pulsa suka kesedot tbtb ? ingin rasanya , ingin mengganti provider saya .",
+   "sec": 1.12
+  },
+  {
+   "id": "P0360",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "sayang cuma sehari doang bisa make nya .",
+   "ref": "sayang cuma sehari saja bisa pakainya .",
+   "hyp": "sangat sedang hanya sehari saja bisa membuatnya .",
+   "sec": 0.37
+  },
+  {
+   "id": "P0361",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "kenapa diem min enggak bales dm saya ?",
+   "ref": "kenapa diam admin , tidak membalas dm saya ?",
+   "hyp": "kenapa diem admin tidak bales dm saya ?",
+   "sec": 0.31
+  },
+  {
+   "id": "P0362",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "emergency",
+   "src": "signal tiba2 hilang ya barusan lokasi di jombang",
+   "ref": "sinyal tiba - tiba hilang baru saja , lokasi di jombang .",
+   "hyp": "signal tiba - tiba hilang barusan lokasi di jombang .",
+   "sec": 0.43
+  },
+  {
+   "id": "P0363",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "judul : di sini senang di sana senang pencipta : ibu sud",
+   "ref": "judul : di sini senang , di sana senang , pencipta : ibu sud",
+   "hyp": "judul : di sini senang di sana senang pencipta : ibu sud .",
+   "sec": 0.51
+  },
+  {
+   "id": "P0364",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "min jnt cipayung masih ada ga sih ? tadi saya kesitu tapi tutup pdhl di google tulisannya open - __ -",
+   "ref": "admin , jnt cipayung masih ada tidak ? tadi saya ke situ tapi tutup , padahal di google tulisannya buka .",
+   "hyp": "admin jnt cipayung masih ada tidak ? tadi saya kesitu tapi tutup padahal di google tulisannya open - __ - .",
+   "sec": 0.79
+  },
+  {
+   "id": "P0365",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "kok mau aktifin paket gak bisa ya ?",
+   "ref": "kenapa mau mengaktifkan paket tidak bisa ?",
+   "hyp": "kenapa mau aktifkan paket tidak bisa ?",
+   "sec": 0.3
+  },
+  {
+   "id": "P0366",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "ditunggu loh penyelesaian kasusnya . cek dm . trims",
+   "ref": "ditunggu penyelesaian kasusnya . cek dm . terima kasih .",
+   "hyp": "ditunggu loh penyelesaian kasihnya . periksa dm . terima kasih .",
+   "sec": 0.59
+  },
+  {
+   "id": "P0367",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "adaptasi teknologi yg tida diimbangi dengan sdm mumpuni merupakan permasalahan utama di negara berflower",
+   "ref": "adaptasi teknologi yang tidak diimbangi dengan sdm mumpuni merupakan permasalahan utama di indonesia .",
+   "hyp": "adaptasi teknologi yang tidak terimbangkan dengan sdm mumpuni merupakan masalah utama di negara berflower .",
+   "sec": 0.66
+  },
+  {
+   "id": "P0368",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "ini yg muncul ketika sy masukkan nomor kontrak",
+   "ref": "ini yang muncul ketika saya masukkan nomor kontrak .",
+   "hyp": "ini yang muncul ketika saya masukkan nomor kontrak .",
+   "sec": 0.39
+  },
+  {
+   "id": "P0369",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "emergency",
+   "src": "provider isiny cm anjing maling dan penipu konsumen",
+   "ref": "provider isinya hanya anjing , maling , dan penipu konsumen .",
+   "hyp": "provider isinya ini cm anjing maling dan penipu konsumen .",
+   "sec": 0.43
+  },
+  {
+   "id": "P0370",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "indosat kenapa ya ini lemot banget dari kemaren",
+   "ref": "indosat , mengapa ini lambat sekali dari kemarin ?",
+   "hyp": "indosat kenapa ya ini lambat sekali dari kemarin ?",
+   "sec": 0.4
+  },
+  {
+   "id": "P0371",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "paan dah error mulu cuma sekali tauk tap nya huhuhu",
+   "ref": "mengapa error terus , hanya sekali tahu tap nya .",
+   "hyp": "paan sudah error mulu hanya sekali , tahu tangan nya . hahaha .",
+   "sec": 0.49
+  },
+  {
+   "id": "P0372",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "ios yg baru emang kyk gini ya ? kan aku jadi gaisa pamer kalo pake",
+   "ref": "ios yang baru memang seperti ini ya ? kan saya jadi tidak bisa pamer kalau pakai .",
+   "hyp": "ios yang baru , apakah seperti ini ? kan aku jadi tidak bisa memamerkan saat pakai ?",
+   "sec": 0.57
+  },
+  {
+   "id": "P0373",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "selamat siang kak , mohon dicek saya mengirimkan dm . terimakasih",
+   "ref": "selamat siang kak . mohon diperiksa saya mengirimkan dm . terima kasih .",
+   "hyp": "selamat siang kak , mohon dicek . saya mengirimkan dm . terima kasih .",
+   "sec": 0.55
+  },
+  {
+   "id": "P0374",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "hallo admin , buka dm dariku dongss",
+   "ref": "halo admin . buka dm dari saya .",
+   "hyp": "halo admin . buka dm dariku dong .",
+   "sec": 0.3
+  },
+  {
+   "id": "P0375",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "ada apa gerangan , wahai provider sinyal akherat",
+   "ref": "ada apa gerangan , wahai provider sinyal akhirat ?",
+   "hyp": "ada apa gerangan , wahai provider sinyal akhirat ?",
+   "sec": 0.4
+  },
+  {
+   "id": "P0376",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "emergency",
+   "src": "yang terhormat indosat ini kenapa cek paketan isi voucher pakatan tidak bisa . tolong jawab . jangan jawab cuma hai hai hai kak terus",
+   "ref": "yang terhormat indosat , ini mengapa periksa paket isi voucher paket tidak bisa . tolong jawab . jangan jawab hanya hai hai hai kak terus .",
+   "hyp": "yang terhormat indosat ini kenapa cek paketan isi vouch pakatan tidak bisa . tolong jawab . jangan jawab cuma hai hai hai kak terus .",
+   "sec": 1.02
+  },
+  {
+   "id": "P0377",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "api kalau gak punya print gimana min ?",
+   "ref": "api kalau tidak punya print bagaimana , admin ?",
+   "hyp": "api kalau tidak punya print , bagaimana admin ?",
+   "sec": 0.34
+  },
+  {
+   "id": "P0378",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "tokopedia skrg cashbacknya pelit cuma dikit mending ke aplikasi bukalapak lebih gede",
+   "ref": "tokopedia sekarang cashbacknya pelit , hanya sedikit lebih baik ke aplikasi bukalapak lebih besar .",
+   "hyp": "tokopedia sekarang cashbacknya pelit , hanya dikit mending ke aplikasi bukalapak lebih tidak baik .",
+   "sec": 0.7
+  },
+  {
+   "id": "P0379",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "shopping",
+   "src": "ga ada paket khusus dengan harga special hari pelanggan kah min ?",
+   "ref": "tidak ada paket khusus dengan harga spesial hari pelanggankah , admin ?",
+   "hyp": "ada paket khusus dengan harga spesial hari pelanggan min ?",
+   "sec": 0.43
+  },
+  {
+   "id": "P0380",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "emergency",
+   "src": "tolong tolong dari kemaren sinyal full tapi gabs buat apa ” , sering banget begini",
+   "ref": "tolong dari kemarin sinyal penuh , tapi tidak bisa pakai apa - apa , sering sekali begini .",
+   "hyp": "tolong tolong dari kemarin sinyal full tapi tidak ada apa - apa . sering sekali seperti ini .",
+   "sec": 0.65
+  },
+  {
+   "id": "P0381",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "shopping",
+   "src": "min jual cilok yg kayak di gak ya ?",
+   "ref": "admin , menjual cilok yang seperti di tidak ?",
+   "hyp": "admin , jual cilok yang seperti di tidak ?",
+   "sec": 0.3
+  },
+  {
+   "id": "P0382",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "di busway dan tol bisa normal digunakan , atau buat naik commuter agak berbeda ? mohon info , sayang2 saldo flazz saya kalau dianggap kadaluarsa",
+   "ref": "di busway dan tol bisa normal digunakan atau untuk naik komuter agak berbeda ? mohon infonya . sayang saldo flazz saya kalau dianggap kadaluarsa .",
+   "hyp": "di busway dan tol , apakah bisa normal digunakan , atau untuk naik commuter agak berbeda ? mohon info , sayang - sayang saldo flazz saya kalau dianggap kadaluarsa .",
+   "sec": 1.16
+  },
+  {
+   "id": "P0383",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "untuk no rek ponsel minimal nominal brp ya",
+   "ref": "untuk nomor rekening ponsel minimal nominal berapa ?",
+   "hyp": "untuk nomor rekening ponsel minimal nominal berapa ya ?",
+   "sec": 0.38
+  },
+  {
+   "id": "P0384",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "mhn kesediaan bpk / ibu pelanggan menunggu , dengan senang hati kami segera merespon mention kembali . tks ^ redo",
+   "ref": "mohon kesediaan bapak / ibu pelanggan menunggu , dengan senang hati kami segera merespons mention kembali . terima kasih . - redo",
+   "hyp": "mohon kesediaan bpk / ibu pelanggan menunggu , dengan senang hati kami segera merespons mention kembali . terima kasih .",
+   "sec": 0.91
+  },
+  {
+   "id": "P0385",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "time",
+   "src": "ini kenapa ya dari kemarin saya daftar paket yellow gak bisa kedaftar ya ? mohon dibantu",
+   "ref": "ini mengapa dari kemarin saya daftar paket yellow tidak bisa terdaftar ? mohon dibantu .",
+   "hyp": "ini kenapa dari kemarin saya daftar paket yellow tidak bisa kadaftar ? mohon dibantu .",
+   "sec": 0.59
+  },
+  {
+   "id": "P0386",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "money",
+   "src": "berarti sudah berubah ya aturannya , kalau tak salah dulu bisa dilakukan via atm .",
+   "ref": "berarti sudah berubah aturannya , kalau tidak salah dulu bisa dilakukan melalui atm .",
+   "hyp": "berarti sudah berubah aturanannya , kalau tidak salah dulu bisa dilakukan via atm .",
+   "sec": 0.55
+  },
+  {
+   "id": "P0387",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "hallo kak kita sama , akun saya yg satunya ke lock dan nunggu kodenya gak nyampe² masa",
+   "ref": "halo , kak . kita sama , akun saya yang satunya terkunci dan menunggu kodenya tidak sampai - sampai masa .",
+   "hyp": "halo kak , kita sama . akun saya yang satunya ke lock dan menunggu kodenya tidak sampai - sampai . mungkin ini sedang proses .",
+   "sec": 0.87
+  },
+  {
+   "id": "P0388",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "selamat pagi . modem m2y saya ada notifikasi : update firmware baru . apa maksud notifikasi tsb ?",
+   "ref": "selamat pagi . modem m2y saya ada notifikasi : update firmware baru . apa maksud notifikasi tersebut ?",
+   "hyp": "selamat pagi . modem saya m2y ada notifikasi : update firmware baru . apa maksud notifikasi tsb ?",
+   "sec": 0.65
+  },
+  {
+   "id": "P0389",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "oh begitu , terima kasih banyak infonya",
+   "ref": "ternyata begitu , terima kasih banyak infonya .",
+   "hyp": "oh begitu , terima kasih banyak infonya .",
+   "sec": 0.34
+  },
+  {
+   "id": "P0390",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "cara aktifkan paylaternya bagaimana ya min ? saya mau pake di tokopedia",
+   "ref": "cara aktifkan pay later - nya bagaimana , admin ? saya mau pakai di tokopedia .",
+   "hyp": "bagaimana cara aktifkan paylaternya bagaimana ya admin ? saya mau pakai di tokopedia ?",
+   "sec": 0.63
+  },
+  {
+   "id": "P0391",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "ride",
+   "src": "iya grab foodnya ga ada promo",
+   "ref": "iya grabfood - nya tidak ada promo .",
+   "hyp": "iya grab foodnya tidak ada promo .",
+   "sec": 0.24
+  },
+  {
+   "id": "P0392",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "min , saya tidak bisa melakukan transaksi pembayaran tiket kereta api dari mbanking dan mandiri online , sedang error kah ?",
+   "ref": "admin , saya tidak bisa melakukan transaksi pembayaran tiket kereta api dari mbanking dan mandiri online , sedang bermasalahkah ?",
+   "hyp": "admin , saya tidak bisa melakukan transaksi pembayaran tiket kereta api dari mbanking dan mandiri online . sedang error kah ?",
+   "sec": 0.76
+  },
+  {
+   "id": "P0393",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "ride",
+   "src": "turun kan tarif grab atau banyak2in promo nya biar muraah , tapi promo yg bisa dipakaii bukan pajangan di inbox semata huhu",
+   "ref": "turunkan tarif grab atau tambahkan promonya biar murah , tapi promo yang bsia dipakai bukan pajangan di inbox semata .",
+   "hyp": "turunkan tarif grab atau banyak - banyak promo nya biar muraah , tapi promo yang bisa dipakaii bukan pajangan di inbox semata . hahaha .",
+   "sec": 0.96
+  },
+  {
+   "id": "P0394",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "hingga kapan ya ? karena aktifitas saya menjadi terganggu , padahal saya baru saja mengisi paket data . terima kasih",
+   "ref": "hingga kapan ya ? karena aktifitas saya menjadi terganggu , padahal saya baru saja mengisi paket data . terima kasih .",
+   "hyp": "hingga kapan ya ? karena aktivitas saya menjadi terganggu , padahal saya baru saja mengisi paket data . terima kasih .",
+   "sec": 0.82
+  },
+  {
+   "id": "P0395",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "halo kak ? ini kenapa ya kok saya dari kemarin2 gabisa masukin kode promo ? semuanya baik grabfood , bike , car",
+   "ref": "halo , kak . ini mengapa saya dari kemarin - kemarin tidak bisa memasukan kode promo ? semuanya baik grabfood , bike , car",
+   "hyp": "halo kak . ini kenapa ya mengapa saya dari kemarin - 2 tidak bisa masukkan kode promo ? semuanya baik grabfood , bike , car .",
+   "sec": 0.86
+  },
+  {
+   "id": "P0396",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "emergency",
+   "src": "min tolong cek dm ane hey",
+   "ref": "admin , tolong periksa dm saya . hai .",
+   "hyp": "admin tolong periksa dm saya .",
+   "sec": 0.25
+  },
+  {
+   "id": "P0397",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "normal apanya min , udah beberapa hari mati nyala terus . hari ini ga tau udah berapa kali , ga ngitung saking seringnya",
+   "ref": "normal apanya admin ? sudah beberapa hari mati nyala terus . hari ini tidak tahu sudah berapa kali , tidak menghitung saking seringnya .",
+   "hyp": "normal apanya admin ? sudah beberapa hari mati . terus . hari ini tidak tahu sudah berapa kali , tidak menghitung saking seringnya .",
+   "sec": 0.89
+  },
+  {
+   "id": "P0398",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "shopping",
+   "src": "min gabisa beli paket data dong",
+   "ref": "admin , tidak bisa beli paket data .",
+   "hyp": "admin , tidak bisa beli paket data dong .",
+   "sec": 0.29
+  },
+  {
+   "id": "P0399",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "baik kak dewa , silakan cek dm kembali",
+   "ref": "baik , kak dewa . silahkan periksa dm kembali .",
+   "hyp": "baik kak dewa , silakan periksa dm kembali .",
+   "sec": 0.4
+  },
+  {
+   "id": "P0400",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "lha perasaan saya ga pernah registrasi ke layanan / fitur tsb . kok bisa tiba2 ada sms begitu .",
+   "ref": "perasaan saya tidak pernah registrasi ke layanan / fitur tersebut . mengapa bisa tiba - tiba ada sms begitu ?",
+   "hyp": "hahaha . perasaan saya tidak pernah registrasi ke layanan / fitur tsb . mengapa bisa tiba - tiba ada sms begitu ?",
+   "sec": 0.83
+  },
+  {
+   "id": "P0401",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "s3 digital marketing social engangement harvard . memanfaatkan yang sedang viral .",
+   "ref": "s3 digital marketing social engagement harvard , memanfaatkan yang sedang viral .",
+   "hyp": "s3 digital marketing social engagement harvard . memanfaatkan yang sedang viral .",
+   "sec": 0.49
+  },
+  {
+   "id": "P0402",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "makin update makin ga user friendly ya aplikasi nya .",
+   "ref": "semakin update , semakin tidak ramah pengguna aplikasinya .",
+   "hyp": "makin update aplikasinya , semakin tidak user friendly .",
+   "sec": 0.36
+  },
+  {
+   "id": "P0403",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "limit transfer dr bca ke bank lain per hari brp ya via klikbca ?",
+   "ref": "batas pengiriman dari bca ke bank lain per hari berapa melalu klikbca ?",
+   "hyp": "batas transfer dari bca ke bank lain per hari via klikbca ?",
+   "sec": 0.42
+  },
+  {
+   "id": "P0404",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "ti ati tar nyasar lagi ke kampung lain .",
+   "ref": "hati - hati nanti tersesat lagi ke kampung lain .",
+   "hyp": "ti ati tar nyasar lagi ke kampung lain .",
+   "sec": 0.35
+  },
+  {
+   "id": "P0405",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "gak bisa . gagal terus , ra aura .",
+   "ref": "tidak bisa . gagal terus , ra aura .",
+   "hyp": "tidak bisa . gagal terus , ra aura .",
+   "sec": 0.34
+  },
+  {
+   "id": "P0406",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "malam kak , apa cs disini aktif ? mau sampaikan keluhan tracking paket nyasar .",
+   "ref": "selamat malam kak . apa customer service di sini aktif ? mau sampaikan keluhan tracking paket tersesat .",
+   "hyp": "malam kak , apa cs disini aktif ? mau sampaikan keluhan tracking paket nyasar .",
+   "sec": 0.57
+  },
+  {
+   "id": "P0407",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "min , kalo mau apply sponsorship buat mahasiswa yg mau ikut event ke luar negri bisa apa ga ? mohon bimbingannya , trimakasih",
+   "ref": "admin , kalau mau mendaftar sponsorship untuk mahasiswa yang mau ikut event ke luar negeri bisa apa tidak ? mohon bimbingannya . terima kasih .",
+   "hyp": "admin , jika ingin menerap sponsping untuk mahasiswa yang ingin ikut event ke luar negri , apakah bisa ? mohon bimbingannya , terima kasih .",
+   "sec": 1.0
+  },
+  {
+   "id": "P0408",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "ride",
+   "src": "kasian temenku ini , lagi kelaperan malah dijahatin mamang grab",
+   "ref": "kasihan temanku ini , sedang kelaparan malah dijahati pengemudi grab .",
+   "hyp": "kasian temanku ini , lagi kelaperan malah dihujan mamang grab .",
+   "sec": 0.52
+  },
+  {
+   "id": "P0409",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "dari internet jelek . sinyal sering ilang2 an . daftar paket aja lama gak masuk2 . wkwkwkwwkwkww gimana mau maju woyy indosott bales dm woyy",
+   "ref": "dari internet jelek , sinyal sering hilang , daftar paket saja lama tidak masuk - masuk . hahaha . bagaimana mau mau hei indosat . balas dm hei .",
+   "hyp": "dari internet jelek . sinyal sering hilangan - hilangan . daftar paket saja lama tidak masuk - masuk . wkwkwk . bagaimana mau maju woyy indosott bales dm woyy .",
+   "sec": 1.32
+  },
+  {
+   "id": "P0410",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "mohon maaf atas kesalahan penyebutan nama ibu novi . untuk email ibu akan kami tindaklanjuti , mohon kesediaanya menunggu . tks ~ toby",
+   "ref": "mohon maaf atas kesalahan penyebutan nama ibu novi . untuk email ibu , akan kami tindaklanjuti . mohon kesediaannya menunggu . terima kasih . - toby",
+   "hyp": "mohon maaf atas kesalahan penyebutan nama ibu novi . untuk email ibu akan kami tindaklanjuti , mohon kesediaanya menunggu . terima kasih .",
+   "sec": 1.09
+  },
+  {
+   "id": "P0411",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "halo min knp gak bisa tambahkan rekening bank ya ?",
+   "ref": "halo , admin . mengapa tidak bisa ditambahkan rekening bank ?",
+   "hyp": "halo admin , mengapa tidak bisa tambahkan rekening bank ?",
+   "sec": 0.38
+  },
+  {
+   "id": "P0412",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "opini yang mana ? memang rokok itu mengerikan dan membunuh . titik .",
+   "ref": "opini yang mana ? memang rokok itu mengerikan dan membunuh . titik .",
+   "hyp": "opini yang mana ? memang rokok itu mengerikan dan membunuh . titik .",
+   "sec": 0.53
+  },
+  {
+   "id": "P0413",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "shopping",
+   "src": "iya saya sudah menyetujui karena saya buru buru dan kurang paham . apakah bisa saya batalkan ?",
+   "ref": "iya , saya sudah menyetujui karena saya buru - buru dan kurang paham . apakah bisa saya batalkan ?",
+   "hyp": "iya , saya sudah menyetujui karena saya buru buru dan kurang paham . apakah bisa saya batalkan ?",
+   "sec": 0.72
+  },
+  {
+   "id": "P0414",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "lg error ya ? saya dah top up saldo dr m banking dan udh kepotong malah error app ovonya ️",
+   "ref": "sedang error kah ? saya sudah isi ulang saldo dari mbanking dan sudah terpotong malah error aplikasi ovo - nya .",
+   "hyp": "ya , error ya ? saya sudah top up saldo dari m - banking dan sudah kepotong . apakah error aplikasi ovonya ?",
+   "sec": 0.7
+  },
+  {
+   "id": "P0415",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "lounge untuk nasabah prioritas untuk berapa orang ?",
+   "ref": "lounge untuk nasabah prioritas untuk berapa orang ?",
+   "hyp": "lounge untuk nasabah prioritas untuk berapa orang ?",
+   "sec": 0.35
+  },
+  {
+   "id": "P0416",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "sama . aku pake ovo waktu goride juga gabisa",
+   "ref": "sama . saya pakai ovo waktu goride juga tidak bisa .",
+   "hyp": "sama . aku pakai ovo waktu goride juga tidak bisa .",
+   "sec": 0.39
+  },
+  {
+   "id": "P0417",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "gratis ongkir . mengajarkan kepada saya gimana caranya malas",
+   "ref": "gratis ongkos kirim mengajarkan kepada saya bagaimana caranya malas .",
+   "hyp": "gratis ongkos kirim . mengajarkan kepada saya bagaimana cara caranya malas .",
+   "sec": 0.53
+  },
+  {
+   "id": "P0418",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "same power mau pesen go - clean kok ga ada ya ?",
+   "ref": "mau pesan goclean mengapa tidak ada ?",
+   "hyp": "same power , mau pesan go - clean , mengapa tidak ada ?",
+   "sec": 0.43
+  },
+  {
+   "id": "P0419",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "directions",
+   "src": "kak kalo hari ini sabtu cabang yg buka dimana yah daerah bandung ? saya mau ganti nomer hp m - banking soalnya",
+   "ref": "kak , kalau hari sabtu , cabang yang buka di mana di daerah bandung ? karena saya mau ganti nomor handphone mbanking .",
+   "hyp": "kak , kalo hari ini sabtu cabang yang buka dimana yah daerah bandung ? saya mau ganti nomor hp m - banking soalnya .",
+   "sec": 0.9
+  },
+  {
+   "id": "P0420",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "money",
+   "src": "kalo mau pindah ke pasca bayar gmn ya ?",
+   "ref": "kalau mau pindah ke paska bayar bagaimana ?",
+   "hyp": "kalo mau pindah ke pasca bayar bagaimana ini ?",
+   "sec": 0.44
+  },
+  {
+   "id": "P0421",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "ride",
+   "src": "dari tadi susah nggak dapat driver , kenapa sih ? nyusahin ya nggak ada respon pula ditanya .",
+   "ref": "dari tadi susah tidak dapat pengemudi . mengapa ? membuat susah saja . ada respons pula ditanya .",
+   "hyp": "dari tadi susah tidak dapat driver , kenapa sih ? nyusahin ya mengapa tidak ada respons pula ditanya ?",
+   "sec": 0.76
+  },
+  {
+   "id": "P0422",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "hotel",
+   "src": "min . jadi saya udah checkout tapi lupa bayar . apakah voucher free ongkirnya hangus ?",
+   "ref": "admin , jadi saya sudah checkout , tapi lupa bayar . apakah voucher gratis ongkos kirim hangus ?",
+   "hyp": "admin . jadi saya sudah checkout tapi lupa bayar . apakah vouchernya free ongkos kirimnya hangus ?",
+   "sec": 0.72
+  },
+  {
+   "id": "P0423",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "yang lebih cepat dari gundala ? ya kamu",
+   "ref": "yang lebih cepat dari gundala ? ya anda .",
+   "hyp": "yang lebih cepat dari gundala ? ya kamu ?",
+   "sec": 0.31
+  },
+  {
+   "id": "P0424",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "shopping",
+   "src": "saya baru register / beli kartu di grapari kemaren . kenapa number already registered ? bisa tolong konfirmasi ? reply asap .",
+   "ref": "saya baru daftar / beli kartu di grapari kemarin . mengapa nomor sudah terdaftar ? bisa tolong konfirmasi ? balas secepatnya .",
+   "hyp": "saya baru mendaftar / beli kartu di grapari kemarin . kenapa nomor sudah terdaftar ? bisa tolong konfirmasi ? balasan asap .",
+   "sec": 0.96
+  },
+  {
+   "id": "P0425",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "td pagi dicoba tetep gabisa min . sampai akhirnya ke update sendiri . soalnya updatenya otomatis",
+   "ref": "tadi pagi dicoba tetap tidak bisa , admin . sampai akhirnya ter - update sendiri . soalnya update - nya otomatis .",
+   "hyp": "td pagi dicoba tetep tidak bisa admin . sampai akhirnya ke update sendiri . soalnya updateannya otomatis .",
+   "sec": 0.76
+  },
+  {
+   "id": "P0426",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "untuk pengambilan apakah bisa di hari yg sama setelah mengajukan laporan ? atau harus menunggu keesokan harinya ?",
+   "ref": "untuk pengambilan apakah bisa di hari yang sama setelah mengajukan laporan ? atau harus menunggu keesokan harinya ?",
+   "hyp": "untuk pengambilan apakah bisa dilakukan pada hari yang sama setelah mengajukan laporan ? atau harus menunggu keesokan harinya ?",
+   "sec": 0.85
+  },
+  {
+   "id": "P0427",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "waktu daftar go mobile via app itu bakal ada upload identitas sama konfirmasi via video chat tidak ?",
+   "ref": "waktu daftar go mobile melalui aplikasi itu bakal ada upload identitas sama konfirmasi melalui video chat tidak ?",
+   "hyp": "waktu mendaftar go - mobile via app itu bakal ada upload identitas dan konfirmasi via video chat tidak ?",
+   "sec": 0.64
+  },
+  {
+   "id": "P0428",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "toped sudah tidak bisa cicilan lagi ?",
+   "ref": "tokopedia sudah tidak bisa cicilan lagi ?",
+   "hyp": "toped sudah tidak bisa cicilan lagi ?",
+   "sec": 0.26
+  },
+  {
+   "id": "P0429",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "malam , mohon infonya , apakah sedang ada gangguan di aplikasi mbanking bni ?",
+   "ref": "selamat malam . mohon infonya . apakah sedang ada gangguan di aplikasi mobile banking bni ?",
+   "hyp": "malam , mohon infonya , apakah sedang ada gangguan di aplikasi mbanking bni ?",
+   "sec": 0.63
+  },
+  {
+   "id": "P0430",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "apa dengan cara itu bisa dftr secara manual ?",
+   "ref": "apa dengan cara itu bisa daftar secara manual ?",
+   "hyp": "apa dengan cara itu bisa dftr secara manual ?",
+   "sec": 0.29
+  },
+  {
+   "id": "P0431",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "emergency",
+   "src": "min , mohon bantuannya . tolong cek dm saya , terima kasih",
+   "ref": "admin , mohon bantuannya . tolong periksa dm saya . terima kasih .",
+   "hyp": "admin , mohon bantuannya . tolong periksa dm saya , terima kasih .",
+   "sec": 0.52
+  },
+  {
+   "id": "P0432",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "restaurant",
+   "src": "kak , gmn cara upload prioduk unggulan . menunya dimana . dari list produk , trus pilih menu apa",
+   "ref": "kak , bagaimana cara upload produk unggulan . menunya di mana ? dari list produk , terus pilih menu apa ?",
+   "hyp": "kak , bagaimana cara upload prioduk unggulan . menunya dimana . dari list produk , trus pilih menu apa .",
+   "sec": 0.76
+  },
+  {
+   "id": "P0433",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "iya bangett banyak yang mention akunnya juga masalah jaringan jelek . padahal butuh bgt buat nugas",
+   "ref": "iya sekali , banyak yang mention akunnya , juga masalah jaringan jelek . padahal sangat butuh untuk membuat tugas .",
+   "hyp": "iya bangett , banyak yang mention akunnya juga masalah jaringan jelek . padahal butuh banyak untuk menugas .",
+   "sec": 0.72
+  },
+  {
+   "id": "P0434",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "mas bowo ini pacarnya mba ammy ya ? kok posesif banget sih saya kan hanya customer",
+   "ref": "mas bowo , ini pacarnya mbak ammy ya ? mengapa cemburuan sekali ? saya kan hanya pelanggan .",
+   "hyp": "mas bowo ini pacarnya mba ammy ? mengapa posesif banget saya kan hanya customer ?",
+   "sec": 0.59
+  },
+  {
+   "id": "P0435",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "sy sudah coba , pulsa sudah kepotong sy cek kok masa aktinya gk berubah ?",
+   "ref": "saya sudah coba , pulsa sudah terpakai . saya periksa mengapa masa aktifnya tidak berubah ?",
+   "hyp": "sudah coba , pulsa sudah kepotong saya cek , mengapa masa aktinya tidak berubah ?",
+   "sec": 0.61
+  },
+  {
+   "id": "P0436",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "hal yg lebih cepet dr gundala ? detak jantung gua pas tupperware ilang disekolah",
+   "ref": "hal yang lebih cepat dari gundala ? detak jantung saya pas tupperware hilang di sekolah .",
+   "hyp": "hal yang lebih cepat dari gundala ? detak jantung saya saat tupperware hilangan disekolah .",
+   "sec": 0.65
+  },
+  {
+   "id": "P0437",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "shopping",
+   "src": "halo , apakah harga paket unlimited pascabayar indosat & paket new freedom prabayar indosat yg tertera pada website resminya sudah termasuk pajak ?",
+   "ref": "halo . apakah harga paket unlimited pasca bayar indosat & paket new freedom prabayar indosat yang tertera pada website resminya sudah termasuk pajak ?",
+   "hyp": "halo , apakah harga paket unlimited pascabayar indosat & paket new freedom prabayar indosat yang tertera pada website resminya sudah termasuk pajak ?",
+   "sec": 1.03
+  },
+  {
+   "id": "P0438",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "apa e money mandiri bisa untuk mrt jakarta ?",
+   "ref": "apa e - money mandiri bisa untuk mrt jakarta ?",
+   "hyp": "apa e money mandiri bisa untuk mrt jakarta ?",
+   "sec": 0.32
+  },
+  {
+   "id": "P0439",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "tadi sudah saya unreg sendiri min",
+   "ref": "tadi sudah saya unregister sendiri , admin .",
+   "hyp": "tadi sudah saya unreg sendiri admin .",
+   "sec": 0.28
+  },
+  {
+   "id": "P0440",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "apakah paketan bhyplastic saya akan di lanjut otomatis apabila telah isi pulsa",
+   "ref": "apakah paket bhyplastic saya akan dilanjut otomatis apabila telah isi pulsa ?",
+   "hyp": "apakah paketan bhyplastic saya akan di lanjuti otomatis apabila telah isi pulsa ?",
+   "sec": 0.65
+  },
+  {
+   "id": "P0441",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "hallo min , di roti ' o ada promo ga ya ?",
+   "ref": "halo , admin . di roti ' o ada promo tidak ?",
+   "hyp": "halo admin , di roti o , ada promo tidak ?",
+   "sec": 0.35
+  },
+  {
+   "id": "P0442",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "directions",
+   "src": "abis bensin dijalan , mau ke pom bensin jauh so ide aja go send",
+   "ref": "habis bensin di jalan , mau ke pom bensin jauh . jad ide saja gosend .",
+   "hyp": "setelah bensin dijalankan , mau ke pom bensin jauh , ide saja go send .",
+   "sec": 0.6
+  },
+  {
+   "id": "P0443",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "nabi muhammad isra ' mi ' raj cuman kedip udah nyampe pake burok",
+   "ref": "nabi muhammad ber - isra mi ' raj hanya sekedip sudah sampai pakai burok .",
+   "hyp": "nabi muhammad isra ' mi ' raj cuman kedip , sudah sampai dengan menggunakan burok .",
+   "sec": 0.57
+  },
+  {
+   "id": "P0444",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "kalo chips ny rusak emang masih bisa di isi saldo ? masih bisa ke detect pas cek sisa saldo ?",
+   "ref": "kalau chips - nya rusak , memang masih bisa diisi saldo ? masih bisa terdeteksi ketika memeriksa sisa saldo ?",
+   "hyp": "kalo chipsnya rusak , apakah masih bisa isi saldo ? masih bisa ke detect pas cek sisa saldo ?",
+   "sec": 0.64
+  },
+  {
+   "id": "P0445",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "kenapa pulsa saya yang dipotong internetnya bukan quota saya ? dua kali lagi duh",
+   "ref": "kenapa pulsa saya yang dipotong internetnya , bukan kuota saya ? dua kali pula .",
+   "hyp": "kenapa pulsa saya yang dipotong internetnya bukan quota saya ? dua kali lagi duh .",
+   "sec": 0.59
+  },
+  {
+   "id": "P0446",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "ride",
+   "src": "halo . hp saya baru saja dicuri , apakah bisa memblokir akun gojek saya ?",
+   "ref": "halo . telepon genggam saya baru saja dicuri . apakah bisa memblokir akun gojek saya ?",
+   "hyp": "halo . hp saya baru saja dicuri , apakah bisa memblokir akun go - eat saya ?",
+   "sec": 0.57
+  },
+  {
+   "id": "P0447",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "transfer masih ga bisa ya ?",
+   "ref": "transfer masih tidak bisakah ?",
+   "hyp": "transfer masih tidak bisa ?",
+   "sec": 0.17
+  },
+  {
+   "id": "P0448",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "shopping",
+   "src": "min saya beli token listrik gagal trus setelah masukin pin kenapa ya ?",
+   "ref": "admin , saya membeli token listrik gagal terus setelah memasukan pin . kenapa ?",
+   "hyp": "admin , saya beli token listrik gagal terus setelah masukkan pin kenapa ya ?",
+   "sec": 0.53
+  },
+  {
+   "id": "P0449",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "emergency",
+   "src": "min tolong bantu tweet saya .",
+   "ref": "admin , tolong bantu cuitan saya .",
+   "hyp": "admin , tolong bantu tweet saya .",
+   "sec": 0.24
+  },
+  {
+   "id": "P0450",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "restaurant",
+   "src": "haahh ? sekarang mainnya gitu yaa ? pesimis dapet promonya lagi deh klo modelnya gitu . paling baru pake pas malem buat makan malem soalnya",
+   "ref": "sekarang mainnya begitukah ? pesimis dapat promonya lagi , kalau modelnya seperti itu . paling baru pakai ketika malam , karena untuk makan malam .",
+   "hyp": "haah ? sekarang mainnya gitu yaa ? pesimis dapat promonya lagi kalau modelnya gitu . paling baru pakai pas malam untuk makan malam soalnya .",
+   "sec": 1.12
+  },
+  {
+   "id": "P0451",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "min cara registrasi nomor utk modem xl go gmn ya ?",
+   "ref": "admin , cara registrasi nomor untuk modem xl go bagaimana ?",
+   "hyp": "admin , cara registrasi nomor utk modem xl go gmn ya ?",
+   "sec": 0.42
+  },
+  {
+   "id": "P0452",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "stnk kebakaran , adanya hanya bpkb , berkas stnknya yg terbakar pun masih ada",
+   "ref": "stnk terbakar , adanya hanya bpkb . berkas stnk yang terbakar pun masih ada .",
+   "hyp": "stnk kebakaran , adanya hanya bpkb , berkas stnknya yang terbakar , tetapi masih ada .",
+   "sec": 0.69
+  },
+  {
+   "id": "P0453",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "ride",
+   "src": "bagaimana cara menghapus akun gojek ? trims",
+   "ref": "bagaimana cara menghapus akun gojek ? terima kasih .",
+   "hyp": "bagaimana cara hapus akun go - ok ? terima kasih .",
+   "sec": 0.47
+  },
+  {
+   "id": "P0454",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "min ini kenapa y , pulsa tiba2 ilang . paketan internet masih byk tp pulsa kesedot trs . mohon follow up nya !",
+   "ref": "admin , ini kenapa pulsa tiba - tiba hilang ? paket internet masih banyak tapi pulsa terpakai terus . mohon tindak lanjutnya .",
+   "hyp": "admin , ini kenapa y ? pulsa tiba - tiba hilang . paketan internet masih banyak tetapi pulsa kesedot terus . mohon follow up nya !",
+   "sec": 0.95
+  },
+  {
+   "id": "P0455",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "pengamat keamanan siber ga bs bedain antara dns resolver dan vpn . kocak .",
+   "ref": "pengamat keamanan siber tidak bisa membedakan antara dns resolver dan vpn . kocak .",
+   "hyp": "pengamat keamanan siber tidak dapat dibedakan antara dns resolver dan vpn . kocak .",
+   "sec": 0.58
+  },
+  {
+   "id": "P0456",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "biar dapet birthday gift gimana sii . pengen dong",
+   "ref": "agar dapat hadiah ulang tahun bagaimanakah ? saya mau .",
+   "hyp": "biar dapat birthday gift bagaimana ini sii . pengen dong .",
+   "sec": 0.43
+  },
+  {
+   "id": "P0457",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "jaringan di kota malang gari ini melambat",
+   "ref": "jaringan di kota malang hari ini melambat .",
+   "hyp": "jaringan di kota malang tidak lambat .",
+   "sec": 0.33
+  },
+  {
+   "id": "P0458",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "restaurant",
+   "src": "om om , kok grabfood error , masa iya aku harus makan mantan ?",
+   "ref": "om - om , mengapa grabfood bermasalah ? masa iya saya harus makan mantan ?",
+   "hyp": "om om , mengapa grabfood error ? bagaimana ini aku harus makan mantan ?",
+   "sec": 0.51
+  },
+  {
+   "id": "P0459",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "min nanya , ini kalau nabung emas di tokopedia nantinya bisa minta barang fisiknya nggak ?",
+   "ref": "admin , saya mau bertanya . ini kalau menabung emas di tokopedia , nanti bisa minta barang fisiknya tidak ?",
+   "hyp": "admin , nanya , ini kalau nabung emas di tokopedia nantinya bisa minta barang fisiknya tidak ?",
+   "sec": 0.7
+  },
+  {
+   "id": "P0460",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "min koneksi internet indosat disetiap malam akhir2 ini jeleknya kelewatan , mohon untuk segera tindaklanjuti permasalahan ini krn sangat merugikan kami sbg pengguna .",
+   "ref": "admin , koneksi internet indosat setiap malam akhir - akhir ini jeleknya keterlaluan . mohon untuk segera ditindaklanjuti permasalahan ini , karena sangat merugikan kami sebagai pengguna .",
+   "hyp": "admin , koneksi internet indosat disetiap malam akhir - akhir ini jelek sekali kelewatan . mohon untuk segera tindaklanjuti permasalahan ini karena sangat merugakan kami sbg pengguna .",
+   "sec": 1.34
+  },
+  {
+   "id": "P0461",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "min cek dm dong . saya mau pesen grabfood ini urgent bgt . tg di percepat prosesnya",
+   "ref": "admin , mohon periksa dm . saya mau pesan grabfood ini darurat sekali . tolong dipercepat prosesnya .",
+   "hyp": "admin , periksa dm dong . saya ingin memesan grabfood ini urgent sekali . tg di percepat prosesnya .",
+   "sec": 0.66
+  },
+  {
+   "id": "P0462",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "yahh minn sedihh , maunya tetep dikirim bukunya hikss",
+   "ref": "admin , saya sedih . maunya tetap dikirim bukunya .",
+   "hyp": "yah , admin , sedih sekali . maunya tetap dikirim bukunya hahaha .",
+   "sec": 0.53
+  },
+  {
+   "id": "P0463",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "emergency",
+   "src": "sudah saya dm tolong di check .",
+   "ref": "sudah saya kirim dm . tolong diperiksa .",
+   "hyp": "sudah saya dm tolong dicek .",
+   "sec": 0.28
+  },
+  {
+   "id": "P0464",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "min ko indosat jelek mulu ya sinyalnya hari ini",
+   "ref": "admin , mengapa indosat jelek terus sinyalnya hari ini ?",
+   "hyp": "admin , ko indosat jelek mulu sinyalnya hari ini .",
+   "sec": 0.44
+  },
+  {
+   "id": "P0465",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "money",
+   "src": "hati hati dg credit card bri . saya sdh lapor utk penutupan credit card sebelum annual fee jatuh tempo tapi tetap harus bayar",
+   "ref": "hati - hati dengan kartu kredit bri . saya sudah lapor untuk penutupan kartu kredit sebelum biaya tahunan jatuh tempo , tapi tetap harus bayar .",
+   "hyp": "hati - hati dengan kartu kredit bri . saya sudah lapor untuk penutupan kartu kredit sebelum tahunan fee jatuh tempo tetapi tetap harus membayar .",
+   "sec": 1.03
+  },
+  {
+   "id": "P0466",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "lu gamau bagi bagi kode promo apa",
+   "ref": "kamu tidak mau berbagi kode promo apa !",
+   "hyp": "lu , bagaimana ini kode promo apa ?",
+   "sec": 0.27
+  },
+  {
+   "id": "P0467",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "ride",
+   "src": "dibilangnya \" driver has arrived \" padahal masih jauh banget . tolong di benerin sistem pemberitahuannya ya .",
+   "ref": "dibilangnya \" pengemudi telah sampai , padahal masih jauh sekali . tolong dibenarkan sistem pemberitahuannya .",
+   "hyp": "dibilangnya \" driver has arrived \" padahal masih jauh banget . tolong dibenerin sistem pemberitahuannya .",
+   "sec": 0.78
+  },
+  {
+   "id": "P0468",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "min di akun im3 ku ada tagihan atas nomor lain mksdnya apa ini ? saya g ngerasa punya nomor itu",
+   "ref": "admin , di akun im3 saya ada tagihan atas nomor lain . maksudnya apa ini ? saya tidak merasa punya nomor itu .",
+   "hyp": "admin , di akun im3 ku ada tagihan atas nomor lain mksdnya apa ini ? saya tidak merasa punya nomor itu .",
+   "sec": 0.79
+  },
+  {
+   "id": "P0469",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "balikin pulsa gw ! kesedot mulu arkhh",
+   "ref": "kembalikan pulsa saya . terpakai terus .",
+   "hyp": "balikin pulsa saya ! kesedot mulu arkhh .",
+   "sec": 0.4
+  },
+  {
+   "id": "P0470",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "saya barusan ditrf sama kakak ke rek bca saya tapi kok ga masuk ya min , mohon solusinya",
+   "ref": "saya baru saja ditransfer oleh kakak ke rekening bca saya , tapi mengapa tidak masuk , admin ? mohon solusinya .",
+   "hyp": "saya barusan ditransfer sama kak ke rek bca saya tapi mengapa tidak masuk min ? mohon solusinya .",
+   "sec": 0.69
+  },
+  {
+   "id": "P0471",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "shopping",
+   "src": "biasanya ada penyesuaian harga dr warungnya . karna warungnya ga mau dipotong komisi grabfood",
+   "ref": "biasanya ada penyesuaian harga dari warungnya , karena warungya tidak mau dipotong komisi grabfood .",
+   "hyp": "biasanya ada penyesuaian harga dari warungnya . karena warungnya tidak mau dipotong komisi grabfood .",
+   "sec": 0.7
+  },
+  {
+   "id": "P0472",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "shopping",
+   "src": "pdhl dapet tau kl beli yang large",
+   "ref": "padahal dapat , kalau membeli yang besar .",
+   "hyp": "pdhl dapat tau , mengapa beli yang besar ?",
+   "sec": 0.32
+  },
+  {
+   "id": "P0473",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "aki2 sih masih ngeluh paket , modal napa",
+   "ref": "kakek - kakek masih mengeluhkan paket . bermodal kenapa !",
+   "hyp": "akik , sih masih mengeluh paket , modal napa ?",
+   "sec": 0.41
+  },
+  {
+   "id": "P0474",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "oh baik , tapi kalau trf ke akun ovo tdk ada batas maksimalnya kan yaa ?",
+   "ref": "baik . tapi kalau transfer ke akun ovo tidak ada batas maksimalnya kan ?",
+   "hyp": "oh baik , tapi kalau terfikir ke akun ovo tidak ada batas maksimalnya kan ?",
+   "sec": 0.6
+  },
+  {
+   "id": "P0475",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "shopping",
+   "src": "min mau tany kl product ga da icon tmbah keranjang atau beli itu knp ya pdhal tdk ada ket stock kosong .",
+   "ref": "admin , mau bertanya . kalau produk tidak ada ikon tambah keranjang atau beli itu kenapa ? padahal tidak ada keterangan stok kosong .",
+   "hyp": "admin , mau tanya , mengapa product tidak ada icon tambah keranjang atau beli itu mengapa pdhal tidak ada ket stock kosong ?",
+   "sec": 0.81
+  },
+  {
+   "id": "P0476",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "restaurant",
+   "src": ": seberapa kamu ? 🧑 : aku gak suka buang makanan : terus ? 🧑 : jadi kalo makan kuaci aku makan sama kulitnya",
+   "ref": ": seberapa kamu ? 🧑 : saya tidak suka membuang makanan : terus ? 🧑 : jadi kalau makan kuaci , saya makan sama kulitnya .",
+   "hyp": ": seberapa kamu ? : aku tidak suka buang makanan : terus ? : jadi kalau makan kuaci aku makan sama kulitnya .",
+   "sec": 0.94
+  },
+  {
+   "id": "P0477",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "ga sampai kok min aku tau mbaknya nipu",
+   "ref": "tidak sampai , admin . saya tahu mbaknya penipu .",
+   "hyp": "tidak sampai , mengapa admin , aku tidak tahu mbaknya nipu ?",
+   "sec": 0.46
+  },
+  {
+   "id": "P0478",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "saya melakukan pembukaan tabungan lewat bca mobile namun saat tahap untuk video call dengan customer service , selalu tidak bisa",
+   "ref": "saya melakukan pembukaan tabungan lewat bca mobile , namun saat tahap panggilan video dengan pelayanan pelanggan , selalu tidak bisa .",
+   "hyp": "saya melakukan pembukaan tabungan lewat bca mobile namun saat tahap untuk video call dengan customer service , selalu tidak bisa .",
+   "sec": 0.75
+  },
+  {
+   "id": "P0479",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "ini kok kuota malem saya gabisa dipake ya ?",
+   "ref": "ini mengapa kuota malam saya tidak bisa dipakai ?",
+   "hyp": "ini mengapa kuota malam saya tidak bisa dipakai ?",
+   "sec": 0.37
+  },
+  {
+   "id": "P0480",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "kenapa pas mau login kaya gini terus ya ?",
+   "ref": "mengapa ketika mau login seperti begini terus ?",
+   "hyp": "kenapa saat mau login seperti ini terus ?",
+   "sec": 0.29
+  },
+  {
+   "id": "P0481",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "eh mbak ariinn , semoga dapet ganti yang lebih baik ya mbaak",
+   "ref": "hai , mbak arin . semoga dapat ganti yang lebih baik ya mbak .",
+   "hyp": "eh mbak ariinn , semoga dapat ganti yang lebih baik .",
+   "sec": 0.44
+  },
+  {
+   "id": "P0482",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "malam , saya mau nanya mobile banking saya tiba tiba ke blockir , kenapa yaa ?",
+   "ref": "selamat malam . saya mau bertanya . mobile banking saya tiba - tiba terblokir . mengapa ya ?",
+   "hyp": "malam , saya mau bertanya kepada mobile banking saya tiba - tiba terblokir , kenapa yaa ?",
+   "sec": 0.61
+  },
+  {
+   "id": "P0483",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "ride",
+   "src": "tapi ko untuk grab bike ga ada promo lagi ya sekarang ? ku sedih ingin berpaling saja '",
+   "ref": "tapi mengapa untuk grabbike tidak ada promo lagi sekarang ? saya sedih . ingin berpaling saja .",
+   "hyp": "tapi ko untuk grab bike tidak ada promo lagi sekarang ? aku sedih ingin berpaling saja .",
+   "sec": 0.59
+  },
+  {
+   "id": "P0484",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "money",
+   "src": "iya , tolong fu nya . saya sdh bayar yes",
+   "ref": "iya . tolong tindak lanjutnya . saya sudah bayar yes .",
+   "hyp": "iya , tolong fu nya . saya sudah bayar yes .",
+   "sec": 0.35
+  },
+  {
+   "id": "P0485",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "heran , tiap hari aja ada masalahnya . nelpon call center juga tdk ada solusi .",
+   "ref": "heran tiap hari ada saja masalahnya . menelepon pusat panggilan juga tidak ada solusi .",
+   "hyp": "heran , tiap hari saja ada masalahnya . telpon ke pusat panggilan toko juga tidak ada solusi .",
+   "sec": 0.69
+  },
+  {
+   "id": "P0486",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "betul , karna tidak mungkin saya menyampaikan keluhan via tweet . terdapat informasi penting soalnya",
+   "ref": "betul . karena tidak mungkin saya menyampaikan keluhan via cuitan . karena terdapat informasi penting .",
+   "hyp": "benar , karena tidak mungkin saya menyampaikan keluhan via tweet . terdapat informasi penting soalnya .",
+   "sec": 0.67
+  },
+  {
+   "id": "P0487",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "ok demi kamu dan demi yang kamu kode itu aku pantengin terus tapi jangan php ya ak gak suka",
+   "ref": "oke . demi anda dan demi anda yang kode itu , saya pantau terus . tapi jangan beri harapan palsu . saya tidak suka .",
+   "hyp": "ok demi kamu dan demi yang kamu kode itu aku pantengin terus , tapi jangan php ya ak tidak suka .",
+   "sec": 0.64
+  },
+  {
+   "id": "P0488",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "ayo dong aku blm dapet ni",
+   "ref": "ayo , saya belum dapat .",
+   "hyp": "ayo dong aku belum dapat ini .",
+   "sec": 0.23
+  },
+  {
+   "id": "P0489",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "tuh min sampe aku nyalain notif nya , pokoknya sgalanya untuk mu",
+   "ref": "lihat , admin , sampai saya nyalakan notifikasinya . pokoknya segalanya untuk anda .",
+   "hyp": "tuh admin , sampe aku nyalain notif nya , pokoknya sgalanya untuk mu .",
+   "sec": 0.58
+  },
+  {
+   "id": "P0490",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "aku pikir aku aja yg merasakan",
+   "ref": "saya pikir saya saja yang merasakan .",
+   "hyp": "aku pikir aku saja yang merasa .",
+   "sec": 0.26
+  },
+  {
+   "id": "P0491",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "virtual acc bca lagi eror min ?",
+   "ref": "akun virtual bca sedang bersalahkah , admin ?",
+   "hyp": "apakah virtual acc bca lagi eror min ?",
+   "sec": 0.29
+  },
+  {
+   "id": "P0492",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "min ini gimana ya saya setiap transfer ke rekening ovo tapi ga pernah masuk ke grabnya ?",
+   "ref": "admin , ini bagaimana saya setiap transfer ke rekening ovo , tapi tidak pernah masuk ke grab - nya ?",
+   "hyp": "admin , ini bagaimana saya setiap transfer ke rekening ovo tapi tidak pernah masuk ke grabnya ?",
+   "sec": 0.62
+  },
+  {
+   "id": "P0493",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "ride",
+   "src": "udah mendingan mb sekarang . udah banyak driver",
+   "ref": "sudah mendingan mbak sekarang . sudah banyak pengemudi .",
+   "hyp": "sudah mendingan mb sekarang . sudah banyak driver .",
+   "sec": 0.4
+  },
+  {
+   "id": "P0494",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "ngga berani , takut drivernya kena masalah",
+   "ref": "tidak berani , takut pengemudinya kena masalah .",
+   "hyp": "tidak berani , takut drivernya kena masalah .",
+   "sec": 0.41
+  },
+  {
+   "id": "P0495",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "saya mau tanya kenapa masa aktif best deal internet masa aktif tidak tepat mohon penjelasannya",
+   "ref": "saya mau bertanya . mengapa masa aktif best deal internet masa aktifnya tidak tepat ? mohon penjelasannya .",
+   "hyp": "saya mau tanya kenapa masa aktif best deal internet masa aktif tidak tepat mohon penjelasannya .",
+   "sec": 0.64
+  },
+  {
+   "id": "P0496",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "ngak bisa bedain pertanyaan dgn komplain tolol . org idiot kok bisa di pake ama ini provider bangsat xl",
+   "ref": "tidak bisa membedakan pertanyaan dengan komplain . tolol . orang idiot mengapa bisa dipakai sama penyedia layanan ini . bangsat xl !",
+   "hyp": "tidak bisa bedain pertanyaan dengan komplain tolol . org idiot , mengapa bisa dipakai oleh ini provider bangsat xl ?",
+   "sec": 0.73
+  },
+  {
+   "id": "P0497",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "ngatau ih sbl mayoo iya ntar aku mau repprt di help center aja disini jg nga dipeduliin",
+   "ref": "tidak tahu . sebal mayo . iya , nanti saya mau laporkan ke pusat bantuan saja . di sini juga tidak diperdulikan .",
+   "hyp": "ngatau ih sbl mayoo iya ntar aku mau repot di help center saja disini justru tidak dipeduliin .",
+   "sec": 0.77
+  },
+  {
+   "id": "P0498",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "ha sungwoon red velvet tiffany young kyuhyun",
+   "ref": "ha sungwoon , red velvet , tiffany , young kyuhyun",
+   "hyp": "ha sungwoon red velvet tiffany young kyuhyun .",
+   "sec": 0.37
+  },
+  {
+   "id": "P0499",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "emergency",
+   "src": "kak tolong ya tolong , gimana orang mau minta tolong keluhan tentang indosat kalau akunnya kalian sendiri nggak open dm ?",
+   "ref": "kak , tolong . bagaimana orang mau minta tolong keluhan tentang indosat , kalau akunnya kalian sendiri tidak membuka dm ?",
+   "hyp": "kak tolong ya tolong , bagaimana orang mau minta tolong keluhan tentang indosat kalau akunnya kalian sendiri tidak terbuka dm ?",
+   "sec": 0.94
+  },
+  {
+   "id": "P0500",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "terimakasih utk informasinya , sdh di fu by email oleh meyda wulansari . terimakasih utk attensi",
+   "ref": "terima kasih untuk informasinya . sudah ditindaklanjuti melalui email oleh medya wulansari . terima kasih atas perhatiannya .",
+   "hyp": "terima kasih utk informasinya , sdh dikirim oleh meyda wulansari . terima kasih utk attensi .",
+   "sec": 0.88
+  },
+  {
+   "id": "P0501",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "shopping",
+   "src": "ey , kenapa internet sy lemot yh , padahal sy beli nya unlimited quota , unlimited segala nya , bisa lemot gt ?",
+   "ref": "hai . mengapa internet saya lambat , padahal saya membeli kuota tak terbatas , tak terbatas segalanya bisa lambat begitu ?",
+   "hyp": "hai , kenapa internet saya lambat ? padahal saya beli nya unlimited quota , unlimited segala nya , bisa lambat ?",
+   "sec": 0.72
+  },
+  {
+   "id": "P0502",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "di kebo sirih sinyal bolak balik e terus nih berhari2 . lagi ga stabil apa gimana sih ?",
+   "ref": "di kebon sirih sinyal terulang e terus berhari - hari . sedang tidak stabil atau bagaimana ?",
+   "hyp": "di kebo sirih sinyal bolak balik e terus nih berhari - hari . lagi tidak stabil apa bagaimana ini ?",
+   "sec": 0.76
+  },
+  {
+   "id": "P0503",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "hi admin tlg check dimaksmal bisa diantar kurir kapan sudah ditungguin",
+   "ref": "hai , admin . tolong periksa secara maksimal bisa diantar kurir kapan ? sudah ditunggu .",
+   "hyp": "hai admin , tolong periksa dimaksimal bisa dikurir kapan sudah ditungguan .",
+   "sec": 0.58
+  },
+  {
+   "id": "P0504",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "ride",
+   "src": "yth admin gojek . tadi sore istri sy mengalami perlakuan kasar scr lisan pada saat naik gocar . mhn ditindaklanjuti . berikut identitas pengemudi .",
+   "ref": "yth , admin gojek . tadi sore istri saya mengalami perlakuan kasar secara lisan pada saat naik gocar . mohon ditindaklanjuti . berikut identitas pengemudi .",
+   "hyp": "admin go - ek . tadi sore istri saya mengalami perlakuan kasar scr lisan pada saat naik gocar . mohon ditindaklanjuti . berikut identitas pengemudi .",
+   "sec": 1.19
+  },
+  {
+   "id": "P0505",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "emergency",
+   "src": "slamat malam admin . saya masang paket malam dan paket nya aktif pas saya menghidup kan data knpa pulsa saya hilang ?",
+   "ref": "selamat malam , admin . saya memasang paket malam dan paketnya aktif ketika saya menghidupkan data . mengapa pulsa saya hilang ?",
+   "hyp": "slamat malam admin . saya masang paket malam dan paketnya aktif saat saya menghidupkan data . mengapa pulsa saya hilang ?",
+   "sec": 0.89
+  },
+  {
+   "id": "P0506",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "ride",
+   "src": "kenapa sih cari driver akhir2 ini susah udah stengah jam order gofood gak dpt driver kasianin aku dong bentar lagi dead",
+   "ref": "mengapa cari pengemudi akhir - akhir ini susah ? sudah setengah jam pesan gofood , tidak dapat pengemudi . kasihani saya , sebentar lagi mati .",
+   "hyp": "kenapa sih cari driver akhir - akhir ini susah sudah stengah jam memesan go - food tidak dapat driver kasianin aku dong ? bentar lagi mati .",
+   "sec": 0.98
+  },
+  {
+   "id": "P0507",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "oh jd gini kualitas layanan pengaduan shopee . ditanya berkali2 lewat email perihal kiriman fiktif ini malah gak dibls sama sekali",
+   "ref": "jadi begini kualitas layanan pengaduan shopee ? ditanya berkali - kali lewat email perihal kiriman fiktif ini malah tidak dibalas sama sekali .",
+   "hyp": "oh jd seperti ini kualitas layanan pengaduan shopee . ditanya berkali - kali lewat email perihal kiriman fiktif ini malah tidak diblok sama sekali .",
+   "sec": 1.08
+  },
+  {
+   "id": "P0508",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "yg paling baik dihilangkan kurir silambatnya",
+   "ref": "yang paling baik dihilangkan kurir silambatnya .",
+   "hyp": "yang paling baik dihilangkan kurir silambatnya .",
+   "sec": 0.37
+  },
+  {
+   "id": "P0509",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "kak please baca dm ya , urgent",
+   "ref": "kak , mohon baca dm ya . darurat .",
+   "hyp": "kak , tolong baca dm ya , urgent .",
+   "sec": 0.31
+  },
+  {
+   "id": "P0510",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "ini grabkitchen bandung napa yang buka cuma satu sih ? yang pengen dipesen tutup semua . padahal td malem masih buka",
+   "ref": "ini grab kitchen bandung mengapa yang buka hanya satu ? yang mau dipesan tutup semua . padahal tadi malam masih buka .",
+   "hyp": "ini grabkitchen bandung napa yang buka hanya satu ? yang pengen dipesan tutup semua . padahal itu malam masih buka .",
+   "sec": 0.85
+  },
+  {
+   "id": "P0511",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "ride",
+   "src": "diapk gojek ga ada gohug ? cause i really really need it )",
+   "ref": "di aplikasi gojek tidak ada gohug ?",
+   "hyp": "diapk go - ek , apakah tidak ada go - hug ? karena i sangat sangat membutuhkan go - hug ?",
+   "sec": 0.65
+  },
+  {
+   "id": "P0512",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "chat",
+   "src": "kok malah tambah lemot jaringan saya",
+   "ref": "mengapa malah tambah lambat jaringan saya ?",
+   "hyp": "mengapa malah tambah lambat jaringan saya ?",
+   "sec": 0.35
+  },
+  {
+   "id": "P0513",
+   "task": "slang_norm",
+   "source_dataset": "STIF-Indonesia test",
+   "scene": "emergency",
+   "src": "min , tolong cek dm saya terkait keluhan paket saya .",
+   "ref": "admin , tolong periksa dm saya terkait keluhan paket saya .",
+   "hyp": "admin , tolong periksa dm saya terkait keluhan paket saya .",
+   "sec": 0.46
+  }
+ ]
+}
