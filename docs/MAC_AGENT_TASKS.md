@@ -360,7 +360,7 @@ done
 ls runs/mlx_adapters_s*/
 ```
 
-6.4 中把 `--adapter-path runs/mlx_adapters` 换成 `runs/mlx_adapters_s$S`、输出前缀换成 `runs/trip-lora-s$S`，6.5 的 tag 换成 `mac_lora_s$S`。采用规则：App 格式 strict ≥ 基座，且公开集各任务 chrF 下降 ≤ 3。
+6.4 中把 `--adapter-path runs/mlx_adapters` 换成 `runs/mlx_adapters_s$S`、输出前缀换成 `runs/trip-lora-s$S`，6.5 的 tag 换成 `mac_lora_s$S`。采用规则：见 6.5 末尾「采用规则（正式）」。
 
 ### 6.3c 回放混合训练（r3 起，优先于 6.3b）
 
@@ -379,6 +379,15 @@ echo $! > runs/mlx_mix_train.pid
 `out_mix/` 已重建：回放约 45%，新增 FLORES-200 **dev** 的 印→中、印→英（评测只用 devtest，零重叠已校验）。`mlx/lora_mix.yaml` 改为 800 步，适配器 `runs/mlx_adapters_mix2`。命令同 6.3c，日志 `runs/mlx_mix2_train.log`；评测 s400 与 s800（目录 `runs/mlx_adapters_mix2_s$S`，GGUF 前缀 `runs/trip-mix2-s$S`，tag `mac_mix2_s$S`）。公开集照旧注明「同提示词偏乐观」，并对最好的检查点各任务抽 2 条输出。
 
 App 侧（r2、r3 已连续两轮全绿）：本轮 T3/T4 只需编译 + UI 测试 + 06_home 截图确认底行副标题不被遮挡。
+
+### 采用规则（正式）
+
+**采用规则（正式，2026-10-13 用户批准，取代旧的「每项降 ≤ 3」）**：以同机基座 `mac_base`（strict 85、金额错 5）为准，三条同时满足才采用：
+1. App 格式 60 条 strict ≥ 基座 + 10（即 ≥ 95）；
+2. 金额错 ≤ 基座（≤ 5）；
+3. 公开集翻译指标 `mt_id_zh`（chrF）与 `mt_id_en`（chrF++）相对基座各自下降 ≤ 10 分（`slang_norm` 只报告，不作门槛；回放同提示词偏乐观）。
+
+报告里对每个检查点逐条写 ✓/✗。达标也**只报告**本机 GGUF 路径、字节数、sha256，不上传、不提交。
 
 ### 6.4 融合 → GGUF Q4_K_M → sha256
 
