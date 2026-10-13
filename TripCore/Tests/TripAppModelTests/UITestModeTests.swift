@@ -35,3 +35,14 @@ final class UITestModeTests: XCTestCase {
         XCTAssertEqual(UITestMode.fakeTranslate("xyz"), "〔mock〕xyz")
     }
 }
+
+@MainActor
+final class UITestSeedAmountTests: XCTestCase {
+    func testSeedShowsConversion() async {
+        let m = ConversationModel(translator: UITestTranslator(), understander: nil, trial: TrialCounter(store: InMemoryTrialStore()))
+        await m.receiveTheirs(UITestMode.seedAmountText)
+        let rows = Transcript.rows(m.messages, viewer: .me, rate: nil, fx: FXContext(rates: .bundled, currency: .cny))
+        XCTAssertEqual(rows[0].primary, "价格是10万（约 ¥37）")
+        XCTAssertTrue(rows[0].secondary!.contains("Rp 100.000（约 ¥37）"))
+    }
+}

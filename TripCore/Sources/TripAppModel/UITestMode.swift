@@ -31,10 +31,14 @@ public enum UITestMode: String, CaseIterable, Sendable {
     public static let fakeTranslations: [String: String] = [
         "⟦N1⟧ belum termasuk ongkos": "⟦N1⟧还没有包括费用",
         "Pak, saya sudah di lobi": "先生，我已经在大堂了",
+        "Harganya Rp ⟦N1⟧ kak": "价格是⟦N1⟧",
         "太贵了": "Terlalu mahal",
         "Terlalu mahal": "太贵了",
     ]
     public static func fakeTranslate(_ text: String) -> String { fakeTranslations[text] ?? "〔mock〕\(text)" }
+    /// 启动参数：预置一条带金额的对方消息（UI 测试截图金额换算）
+    public static let seedAmountArgument = "-UITestSeedAmount"
+    public static let seedAmountText = "Harganya Rp 100.000 kak"
     /// MockEngine 的固定理解输出
     public static let fakeUnderstanding = "5万，不含车费"
 }

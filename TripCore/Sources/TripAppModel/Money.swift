@@ -37,6 +37,19 @@ public enum Money {
         AmountChip(idr: idr, rupiah: rupiah(idr), chinese: ChineseAmountFormatter.format(idr) + "印尼盾", cny: cny(idr, rate: rate))
     }
 
+    /// 新：按 FXContext（人民币或美元）生成胶囊，cny 字段放「约 ¥37」/「≈ $5.6」
+    public static func chips(in text: String, fx: FXContext) -> [AmountChip] {
+        var seen = Set<Int>(); var out: [AmountChip] = []
+        for m in AmountNormalizer.findAmounts(in: text) {
+            for v in m.values where v >= 100 && !seen.contains(v) {
+                seen.insert(v)
+                out.append(AmountChip(idr: v, rupiah: rupiah(v), chinese: ChineseAmountFormatter.format(v) + "印尼盾",
+                                      cny: FXFormatter.approx(v, to: fx.currency, rates: fx.rates)))
+            }
+        }
+        return out
+    }
+
     /// 从一句原文（印尼语/英语）里找出金额并生成胶囊；去重，保持出现顺序。
     public static func chips(in text: String, rate: ExchangeRate?) -> [AmountChip] {
         var seen = Set<Int>(); var out: [AmountChip] = []

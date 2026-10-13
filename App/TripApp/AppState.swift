@@ -31,14 +31,24 @@ final class AppState: ObservableObject {
     @Published var askContinue = false
     @Published var speechAlert: String?
     /// 离线汇率（1 人民币 = ? 印尼盾），用户手动设置；不联网获取
-    @Published var rate: ExchangeRate = AppState.loadRate() { didSet { AppState.saveRate(rate) } }
     @Published var faceToFace = false
 
-    static func loadRate() -> ExchangeRate {
-        let v = UserDefaults.standard.double(forKey: "idrPerCny")
-        return v > 0 ? ExchangeRate(idrPerCny: v, updatedNote: "手动设置") : .default
+    /// 金额换算（PRD v2 §7.9）：中文界面 → 人民币，其余 → 美元；汇率有网时自动刷新（≥6 小时一次），超过 30 天警告
+    let fxStore = FXStore()
+    @Published var fx = FXContext(rates: FXStore().current,
+                                  currency: TargetCurrency.forLocale(Locale.preferredLanguages.first ?? "zh-Hans"))
+    var fxRefreshEnabled = true
+    func refreshFX(force: Bool = false) async {
+        guard fxRefreshEnabled else { return }
+        let online = env.network != .none
+        if force { UserDefaults.standard.removeObject(forKey: "fx.lastAttempt") }
+        let r = await fxStore.refresh(now: Date(), online: online) { url in
+            var req = URLRequest(url: url); req.timeoutInterval = 10
+            return try await URLSession.shared.data(for: req).0
+        }
+        if case .updated(let x) = r { fx.rates = x }
     }
-    static func saveRate(_ r: ExchangeRate) { UserDefaults.standard.set(r.idrPerCny, forKey: "idrPerCny") }
+
 
     /// 场景卡片最近使用排序（TripAppModel.RecentScenes）
     @Published var recentScenes: RecentScenes = AppState.loadRecent() { didSet { AppState.saveRecent(recentScenes) } }
@@ -130,6 +140,7 @@ final class AppState: ObservableObject {
 
     func refresh(_ trigger: GateTrigger) async {
         decision = await gate.refresh(trigger)
+        if trigger != .downloadFinished { Task { await refreshFX() } }
         rows = PrepareRows.rows(status: gate.status, theirLanguages: gate.theirLanguages)
         if decision == .open {
             await loadModelIfNeeded()
@@ -154,6 +165,11 @@ final class AppState: ObservableObject {
                          downloader: nil, env: SystemDownloadEnvironment(network: .wifi), speechInstaller: PreviewSpeechInstaller(),
                          transcriber: PreviewTranscriber(), sessions: SessionStore(directory: dir),
                          modelReadinessOverride: { mode.modelReadiness }, defaults: defaults, trialStore: InMemoryTrialStore())
+        s.fxRefreshEnabled = false            // UI 测试用内置汇率，结果可复现
+        s.fx = FXContext(rates: .bundled, currency: .cny)
+        if ProcessInfo.processInfo.arguments.contains(UITestMode.seedAmountArgument) {
+            Task { await s.conversation.receiveTheirs(UITestMode.seedAmountText) }   // 截图验证金额换算
+        }
         Task { try? await engine.load(modelURL: URL(fileURLWithPath: "/dev/null")) }
         return s
     }

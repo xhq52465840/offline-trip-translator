@@ -91,20 +91,31 @@ struct ScenarioCard: View {
     }
 }
 
+/// 汇率说明（PRD v2 §7.9）：不再手动输入；内置 ECB 汇率，有网自动更新，旧于 30 天警告。
 struct RateSettingView: View {
     @EnvironmentObject var state: AppState
-    @State private var text = ""
+    @State private var refreshing = false
     var body: some View {
+        let r = state.fx.rates
         Form {
             Section {
-                TextField("例如 2300", text: $text).keyboardType(.decimalPad)
-                Button("保存") { if let v = Double(text), v > 0 { state.rate = ExchangeRate(idrPerCny: v, updatedNote: "手动设置") } }
-            } header: { Text("1 人民币 = ? 印尼盾") } footer: {
-                Text("离线使用，不会联网更新。出发前按实际汇率改一次；气泡里的人民币只是约值。")
+                LabeledContent("1 人民币", value: "≈ Rp \(Int(r.idrPerCNY.rounded()))")
+                LabeledContent("1 美元", value: "≈ Rp \(Int(r.idrPerUSD.rounded()))")
+                LabeledContent("日期", value: r.date)
+                LabeledContent("来源", value: r.source)
+                LabeledContent("换算成", value: state.fx.currency == .cny ? "人民币" : "美元")
+            } footer: {
+                Text(state.fx.caption(now: Date()) + "。金额由程序按原文换算，只有汇率是约值，位数不会错。有网时自动更新（只下载公开汇率，不上传任何内容）。")
+            }
+            Section {
+                Button(refreshing ? "更新中…" : "现在更新汇率") {
+                    refreshing = true
+                    Task { await state.refreshFX(force: true); refreshing = false }
+                }.disabled(refreshing)
             }
         }
         .navigationTitle("汇率")
-        .onAppear { text = String(Int(state.rate.idrPerCny)) }
+        .accessibilityIdentifier("rateSettings")
     }
 }
 
@@ -291,7 +302,7 @@ struct TranscriptList: View {
     private var model: ConversationModel { state.conversation }
 
     var body: some View {
-        let rows = Transcript.rows(model.messages, viewer: viewer, rate: state.rate)
+        let rows = Transcript.rows(model.messages, viewer: viewer, rate: nil, fx: viewer == .me ? state.fx : nil)
         ScrollViewReader { proxy in
             ScrollView {
                 LazyVStack(spacing: 14) {
@@ -345,6 +356,10 @@ struct BubbleView: View {
                 }
                 if !row.chips.isEmpty {
                     FlowChips(chips: row.chips)
+                    Text(state.fx.caption(now: Date()))
+                        .font(.caption2)
+                        .foregroundStyle(state.fx.isStale(now: Date()) ? Color.orange : Color.secondary)
+                        .accessibilityIdentifier("rateCaption")
                 }
                 if let n = row.note { Text(n).font(.footnote).foregroundStyle(.tertiary) }
                 if viewer == .me, let m = message { actions(m) }
@@ -409,19 +424,18 @@ struct ChipView: View {
     @EnvironmentObject var state: AppState
     let chip: AmountChip
     /// 仍是内置示例汇率时，人民币换算后标「示例」，避免用户把它当真实汇率
-    private var sampleRate: Bool { state.rate == ExchangeRate.default }
     var body: some View {
         HStack(spacing: 4) {
             Text(chip.rupiah).font(.callout.monospacedDigit().weight(.semibold))
             Text(chip.chinese).font(.caption)
             if let c = chip.cny {
                 Text(c).font(.caption.weight(.semibold)).foregroundStyle(.orange)
-                if sampleRate { Text("示例汇率").font(.caption2).foregroundStyle(.secondary) }
             }
         }
         .padding(.horizontal, 8).padding(.vertical, 4)
         .background(Color.orange.opacity(0.12), in: Capsule())
-        .accessibilityLabel("\(chip.chinese)\(chip.cny.map { "，约人民币\($0.dropFirst(3))元" } ?? "")")
+        .accessibilityLabel("\(chip.chinese)\(chip.cny.map { "，\($0)" } ?? "")")
+        .accessibilityIdentifier("amountChip")
     }
 }
 

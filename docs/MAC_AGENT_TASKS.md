@@ -445,6 +445,14 @@ PY
 
 ---
 
+## T3b（r4/r5 必做）金额换算截图验证
+
+1. 跑 `testAmountConversionShown`（启动参数 `-UITestMode mock-ready -UITestSeedAmount`），截图 `08_amount_conversion`：气泡必须出现 `Rp 100.000（约 ¥37）` 和汇率说明行（含 `2026-10-12`）。
+2. 在 `07_chat_sent` 截图中确认金额芯片显示「约 ¥…」，不再出现「示例汇率」。
+3. 打开 设置 → 汇率，截图 `09_rate_settings`（1 CNY / 1 USD 对应 IDR、日期、来源）。
+4. 英文环境再跑一次：追加 `-AppleLanguages (en) -AppleLocale en_US`，截图 `08_amount_conversion_en`，应显示 `≈ $5.6`（UI 测试里中文断言失败属预期，只要截图正确即可，报告里注明）。
+5. 报告里写明：数量级是否正确（100.000 → ¥37 而非 ¥3.7/¥370）、日期是否显示、有无截断。
+
 ## T7（可选，需要用户本人）StoreKit / 真机——只列出，不要执行
 
 以下步骤需要用户的 Apple ID、开发者团队、真机，代理**不要做**，只在报告里原样列出给用户：

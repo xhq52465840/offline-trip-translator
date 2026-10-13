@@ -1,4 +1,5 @@
 import Foundation
+import TripCore
 
 /// 聊天式记录的一行（UX 改版）：两种语言都显示，带金额胶囊、理解结果、时间。
 public struct BubbleRow: Identifiable, Equatable, Sendable {
@@ -23,13 +24,14 @@ public enum Transcript {
     }
 
     /// viewer = .me：中文为主；viewer = .partner：对方语言为主（面对面模式上半屏，旋转 180°）。
-    public static func rows(_ messages: [Message], viewer: Viewer, rate: ExchangeRate?, tz: TimeZone = .current) -> [BubbleRow] {
+    public static func rows(_ messages: [Message], viewer: Viewer, rate: ExchangeRate?, fx: FXContext? = nil, tz: TimeZone = .current) -> [BubbleRow] {
         messages.compactMap { m in
             if m.status == .trialBlocked && viewer == .partner { return nil }
             let mine = m.role == .me
             let side: BubbleRow.Side = (mine == (viewer == .me)) ? .trailing : .leading
             let chipSource = mine ? (m.foreign ?? "") : m.source
-            let chips = Money.chips(in: chipSource, rate: viewer == .me ? rate : nil)
+            let chips: [AmountChip]
+            if let fx, viewer == .me { chips = Money.chips(in: chipSource, fx: fx) } else { chips = Money.chips(in: chipSource, rate: viewer == .me ? rate : nil) }
             let primary: String, secondary: String?, note: String?
             switch (viewer, mine) {
             case (.me, true):
@@ -43,7 +45,22 @@ public enum Transcript {
             case (.partner, false):
                 primary = m.source; secondary = m.display ?? m.literal; note = nil
             }
-            return BubbleRow(id: m.id, side: side, primary: primary, secondary: secondary, note: note, chips: chips,
+            // 金额换算注释（PRD v2 §7.9）：只给阅读者是我的一侧加；数量级来自代码解析，不来自模型
+            var p = primary, sec = secondary, nt = note
+            if let fx, viewer == .me {
+                if mine {
+                    sec = sec.map { AmountAnnotator.annotateSource($0, to: fx.currency, rates: fx.rates) }
+                    let cny = CNYParser.find(in: m.source)
+                    if !cny.isEmpty {
+                        let r = cny.map { "¥\(FXFormatter.grouped(Int($0)))≈" + String(CNYParser.idrNote($0, rates: fx.rates).dropFirst(2)) }.joined(separator: "，")
+                        nt = [nt, r].compactMap { $0 }.joined(separator: "\n")
+                    }
+                } else {
+                    p = AmountAnnotator.annotateChinese(p, allowed: AmountAnnotator.allowedValues(source: m.source), to: fx.currency, rates: fx.rates)
+                    sec = sec.map { AmountAnnotator.annotateSource($0, to: fx.currency, rates: fx.rates) }
+                }
+            }
+            return BubbleRow(id: m.id, side: side, primary: p, secondary: sec, note: nt, chips: chips,
                              time: time(m.createdAt, tz: tz), pending: m.status == .translating)
         }
     }

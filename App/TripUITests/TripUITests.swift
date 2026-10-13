@@ -74,6 +74,19 @@ final class TripUITests: XCTestCase {
         shot("07_chat_sent")
     }
 
+    func testAmountConversionShown() {
+        // 金额换算（PRD v2 §7.9）：对方「Rp 100.000」→ 气泡里出现「约 ¥37」与汇率日期
+        let app = XCUIApplication()
+        app.launchArguments += ["-UITestMode", "mock-ready", "-UITestSeedAmount", "-AppleLanguages", "(zh-Hans)", "-AppleLocale", "zh_CN"]
+        app.launch()
+        app.buttons["startChat"].tap()
+        let conv = app.staticTexts.containing(NSPredicate(format: "label CONTAINS '约 ¥37'")).firstMatch
+        XCTAssertTrue(conv.waitForExistence(timeout: 10), "应显示 约 ¥37（100.000 / 2677.5）")
+        XCTAssertTrue(app.staticTexts["rateCaption"].exists)
+        XCTAssertTrue(app.staticTexts["rateCaption"].label.contains("2026-10-12"))
+        shot("08_amount_conversion")
+    }
+
     func testLaunchMemoryMetric() {
         // 基本指标（无需 Instruments）：启动到首页的内存与时间
         let app = XCUIApplication()

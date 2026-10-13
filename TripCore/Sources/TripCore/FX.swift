@@ -59,7 +59,7 @@ public enum FXFormatter {
         else { s = grouped(Int(v.rounded())) }
         return c.symbol + s
     }
-    static func grouped(_ n: Int) -> String {
+    public static func grouped(_ n: Int) -> String {
         let s = String(n); var out = ""
         for (i, ch) in s.reversed().enumerated() { if i > 0 && i % 3 == 0 { out.append(",") }; out.append(ch) }
         return String(out.reversed())
