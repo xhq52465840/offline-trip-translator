@@ -30,6 +30,31 @@ mkdir -p "$WORK"
 
 ---
 
+## 当前轮次：r4（拉取 master 后按此清单执行）
+
+> 用户不转述消息。Mac 代理只需 `git pull origin master`，读本节 + 下文 T0–T7 / T3b / 6.3d，开 PR 标题 `Mac run r4`。**不要合并 PR。**
+
+### r4 必做清单
+
+1. **拉最新** `git fetch && git checkout master && git pull`，设 `ROUND=4`，分支 `mac-run-<日期>-r4`。
+2. **T0–T4**：编译、UI 测试全绿；截图目录 `reports/screens/<日期>-r4/`。
+3. **T3b 金额换算截图（本轮新增，必做）**
+   - 跑 `testAmountConversionShown`（`-UITestMode mock-ready -UITestSeedAmount`）→ `08_amount_conversion`：气泡须有 `Rp 100.000（约 ¥37）` + 汇率行含 `2026-10-12`。
+   - `07_chat_sent`：芯片为「约 ¥…」，无「示例汇率」。
+   - 设置 → 汇率 → `09_rate_settings`（1 CNY/1 USD→IDR、日期、来源）。
+   - 英文环境 `-AppleLanguages (en) -AppleLocale en_US` → `08_amount_conversion_en`，应见 `≈ $5.6`。
+4. **T6 混合训练（6.3d，优先于 6.3c）**：`out_mix/`（约 45% 回放，含 FLORES **dev**），`mlx/lora_mix.yaml` **800 步**，适配器 `runs/mlx_adapters_mix2`。对 **s400 与 s800** 分别 fuse→GGUF→评测（tag `mac_mix2_s400` / `mac_mix2_s800`）。
+5. **采用规则（正式，放宽版）**，相对同机 `mac_base`（strict 85、金额错 5），三条同时满足才采用：
+   - App 60 条 strict ≥ 基座 + 10（≥ 95）；
+   - 金额错 ≤ 基座（≤ 5）；
+   - 公开集 `mt_id_zh` chrF、`mt_id_en` chrF++ 相对基座各自下降 ≤ 10（`slang_norm` 只报告）。
+   报告对每个检查点写 ✓/✗。
+6. **不上传模型**：只报告本机 GGUF 路径、字节数、sha256；不提交权重、不传 HF/网盘。
+7. **盒子 CPU 旁路已中止**：Linux 盒子曾试跑 CPU PEFT 混合短训（`scripts/box_mix_r4.sh`），约 step 55 被终止（`MIX_R4_FAILED`），**无可用评测数字**。r4 **以 Mac MLX 800 步为准**，不要等盒子结果。
+8. 开 PR：标题 `Mac run r4`，报告 `reports/mac_run_<日期>_r4.md`，**不要 merge**。等审阅方评论 `next round`。
+
+---
+
 ## T0 环境检查
 
 **目标**：确认 macOS、芯片、内存、磁盘、Xcode、python3、git、brew，缺的用 brew / venv 内 pip 安装。
@@ -378,7 +403,9 @@ echo $! > runs/mlx_mix_train.pid
 
 `out_mix/` 已重建：回放约 45%，新增 FLORES-200 **dev** 的 印→中、印→英（评测只用 devtest，零重叠已校验）。`mlx/lora_mix.yaml` 改为 800 步，适配器 `runs/mlx_adapters_mix2`。命令同 6.3c，日志 `runs/mlx_mix2_train.log`；评测 s400 与 s800（目录 `runs/mlx_adapters_mix2_s$S`，GGUF 前缀 `runs/trip-mix2-s$S`，tag `mac_mix2_s$S`）。公开集照旧注明「同提示词偏乐观」，并对最好的检查点各任务抽 2 条输出。
 
-App 侧（r2、r3 已连续两轮全绿）：本轮 T3/T4 只需编译 + UI 测试 + 06_home 截图确认底行副标题不被遮挡。
+App 侧：r2、r3 已连续两轮全绿；**r4 仍须完整 T3/T4 + T3b 金额换算截图**（见文首「当前轮次：r4」）。
+
+**盒子 CPU**：曾尝试 `scripts/box_mix_r4.sh`（CPU PEFT，~100 步），约 step 55 被终止，`MIX_R4_FAILED`，无评测结论。**以本机 MLX 800 步为准，勿等待盒子。**
 
 ### 采用规则（正式）
 
