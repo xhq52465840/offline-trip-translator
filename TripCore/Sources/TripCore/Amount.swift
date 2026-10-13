@@ -58,6 +58,10 @@ public enum AmountNormalizer {
     /// 区间中文写法：3万–4万
     public static func rangeDisplay(_ lo: Int, _ hi: Int) -> String { "\(ChineseAmountFormatter.format(lo))–\(ChineseAmountFormatter.format(hi))" }
 
+    // 3) 带货币前缀的整数：Rp 5000 / Rp5000 / IDR 50,000（英文逗号千分位，仅在有 Rp/IDR 前缀时认）
+    private static let prefixedRegex = try! NSRegularExpression(
+        pattern: #"(?:Rp\.?|IDR)\s*(\d{1,3}(?:,\d{3})+|\d{1,3}(?:\.\d{3})+|\d{3,})(?![\d.,]*\d)(?!\s*(?:ribu|rbu|rb|juta|jt|k)(?![A-Za-z]))"#, options: [.caseInsensitive])
+
     private static let unitRegex = try! NSRegularExpression(pattern: unitPattern, options: [.caseInsensitive])
     private static let thousandsRegex = try! NSRegularExpression(pattern: thousandsPattern, options: [])
 
@@ -106,6 +110,12 @@ public enum AmountNormalizer {
             guard let r = Range(m.range, in: text) else { continue }
             results.append(AmountMatch(original: ns.substring(with: m.range), value: v, display: ChineseAmountFormatter.format(v), range: r))
             taken.append(m.range)
+        }
+        for m in prefixedRegex.matches(in: text, range: all) where !overlaps(m.range(at: 1)) {
+            let numStr = ns.substring(with: m.range(at: 1))
+            guard let v = Int(numStr.replacingOccurrences(of: ",", with: "").replacingOccurrences(of: ".", with: "")), let r = Range(m.range(at: 1), in: text) else { continue }
+            results.append(AmountMatch(original: numStr, value: v, display: ChineseAmountFormatter.format(v), range: r))
+            taken.append(m.range(at: 1))
         }
         for m in thousandsRegex.matches(in: text, range: NSRange(location: 0, length: ns.length)) {
             if taken.contains(where: { NSIntersectionRange($0, m.range).length > 0 }) { continue }
