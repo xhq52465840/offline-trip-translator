@@ -50,3 +50,6 @@
 说明（合理性）：短程 LoRA 目标是「系统直译→旅行场景中文」，不是印尼语口语正规化，也不是通用开放域 MT。STIF `slang_norm` 短程大量输出中文而非正式印尼语，chrF 下降属任务错配，**不代表** App 60 条理解评测作废；App 严格分仍以 `eval_short.json` 为准。开放域 mt_id_zh 略降、mt_id_en 略升，波动幅度正常，无空输出。
 
 
+
+## r4 盒子 CPU 混合 LoRA（进行中，2026-10-13 10:56 启动）
+【盒子 CPU 结果，非 Mac MLX / 非真机】`scripts/box_mix_r4.sh`：out_mix（scene 2244 + replay 1836，约 45%，含 FLORES dev），PEFT r16，bs2×ga4，100 step，max_len 512，约 75–100 s/step。完成后产出 `eval_box_mix_r4.json` / `public_box_mix_r4.json`，按放宽规则对比盒子基线（`eval_base.json` 严格 90、金额错 5；`public_base.json`）判定。首次尝试 ga8 为 217 s/step，已中止（`runs/mix_r4_attempt1.log`）。
