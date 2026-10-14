@@ -125,7 +125,7 @@ public enum AmountAnnotator {
     }
 
     // 英文显示行里的金额：Rp 100,000 / 100,000 / 100k / 1.5 million / 30,000–40,000
-    private static let enOne = try! NSRegularExpression(
+    static let enOne = try! NSRegularExpression(
         pattern: #"(?<![\w.,])(\d{1,3}(?:,\d{3})+|\d+(?:\.\d+)?\s*(?:k|thousand|million|mil)|\d{3,})(?![\w,]*\d)(?![A-Za-z])"#, options: [.caseInsensitive])
     static func parseEnglish(_ s: String) -> Int? {
         let t = s.lowercased().replacingOccurrences(of: " ", with: "")

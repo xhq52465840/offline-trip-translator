@@ -119,6 +119,7 @@ public final class ConversationModel {
         var mtInput = text
         var rewritten = false
         if mine == "zh-Hans", let u = understander, Self.hasReference(text), messages.count > 1 {
+            u.builder.target = "zh-Hans"
             let ctx = contextTurns(excluding: m.id)
             u.timeout = mineRewriteBudget
             if case .replaced(let s) = await u.understand(context: ctx, source: text, literal: text),
@@ -203,6 +204,7 @@ public final class ConversationModel {
         guard remaining > 0.05 else { return }
         u.timeout = remaining
         u.builder.theirLanguageName = Lang.displayName(lang)
+        u.builder.target = target
         let outcome = await u.understand(context: contextTurns(excluding: id), source: m.source, literal: literal)
         // 时间窗外不再改（PRD v2 §7.2）
         guard clock.now().timeIntervalSince(m.createdAt) <= understandBudget + 0.05 else { return }

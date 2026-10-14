@@ -134,3 +134,38 @@ final class TrilingualP2Tests: XCTestCase {
         XCTAssertEqual(rows[0].primary, "价格是10万（约 ¥37）")
     }
 }
+
+@MainActor
+final class TrilingualP3Tests: XCTestCase {
+    func testEnglishUnderstandingUsesEnglishPrompt() async throws {
+        var seenSystem = ""
+        let eng = MockEngine(pieceDelayNanos: 0) { msgs in seenSystem = msgs[0].content; return "Rp 50,000, but the fare is not included" }
+        try await eng.load(modelURL: URL(fileURLWithPath: "/dev/null"))
+        let u = Understander(engine: eng)
+        let m = ConversationModel(translator: RecordingTranslator(), understander: u, trial: TrialCounter(store: InMemoryTrialStore()))
+        m.myLanguage = "en"; m.theirLanguage = "id"
+        await m.receiveTheirs("50rb belum termasuk ongkos")
+        XCTAssertTrue(seenSystem.contains("English"), seenSystem)
+        XCTAssertEqual(m.messages[0].display, "Rp 50,000, but the fare is not included")
+        XCTAssertTrue(m.messages[0].understood)
+    }
+
+    func testEnglishWrongMagnitudeKeepsLiteral() async throws {
+        let eng = MockEngine(pieceDelayNanos: 0) { _ in "Rp 500,000, fare not included" }
+        try await eng.load(modelURL: URL(fileURLWithPath: "/dev/null"))
+        let m = ConversationModel(translator: RecordingTranslator(), understander: Understander(engine: eng), trial: TrialCounter(store: InMemoryTrialStore()))
+        m.myLanguage = "en"
+        await m.receiveTheirs("50rb belum termasuk ongkos")
+        XCTAssertNil(m.messages[0].display)
+        XCTAssertEqual(m.messages[0].literal, "[id>en]Rp 50,000 belum termasuk ongkos")
+    }
+
+    func testIndonesianTargetNoUnderstanding() async throws {
+        let eng = MockEngine(pieceDelayNanos: 0) { _ in "should not be used" }
+        try await eng.load(modelURL: URL(fileURLWithPath: "/dev/null"))
+        let m = ConversationModel(translator: RecordingTranslator(), understander: Understander(engine: eng), trial: TrialCounter(store: InMemoryTrialStore()))
+        m.myLanguage = "id"; m.theirLanguage = "en"
+        await m.receiveTheirs("too expensive")
+        XCTAssertEqual(eng.calls, 0)
+    }
+}

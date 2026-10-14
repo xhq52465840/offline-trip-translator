@@ -14,6 +14,7 @@ struct Draft: Codable {
     var literal: String
     var glossary: [[String]]?
     var target_template: String
+    var target: String?          // P3：zh-Hans（默认）或 en
 }
 struct AmountOut: Codable { var original: String; var value: Int; var display: String }
 struct Out: Codable {
@@ -30,7 +31,7 @@ let dec = JSONDecoder()
 let enc = JSONEncoder(); enc.outputFormatting = [.withoutEscapingSlashes]
 while let line = readLine(strippingNewline: true) {
     guard !line.isEmpty, let d = try? dec.decode(Draft.self, from: Data(line.utf8)) else { continue }
-    var b = PromptBuilder(); b.scene = d.scene
+    var b = PromptBuilder(); b.scene = d.scene; b.target = d.target ?? "zh-Hans"
     let ctx = d.context.map { t in
         t.role == "me" ? ContextTurn(role: .me, source: t.source, foreign: t.foreign)
                        : ContextTurn(role: .them, source: t.source, zhDisplay: t.zh)
@@ -39,18 +40,18 @@ while let line = readLine(strippingNewline: true) {
     let amounts = AmountNormalizer.findAmounts(in: d.source)
     var target = d.target_template
     var bad: String?
-    for (i, a) in amounts.enumerated() { target = target.replacingOccurrences(of: "⟨A\(i + 1)⟩", with: a.display) }
+    for (i, a) in amounts.enumerated() { target = target.replacingOccurrences(of: "⟨A\(i + 1)⟩", with: a.display(for: b.target)) }
     if target.contains("⟨A") { bad = "template-amount-unfilled" }
     let v: String
     if let b = bad { v = "rejected:\(b)" } else {
-        switch OutputValidator.validate(output: target, literal: d.literal, source: d.source, context: ctx) {
+        switch OutputValidator.validate(output: target, literal: d.literal, source: d.source, context: ctx, target: b.target) {
         case .accepted: v = "accepted"
         case .unchanged: v = "unchanged"
         case .rejected(let r): v = "rejected:\(r)"
         }
     }
     let o = Out(id: d.id, system: b.system,
-                fewshot: PromptBuilder.fewShot.map { [$0.user, $0.assistant] },
+                fewshot: PromptBuilder.fewShot(for: b.target).map { [$0.user, $0.assistant] },
                 user: b.user(context: ctx, source: d.source, literal: d.literal, glossary: gl),
                 amounts: amounts.map { AmountOut(original: $0.original, value: $0.value, display: $0.display) },
                 target: target, validation: v)

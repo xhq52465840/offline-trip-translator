@@ -7,9 +7,16 @@ public extension PromptBuilder {
         ("这场对话（时间顺序）：\n（无）\n\n金额：无\n词：无\n\n对方原文：udh sampe blm?\n字面：\nudh sampe blm？", "已经到了吗？"),
     ]
 
+    /// 英文目标少样本（P3），与中文两条一一对应
+    public static let fewShotEnglish: [(user: String, assistant: String)] = [
+        ("Conversation (in order):\nThem: harga 30rb / English: the price is Rp 30,000\nMe: Too expensive\n\nAmounts: none\nWords: none\n\nOriginal: yang tadi 25 aja\nLiteral:\nthe earlier 25 only", "The earlier price, Rp 25,000, is fine"),
+        ("Conversation (in order):\n(none)\n\nAmounts: none\nWords: none\n\nOriginal: udh sampe blm?\nLiteral:\nudh arrive blm?", "Have you arrived yet?"),
+    ]
+    public static func fewShot(for target: String) -> [(user: String, assistant: String)] { target == "en" ? fewShotEnglish : fewShot }
+
     /// 可缓存的前缀：system + 少样本。
     public var prefixMessages: [ChatMessage] {
-        [ChatMessage(.system, system)] + Self.fewShot.flatMap { [ChatMessage(.user, $0.user), ChatMessage(.assistant, $0.assistant)] }
+        [ChatMessage(.system, system)] + Self.fewShot(for: target).flatMap { [ChatMessage(.user, $0.user), ChatMessage(.assistant, $0.assistant)] }
     }
 
     func messages(context: [ContextTurn], source: String, literal: String, glossary: [GlossaryHit] = []) -> [ChatMessage] {
@@ -53,7 +60,7 @@ public final class Understander: @unchecked Sendable {
             return first
         }
         guard let raw else { return .keepLiteral(reason: "timeoutOrError") }
-        switch OutputValidator.validate(output: raw, literal: literal, source: source, context: context) {
+        switch OutputValidator.validate(output: raw, literal: literal, source: source, context: context, target: builder.target) {
         case .accepted(let s): return .replaced(s)
         case .unchanged: return .keepLiteral(reason: "unchanged")
         case .rejected(let r): return .keepLiteral(reason: "\(r)")
