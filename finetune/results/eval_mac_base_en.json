@@ -1,0 +1,618 @@
+{
+ "summary": {
+  "model": "qwen2.5-1.5b-instruct-q4_k_m.gguf",
+  "tag": "mac_base_en",
+  "target": "en",
+  "n": 60,
+  "score": 100,
+  "strict": 100,
+  "max": 120,
+  "orig30_strict": 52,
+  "ext30_strict": 48,
+  "amount_err": 0,
+  "app_accepted": 50,
+  "ttft_med": 0.45
+ },
+ "results": [
+  {
+   "id": "01",
+   "src": "50rb belum termasuk ongkos",
+   "out": "50,000 not including fare",
+   "score": 2,
+   "strict": 2,
+   "amount_err": false,
+   "ttft": 5.193,
+   "app_validation": "accepted"
+  },
+  {
+   "id": "02",
+   "src": "yang tadi 40 saja",
+   "out": "the one earlier Rp 40,000",
+   "score": 2,
+   "strict": 2,
+   "amount_err": false,
+   "ttft": 1.021,
+   "app_validation": "accepted"
+  },
+  {
+   "id": "03",
+   "src": "brp lama lagi pak?",
+   "out": "How long will it take, sir?",
+   "score": 2,
+   "strict": 2,
+   "amount_err": false,
+   "ttft": 0.457,
+   "app_validation": "accepted"
+  },
+  {
+   "id": "04",
+   "src": "udh di depan lobby ya",
+   "out": "You are in front of the lobby.",
+   "score": 1,
+   "strict": 1,
+   "amount_err": false,
+   "ttft": 0.161,
+   "app_validation": "accepted"
+  },
+  {
+   "id": "05",
+   "src": "gk bisa kurang lagi kak",
+   "out": "You can't go any lower, kid.",
+   "score": 2,
+   "strict": 2,
+   "amount_err": false,
+   "ttft": 0.111,
+   "app_validation": "accepted"
+  },
+  {
+   "id": "06",
+   "src": "total 1,5jt sudah termasuk tips",
+   "out": "total 1,500,000 already including tips",
+   "score": 2,
+   "strict": 2,
+   "amount_err": false,
+   "ttft": 1.973,
+   "app_validation": "accepted"
+  },
+  {
+   "id": "07",
+   "src": "harganya 250 ribu per orang",
+   "out": "the price is Rp 250,000 per person",
+   "score": 2,
+   "strict": 2,
+   "amount_err": false,
+   "ttft": 0.696,
+   "app_validation": "accepted"
+  },
+  {
+   "id": "08",
+   "src": "saya sudah sampai, mobil avanza putih B 1234 XYZ",
+   "out": "I have arrived, car Avanza white B1234XYZ",
+   "score": 2,
+   "strict": 2,
+   "amount_err": false,
+   "ttft": 0.485,
+   "app_validation": "unchanged"
+  },
+  {
+   "id": "09",
+   "src": "tunggu sebentar ya, macet",
+   "out": "wait a moment, jammed",
+   "score": 2,
+   "strict": 2,
+   "amount_err": false,
+   "ttft": 0.511,
+   "app_validation": "accepted"
+  },
+  {
+   "id": "10",
+   "src": "oke saya ke situ",
+   "out": "OK, I go there.",
+   "score": 2,
+   "strict": 2,
+   "amount_err": false,
+   "ttft": 0.439,
+   "app_validation": "unchanged"
+  },
+  {
+   "id": "11",
+   "src": "ini 100rb, itu 75rb",
+   "out": "This 100,000, that 75,000.",
+   "score": 2,
+   "strict": 2,
+   "amount_err": false,
+   "ttft": 0.847,
+   "app_validation": "accepted"
+  },
+  {
+   "id": "12",
+   "src": "yang mahal bisa 85",
+   "out": "the expensive can be cheaper",
+   "score": 1,
+   "strict": 1,
+   "amount_err": false,
+   "ttft": 1.03,
+   "app_validation": "accepted"
+  },
+  {
+   "id": "13",
+   "src": "maaf kak, udah habis",
+   "out": "Sorry, sold out.",
+   "score": 2,
+   "strict": 2,
+   "amount_err": false,
+   "ttft": 0.376,
+   "app_validation": "accepted"
+  },
+  {
+   "id": "14",
+   "src": "alamatnya di jl. sunset road no 88",
+   "out": "The address is at jl. sunset road no 88.",
+   "score": 2,
+   "strict": 2,
+   "amount_err": false,
+   "ttft": 0.506,
+   "app_validation": "unchanged"
+  },
+  {
+   "id": "15",
+   "src": "mantap, gas!",
+   "out": "steady, gas!",
+   "score": 0,
+   "strict": 0,
+   "amount_err": false,
+   "ttft": 0.169,
+   "app_validation": "unchanged"
+  },
+  {
+   "id": "16",
+   "src": "nggak apa-apa, santai aja",
+   "out": "It's okay, just relax.",
+   "score": 2,
+   "strict": 2,
+   "amount_err": false,
+   "ttft": 0.264,
+   "app_validation": "accepted"
+  },
+  {
+   "id": "17",
+   "src": "jam berapa pesawatnya?",
+   "out": "What hour is the plane?",
+   "score": 1,
+   "strict": 1,
+   "amount_err": false,
+   "ttft": 0.876,
+   "app_validation": "accepted"
+  },
+  {
+   "id": "18",
+   "src": "175 deal ya",
+   "out": "175 deal, yes",
+   "score": 2,
+   "strict": 2,
+   "amount_err": false,
+   "ttft": 0.489,
+   "app_validation": "unchanged"
+  },
+  {
+   "id": "19",
+   "src": "bisa tunggu 5 menit?",
+   "out": "Can you wait 5 minutes?",
+   "score": 2,
+   "strict": 2,
+   "amount_err": false,
+   "ttft": 0.308,
+   "app_validation": "accepted"
+  },
+  {
+   "id": "20",
+   "src": "it's 50k for the ride, cash only",
+   "out": "it's 50,000 for the ride, cash only",
+   "score": 2,
+   "strict": 2,
+   "amount_err": false,
+   "ttft": 0.388,
+   "app_validation": "accepted"
+  },
+  {
+   "id": "21",
+   "src": "same price",
+   "out": "The same price as the blue one.",
+   "score": 2,
+   "strict": 2,
+   "amount_err": false,
+   "ttft": 1.724,
+   "app_validation": "accepted"
+  },
+  {
+   "id": "22",
+   "src": "sy otw kak, 10 mnt lg",
+   "out": "You're late, 10 minutes.",
+   "score": 1,
+   "strict": 1,
+   "amount_err": false,
+   "ttft": 0.494,
+   "app_validation": "accepted"
+  },
+  {
+   "id": "23",
+   "src": "oke yang biasa ya",
+   "out": "OK, the usual.",
+   "score": 2,
+   "strict": 2,
+   "amount_err": false,
+   "ttft": 0.427,
+   "app_validation": "accepted"
+  },
+  {
+   "id": "24",
+   "src": "belum bayar, kurang 20rb",
+   "out": "Not yet paid, short by 20,000.",
+   "score": 2,
+   "strict": 2,
+   "amount_err": false,
+   "ttft": 1.461,
+   "app_validation": "accepted"
+  },
+  {
+   "id": "25",
+   "src": "terima kasih",
+   "out": "Thank you",
+   "score": 2,
+   "strict": 2,
+   "amount_err": false,
+   "ttft": 0.133,
+   "app_validation": "unchanged"
+  },
+  {
+   "id": "26",
+   "src": "selamat pagi",
+   "out": "Good morning.",
+   "score": 2,
+   "strict": 2,
+   "amount_err": false,
+   "ttft": 0.277,
+   "app_validation": "unchanged"
+  },
+  {
+   "id": "27",
+   "src": "tiga 120rb aja",
+   "out": "three Rp 120,000 only",
+   "score": 2,
+   "strict": 2,
+   "amount_err": false,
+   "ttft": 0.646,
+   "app_validation": "accepted"
+  },
+  {
+   "id": "28",
+   "src": "oke ke sana 80rb",
+   "out": "OK, let's go there for 80,000.",
+   "score": 2,
+   "strict": 2,
+   "amount_err": false,
+   "ttft": 0.601,
+   "app_validation": "accepted"
+  },
+  {
+   "id": "29",
+   "src": "bs bayar pake qris?",
+   "out": "Can't pay with Qris?",
+   "score": 2,
+   "strict": 2,
+   "amount_err": false,
+   "ttft": 1.106,
+   "app_validation": "accepted"
+  },
+  {
+   "id": "30",
+   "src": "pls wait, i'm omw",
+   "out": "Please wait, I'm omw",
+   "score": 0,
+   "strict": 0,
+   "amount_err": false,
+   "ttft": 0.273,
+   "app_validation": "accepted"
+  },
+  {
+   "id": "31",
+   "src": "sy udh di P2 lantai dasar, mobil hitam",
+   "out": "You are at P2, ground floor, with a black car.",
+   "score": 2,
+   "strict": 2,
+   "amount_err": false,
+   "ttft": 0.56,
+   "app_validation": "accepted"
+  },
+  {
+   "id": "32",
+   "src": "keluar pintu kedatangan, jalan ke parkiran ya kak",
+   "out": "Exit the arrival door and walk to the parking lot, okay.",
+   "score": 2,
+   "strict": 2,
+   "amount_err": false,
+   "ttft": 0.26,
+   "app_validation": "accepted"
+  },
+  {
+   "id": "33",
+   "src": "share lok aja kak, alamatnya gk ketemu",
+   "out": "share location only, address not found",
+   "score": 2,
+   "strict": 2,
+   "amount_err": false,
+   "ttft": 0.364,
+   "app_validation": "accepted"
+  },
+  {
+   "id": "34",
+   "src": "macet bgt kak, mungkin 20 mnt lg",
+   "out": "It's jammed, maybe 20 minutes.",
+   "score": 2,
+   "strict": 2,
+   "amount_err": false,
+   "ttft": 0.259,
+   "app_validation": "accepted"
+  },
+  {
+   "id": "35",
+   "src": "tambah 50 ya, jalannya jauh",
+   "out": "Add 50, the road is far.",
+   "score": 2,
+   "strict": 2,
+   "amount_err": false,
+   "ttft": 1.686,
+   "app_validation": "accepted"
+  },
+  {
+   "id": "36",
+   "src": "di sini gk boleh jemput, jalan dikit ke depan ya",
+   "out": "here, pick up is not allowed, walk a bit to the front.",
+   "score": 2,
+   "strict": 2,
+   "amount_err": false,
+   "ttft": 0.371,
+   "app_validation": "accepted"
+  },
+  {
+   "id": "37",
+   "src": "pesanan sdh sy ambil, otw ya kak",
+   "out": "Your order is ready, thank you.",
+   "score": 0,
+   "strict": 0,
+   "amount_err": false,
+   "ttft": 0.237,
+   "app_validation": "accepted"
+  },
+  {
+   "id": "38",
+   "src": "kak menu ayam geprek habis, mau ganti apa?",
+   "out": "The smashed fried chicken is finished, what else would you like?",
+   "score": 0,
+   "strict": 0,
+   "amount_err": false,
+   "ttft": 0.475,
+   "app_validation": "accepted"
+  },
+  {
+   "id": "39",
+   "src": "bayar cash ya kak, totalnya 87rb",
+   "out": "pay cash, the total is 87,000.",
+   "score": 2,
+   "strict": 2,
+   "amount_err": false,
+   "ttft": 0.305,
+   "app_validation": "accepted"
+  },
+  {
+   "id": "40",
+   "src": "mau level pedas berapa? 0 sampai 5",
+   "out": "How spicy do you want it?",
+   "score": 0,
+   "strict": 0,
+   "amount_err": false,
+   "ttft": 0.631,
+   "app_validation": "accepted"
+  },
+  {
+   "id": "41",
+   "src": "harga belum termasuk pajak 10% dan service 5%",
+   "out": "price not yet including tax 10% and service 5%",
+   "score": 2,
+   "strict": 2,
+   "amount_err": false,
+   "ttft": 0.386,
+   "app_validation": "unchanged"
+  },
+  {
+   "id": "42",
+   "src": "ada kak, saus kacang",
+   "out": "Is there any peanut sauce?",
+   "score": 1,
+   "strict": 1,
+   "amount_err": false,
+   "ttft": 0.43,
+   "app_validation": "accepted"
+  },
+  {
+   "id": "43",
+   "src": "check in jam 2 siang, sekarang kamarnya blm siap",
+   "out": "check in at 2 PM, the room is still not ready",
+   "score": 2,
+   "strict": 2,
+   "amount_err": false,
+   "ttft": 0.544,
+   "app_validation": "accepted"
+  },
+  {
+   "id": "44",
+   "src": "deposit 500rb, nanti dikembalikan pas check out",
+   "out": "deposit Rp 500,000, later returned at check out",
+   "score": 2,
+   "strict": 2,
+   "amount_err": false,
+   "ttft": 0.357,
+   "app_validation": "accepted"
+  },
+  {
+   "id": "45",
+   "src": "air panasnya harus tunggu 15 menit dulu ya",
+   "out": "The hot water needs to be prepared first.",
+   "score": 1,
+   "strict": 1,
+   "amount_err": false,
+   "ttft": 0.381,
+   "app_validation": "accepted"
+  },
+  {
+   "id": "46",
+   "src": "rate hari ini 2.600 per yuan, minimal tukar 1jt",
+   "out": "rate today 2.600 per yuan, minimum exchange 1,000,000",
+   "score": 1,
+   "strict": 1,
+   "amount_err": false,
+   "ttft": 1.046,
+   "app_validation": "accepted"
+  },
+  {
+   "id": "47",
+   "src": "uangnya dihitung lagi ya kak di sini",
+   "out": "The money is being counted again, please.",
+   "score": 1,
+   "strict": 1,
+   "amount_err": false,
+   "ttft": 0.398,
+   "app_validation": "accepted"
+  },
+  {
+   "id": "48",
+   "src": "bisa QRIS atau cash, kartu gk bisa",
+   "out": "can QRIS or cash, card cannot",
+   "score": 2,
+   "strict": 2,
+   "amount_err": false,
+   "ttft": 0.341,
+   "app_validation": "accepted"
+  },
+  {
+   "id": "49",
+   "src": "kembaliannya gk ada, uang pas aja",
+   "out": "There's no change, just the exact amount.",
+   "score": 2,
+   "strict": 2,
+   "amount_err": false,
+   "ttft": 0.168,
+   "app_validation": "accepted"
+  },
+  {
+   "id": "50",
+   "src": "paket 30 hari 25GB 150rb, perlu paspor",
+   "out": "package 30 days, 25GB, 150rb, need passport",
+   "score": 0,
+   "strict": 0,
+   "amount_err": false,
+   "ttft": 2.037,
+   "app_validation": "unchanged"
+  },
+  {
+   "id": "51",
+   "src": "tolong tunjukkan QR e-CD dan tiket pulang",
+   "out": "Please show QR e-CD and return ticket.",
+   "score": 2,
+   "strict": 2,
+   "amount_err": false,
+   "ttft": 0.667,
+   "app_validation": "accepted"
+  },
+  {
+   "id": "52",
+   "src": "VOA 500rb, bisa bayar kartu",
+   "out": "VOA 500,000, can pay card",
+   "score": 2,
+   "strict": 2,
+   "amount_err": false,
+   "ttft": 0.45,
+   "app_validation": "accepted"
+  },
+  {
+   "id": "53",
+   "src": "diminum 3x sehari sesudah makan",
+   "out": "drunk 3 times a day after eating",
+   "score": 2,
+   "strict": 2,
+   "amount_err": false,
+   "ttft": 0.714,
+   "app_validation": "accepted"
+  },
+  {
+   "id": "54",
+   "src": "ini obat diare, kalau demam harus ke dokter",
+   "out": "This medicine treats diarrhea. If you have a fever, you should go to the doctor.",
+   "score": 2,
+   "strict": 2,
+   "amount_err": false,
+   "ttft": 0.219,
+   "app_validation": "accepted"
+  },
+  {
+   "id": "55",
+   "src": "sudah lapor polisi? perlu surat kehilangan",
+   "out": "Have you reported to the police yet?",
+   "score": 2,
+   "strict": 2,
+   "amount_err": false,
+   "ttft": 0.303,
+   "app_validation": "accepted"
+  },
+  {
+   "id": "56",
+   "src": "lurus aja, nanti di perempatan belok kiri",
+   "out": "go straight, turn left at the intersection",
+   "score": 2,
+   "strict": 2,
+   "amount_err": false,
+   "ttft": 0.198,
+   "app_validation": "accepted"
+  },
+  {
+   "id": "57",
+   "src": "sewa mobil 10 jam 700rb sudah termasuk bensin",
+   "out": "rental car for 10 hours, Rp 700,000, includes fuel.",
+   "score": 2,
+   "strict": 2,
+   "amount_err": false,
+   "ttft": 0.564,
+   "app_validation": "accepted"
+  },
+  {
+   "id": "58",
+   "src": "kapal ke Gili jam 9, harus di pelabuhan jam 8.30",
+   "out": "The boat to Gili departs at 9:00, but you need to be at the harbor by 8:30.",
+   "score": 2,
+   "strict": 2,
+   "amount_err": false,
+   "ttft": 0.333,
+   "app_validation": "rejected:amountMismatch(\"00\")"
+  },
+  {
+   "id": "59",
+   "src": "pijat 60 menit 150rb, tipnya terserah",
+   "out": "massage 60 minutes Rp 150,000, the tip is up to",
+   "score": 2,
+   "strict": 2,
+   "amount_err": false,
+   "ttft": 0.583,
+   "app_validation": "accepted"
+  },
+  {
+   "id": "60",
+   "src": "dari mana kak? pertama kali ke Bali?",
+   "out": "Where are you from? This is your first time to Bali?",
+   "score": 2,
+   "strict": 2,
+   "amount_err": false,
+   "ttft": 0.357,
+   "app_validation": "accepted"
+  }
+ ]
+}
