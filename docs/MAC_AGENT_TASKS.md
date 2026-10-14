@@ -45,7 +45,7 @@ mkdir -p "$WORK"
 5. T3 编译 App 无 error；警告里如有 `Localizable.xcstrings` 相关（未用键/缺翻译）抄进报告。
 
 **C. UI 测试两遍（T4.4）**
-6. 中文界面（默认）：照 T4.4 跑一遍，共 13 项，全绿。
+6. 中文界面（默认）：照 T4.4 跑一遍，共 12 项，全绿。
 7. 英文界面：同一命令加 `TEST_RUNNER_UI_LANG=en`，`-resultBundlePath "$WORK/ui_r${ROUND}_en.xcresult"`，日志 `t4_ui_en.log`。这一遍截图自动加 `_en` 后缀。
    - `testEnglishUIHasNoChinese` 必须通过（引导页、阻断页、首页、对话页可见文字里没有汉字）。失败时把它列出的汉字字符串逐条写进报告（这是缺键，属于盒子要修的缺陷，不要改 App 掩盖）。
    - 中文专用断言（比如 `约 ¥37`、`太贵了`）在英文遍里失败的，只记录不修，并注明是否属于测试本身假设了中文界面。
