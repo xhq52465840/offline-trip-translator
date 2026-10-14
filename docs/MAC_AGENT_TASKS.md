@@ -30,6 +30,32 @@ mkdir -p "$WORK"
 
 ---
 
+## 当前轮次：r6（r5 已审阅合并；拉取 master 后按此清单执行）
+
+> 用户只会说「pull master and continue」。开 PR `Mac run r6`，**不要 merge**。不训练、不上传权重。
+> r5 结论：编译 / swift test 156 / 中文 UI 12 项全绿；英文截图无汉字（常用句分段除外，已修）；s400 中文复跑 strict 105、金额错 0（无回归）；sha256 一致；s400 印→英 strict 97/120、金额错 0。
+> **P9 是否重训取决于本轮第 5 步**（计划 §5 规则：id→en strict ≥ 同机基座 + 10 且金额错 ≤ 基座）。
+
+1. `git pull origin master`；`ROUND=6`；分支 `mac-run-<日期>-r6`；`python3 scripts/i18n.py check` = OK；`cd App && xcodegen generate`；`cd TripCore && swift test` 全绿。
+2. **UI 测试一次跑完中英两遍**（不再用 `TEST_RUNNER_UI_LANG`，r5 实测无效）：照 T4.4 的命令跑整个 `TripUITests` 目标，会同时执行 `TripUITests`（中文，12 项）和 `TripUITestsEnglish`（英文，继承用例，截图自动加 `_en`）。两个类都要全绿；英文类里依赖中文界面的断言如有失败，只记录。
+3. **复核 r5 的 UX 修复**（逐张看截图，写 ✓/✗ + 文件名）：
+   - 对话顶栏只显示「English ⇄ Indonesian」这类语言名（我方加粗），不被返回按钮裁切，不和右侧图标重叠（`07_chat_sent_en`、`08_amount_conversion_en`、`11_face_to_face_lang`）；
+   - 英文首页大标题为 `Trip Translator`，不截断（`06_home_en`）；
+   - 英文阻断页缺包说明完整显示（可滚动 / 可上拉）（`02_blocking_sheet_en`）；
+   - 英文常用句分段无汉字（`03_phrasebook_en`、`12_no_han_phrasebook_en`）；
+   - 离线准备、常用句列表最后一行不被 Home 指示条挡住（`01_onboarding`、`03_phrasebook`）。
+   - 金额：`08_amount_conversion` 有 `约 ¥37`，`08_amount_conversion_en` 有 `≈ $5.6`。
+4. s400 sha256 仍为 `691a1b2b…f05b0a`、986048640 字节（不删、不传）。
+5. **P9 判定：基座印→英 60 条（必做）**，同机、同脚本：
+   ```bash
+   cd "$REPO/finetune/mlx"
+   python ../scripts/eval_appfmt.py "$BASE" --tag mac_base_en --target en --limit 60 2>&1 | tee "$WORK/t6_eval_base_en.log" | tail -5
+   ```
+   报告表：基座 vs s400（r5：strict 97、金额错 0、App 接受 46）。判定：s400 strict ≥ 基座 + 10 且金额错 ≤ 基座 → **不做 P9**；否则写「P9 需要」，下一轮由盒子准备数据。
+6. 报告 `reports/mac_run_<日期>_r6.md`，PR `Mac run r6`，**不要 merge**。
+
+---
+
 ## 当前轮次：r5（r5 原清单 + 三语/国际化 P1–P8 验证，合并为一张清单）
 
 > 用户只会说「pull master and continue」。按本节从上到下执行，开 PR `Mac run r5`，**不要 merge**。
