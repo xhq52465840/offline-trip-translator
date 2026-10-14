@@ -31,7 +31,8 @@ final class PromptEnglishP3Tests: XCTestCase {
         """)
         XCTAssertTrue(b.user(context: [], source: "harga 50rb", literal: "", glossary: []).contains("⟦N1⟧50rb=Rp 50,000"))
         XCTAssertEqual(b.prefixMessages.count, 1 + 2 * PromptBuilder.fewShotEnglish.count)
-        XCTAssertTrue(PromptBuilder.supportsUnderstanding(target: "en"))
+        XCTAssertTrue(PromptBuilder.hasPrompt(target: "en"))
+        XCTAssertFalse(PromptBuilder.supportsUnderstanding(target: "en"), "r7：印→英在 App 里走 Apple 直译")
         XCTAssertFalse(PromptBuilder.supportsUnderstanding(target: "id"))
     }
 

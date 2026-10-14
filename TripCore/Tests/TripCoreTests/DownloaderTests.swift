@@ -106,9 +106,9 @@ final class DownloaderTests: XCTestCase {
     func testBundledManifest() throws {
         let m = try ModelManifest.bundled()
         let e = try XCTUnwrap(m.entry(for: .b6GB))
-        XCTAssertEqual(e.bytes, 1_117_320_736)
-        XCTAssertEqual(e.sha256, "6a1a2eb6d15622bf3c96857206351ba97e1af16c30d7a74ee38970e434e9407e")
-        XCTAssertTrue(e.url.hasPrefix("https://huggingface.co/Qwen/Qwen2.5-1.5B-Instruct-GGUF/resolve/"))
+        XCTAssertEqual(e.bytes, 986_048_640)
+        XCTAssertEqual(e.sha256, "691a1b2b1e0b73e3e2156583505300697753184477176301924877f73bf05b0a")
+        XCTAssertTrue(e.url.hasPrefix("https://github.com/xhq52465840/offline-trip-translator/releases/download/model-s400-v1/"))
         XCTAssertNil(m.entry(for: .c4GB), "4GB 档默认不提供模型")
         XCTAssertNotNil(m.entry(for: .a8GB))
     }

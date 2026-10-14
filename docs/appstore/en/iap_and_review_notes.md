@@ -17,7 +17,8 @@ The UI is available in Chinese and English (follows the system language; overrid
 Settings > App language).
 How to test: 1) Launch on Wi-Fi and wait for the download (~1-3 min). 2) Tap "Start conversation".
 At the top choose "I speak" and "They speak" (e.g. English / Indonesian). 3) Paste or type
-"Harganya Rp 100.000 kak" as the other side -> shows "The price is Rp 100,000 (≈ $5.6)".
+"Harganya Rp 100.000 kak" as the other side -> the translation shows "Rp 100,000 (≈ $5.6)".
+Indonesian->English uses Apple on-device translation; the local model adds understanding for Chinese readers.
 4) Phrases work immediately, even before the download completes. 5) "Demo" on the setup screen
 shows a pre-recorded conversation without any download.
 Trial: 24 hours from the first translated message; then IAP (30-day non-renewing Trip Pass or

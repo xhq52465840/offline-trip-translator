@@ -32,7 +32,12 @@ public struct PromptBuilder: Sendable {
     var isEnglish: Bool { target == "en" }
 
     /// 本地模型能输出「理解」的目标语言（P1：只有中文；P3 加英文）
-    public static func supportsUnderstanding(target: String) -> Bool { target == "zh-Hans" || target == "en" }
+    /// 本地模型能写提示词的目标语言（英文提示词保留，供评测工具 trip-prompt / eval_appfmt --target en 使用）
+    public static func hasPrompt(target: String) -> Bool { target == "zh-Hans" || target == "en" }
+    /// App 里实际启用本地理解的目标语言（计划 §5 按方向采用）。r7：s400 印→英 strict 97 < 基座 100 + 10，
+    /// P9 的 mix3 s1000 也只有 107 且金额错 1 → 印→英不启用本地理解，走 Apple 翻译直译。将来某个检查点印→英达标后再加回 "en"。
+    public static let localUnderstandingTargets: Set<String> = ["zh-Hans"]
+    public static func supportsUnderstanding(target: String) -> Bool { localUnderstandingTargets.contains(target) }
 
     public var system: String {
         if isEnglish {

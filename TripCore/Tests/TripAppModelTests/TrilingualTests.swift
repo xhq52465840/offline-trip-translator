@@ -137,17 +137,21 @@ final class TrilingualP2Tests: XCTestCase {
 
 @MainActor
 final class TrilingualP3Tests: XCTestCase {
-    func testEnglishUnderstandingUsesEnglishPrompt() async throws {
-        var seenSystem = ""
-        let eng = MockEngine(pieceDelayNanos: 0) { msgs in seenSystem = msgs[0].content; return "Rp 50,000, but the fare is not included" }
+    /// r7 按方向采用：印→英不调用本地模型，只用 Apple 翻译直译（金额照样由程序还原 + 加注）
+    func testEnglishTargetUsesAppleDirectOnly() async throws {
+        var calls = 0
+        let eng = MockEngine(pieceDelayNanos: 0) { _ in calls += 1; return "Rp 50,000, but the fare is not included" }
         try await eng.load(modelURL: URL(fileURLWithPath: "/dev/null"))
-        let u = Understander(engine: eng)
-        let m = ConversationModel(translator: RecordingTranslator(), understander: u, trial: TrialCounter(store: InMemoryTrialStore()))
+        let m = ConversationModel(translator: RecordingTranslator(), understander: Understander(engine: eng), trial: TrialCounter(store: InMemoryTrialStore()))
         m.myLanguage = "en"; m.theirLanguage = "id"
         await m.receiveTheirs("50rb belum termasuk ongkos")
-        XCTAssertTrue(seenSystem.contains("English"), seenSystem)
-        XCTAssertEqual(m.messages[0].display, "Rp 50,000, but the fare is not included")
-        XCTAssertTrue(m.messages[0].understood)
+        XCTAssertEqual(calls, 0, "印→英不应调用本地模型")
+        XCTAssertNil(m.messages[0].display)
+        XCTAssertFalse(m.messages[0].understood)
+        XCTAssertEqual(m.messages[0].literal, "[id>en]Rp 50,000 belum termasuk ongkos")
+        XCTAssertEqual(LangRoute.route(from: "id", to: "en"), .translate)
+        XCTAssertEqual(LangRoute.route(from: "id", to: "zh-Hans"), .translateAndUnderstand)
+        XCTAssertEqual(LangRoute.route(from: "en", to: "zh-Hans"), .translateAndUnderstand)
     }
 
     func testEnglishWrongMagnitudeKeepsLiteral() async throws {

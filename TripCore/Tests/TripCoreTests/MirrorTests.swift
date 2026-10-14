@@ -92,10 +92,10 @@ final class MirrorTests: XCTestCase {
         d.resume(); XCTAssertEqual(t.starts[1].url.host, "cn.example.com"); XCTAssertEqual(t.starts[1].resume, Data("resume-token".utf8))
     }
 
-    func testBundledManifestHasMirrorsWithHFPlaceholderLast() throws {
+    func testBundledManifestHasMirrorsWithGitHubReleaseLast() throws {
         let m = try ModelManifest.bundled()
         for e in m.models {
-            XCTAssertEqual(e.orderedMirrors.map(\.id), ["cn", "global", "hf"])
+            XCTAssertEqual(e.orderedMirrors.map(\.id), ["cn", "global", "gh"])
             XCTAssertEqual(e.orderedMirrors.last?.url, e.url)
             XCTAssertEqual(e.sha256.count, 64)
         }

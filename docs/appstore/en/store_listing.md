@@ -8,7 +8,7 @@
 Travel translation that works with no internet at all.
 • Fully offline: translation and understanding run on your iPhone. Conversations never leave the device.
 • Three languages: any direction between Chinese, Indonesian and English. Pick your language and theirs at the top of the chat; swap with one tap.
-• Understands real talk: Grab/Gojek drivers, delivery riders and market vendors use abbreviations (gpp, otw, 50rb, 1jt). You see the literal text and what they actually mean.
+• Understands real talk: Grab/Gojek drivers, delivery riders and market vendors use abbreviations (gpp, otw, 50rb, 1jt). Chinese readers see what they actually mean; English readers get an on-device Apple translation (local understanding for English is still being tuned).
 • Amounts you can trust: "Rp 100,000 (≈ $5.6)". Conversion is done by code, not AI; rates update when online and show their date.
 • Face-to-face mode: turn the screen around; each side holds to talk in their own language.
 • Phrase book for 13 scenes (arrival, taxi, food, bargaining, money exchange, hotel, doctor, emergency…), usable before the download finishes.
