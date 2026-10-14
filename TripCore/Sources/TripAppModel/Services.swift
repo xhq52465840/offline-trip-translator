@@ -45,3 +45,9 @@ public enum LangRoute: Equatable, Sendable {
         return .translate
     }
 }
+
+/// 界面语言（P7）：zh-Hans 或 en。App 启动时按系统语言 / App 内设置写入；模型层文案据此选择。
+public enum L10n {
+    nonisolated(unsafe) public static var uiLanguage: String = "zh-Hans"
+    public static var isEnglish: Bool { uiLanguage == "en" }
+}

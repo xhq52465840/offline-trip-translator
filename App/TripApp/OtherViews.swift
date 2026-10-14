@@ -145,7 +145,7 @@ struct PhraseBookView: View {
         List {
             Section {
                 Picker("对方语言", selection: $lang) {
-                    Text("印尼语").tag("id"); Text("English").tag("en")
+                    ForEach(Lang.all.filter { $0 != state.myLanguage }, id: \.self) { l in Text(LangNames.native(l)).tag(l) }
                 }.pickerStyle(.segmented)
             } footer: { Text("下载完成前只能用这些预先翻好的句子。点一下，把屏幕给对方看。") }
             ForEach(PhraseBook.sections(recent: state.recentScenes)) { sec in
@@ -154,8 +154,8 @@ struct PhraseBookView: View {
                         Button { showing = p } label: {
                             HStack {
                                 VStack(alignment: .leading) {
-                                    Text(p.zh).font(.body.weight(.semibold))
-                                    Text(p.foreign(lang)).font(.footnote).foregroundStyle(.secondary)
+                                    Text(p.text(state.myLanguage)).font(.body.weight(.semibold))
+                                    Text(p.text(lang)).font(.footnote).foregroundStyle(.secondary)
                                 }
                                 Spacer()
                                 if p.needsNativeReview { Text("待校对").font(.caption2).foregroundStyle(.orange) }
@@ -169,8 +169,9 @@ struct PhraseBookView: View {
         }
         .navigationTitle("常用句（离线可用）")
         .accessibilityIdentifier("phraseBook")
+        .onAppear { if lang == state.myLanguage { lang = state.myLanguage == "id" ? "zh-Hans" : "id" } }
         .fullScreenCover(item: $showing) { p in
-            PresentView(text: PhraseBook.present(p, lang: lang).big, amountLine: nil)
+            PresentView(text: PhraseBook.present(p, lang: lang, myLanguage: state.myLanguage).big, amountLine: nil)
         }
     }
 }

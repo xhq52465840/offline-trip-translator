@@ -36,7 +36,58 @@ public enum Scenario: String, CaseIterable, Identifiable, Codable, Sendable {
     case chat
 
     public var id: String { rawValue }
-    public var title: String {
+    /// 界面语言下的标题（P6/P7：跟随 L10n.uiLanguage）
+    public var title: String { title(for: L10n.uiLanguage) }
+    public var subtitle: String { subtitle(for: L10n.uiLanguage) }
+
+    public func title(for lang: String) -> String {
+        switch Lang.normalize(lang) {
+        case "en": return Self.en[self]!.0
+        case "id": return Self.id_[self]!.0
+        default: return titleZh
+        }
+    }
+    public func subtitle(for lang: String) -> String {
+        switch Lang.normalize(lang) {
+        case "en": return Self.en[self]!.1
+        case "id": return Self.id_[self]!.1
+        default: return subtitleZh
+        }
+    }
+    /// 英文（按英语母语习惯重写，非直译；待英语母语复核）
+    static let en: [Scenario: (String, String)] = [
+        .arrival: ("Airport arrival", "Visa on arrival, arrival card QR, return ticket"),
+        .ride: ("Rides · Pickup", "Pickup point, ETA, pay the app price"),
+        .delivery: ("Food delivery", "Leave at door, can't find gate, swap item"),
+        .restaurant: ("Restaurant", "Not spicy, allergies, takeaway, the bill"),
+        .shopping: ("Shopping · Paying", "How much, QRIS, card, change"),
+        .money: ("Money exchange · ATM", "Rates, count it yourself, nearby ATM"),
+        .hotel: ("Hotel · Villa", "Check-in, deposit, hot water, repairs"),
+        .tour: ("Private driver · Boat", "Departure time, what's included, meeting point"),
+        .spa: ("Massage · Spa", "Pressure, duration, price"),
+        .health: ("Clinic · Pharmacy", "Diarrhea, fever, dosage"),
+        .emergency: ("Emergency", "Police, lost items, ambulance"),
+        .directions: ("Directions", "Where is it, how to get there, how far"),
+        .chat: ("Small talk · Courtesy", "Thanks, no problem, where I'm from"),
+    ]
+    /// 印尼语（印尼语用户作为「我方」时的界面场景名；待印尼语母语复核）
+    static let id_: [Scenario: (String, String)] = [
+        .arrival: ("Kedatangan bandara", "VOA, QR kartu kedatangan, tiket pulang"),
+        .ride: ("Ojek / taksi online", "Titik jemput, berapa lama, harga aplikasi"),
+        .delivery: ("Pesan antar makanan", "Taruh di depan pintu, alamat, ganti menu"),
+        .restaurant: ("Restoran", "Tidak pedas, alergi, dibungkus, minta bon"),
+        .shopping: ("Belanja · Bayar", "Berapa, QRIS, kartu, kembalian"),
+        .money: ("Tukar uang · ATM", "Kurs, hitung sendiri, ATM terdekat"),
+        .hotel: ("Hotel · Vila", "Check-in, deposit, air panas, perbaikan"),
+        .tour: ("Sewa mobil · Kapal", "Jam berangkat, termasuk apa, titik kumpul"),
+        .spa: ("Pijat · Spa", "Tekanan, durasi, harga"),
+        .health: ("Klinik · Apotek", "Diare, demam, cara minum obat"),
+        .emergency: ("Darurat", "Polisi, barang hilang, ambulans"),
+        .directions: ("Tanya jalan", "Di mana, lewat mana, jauh tidak"),
+        .chat: ("Ngobrol · Sopan santun", "Terima kasih, tidak apa-apa, asal negara"),
+    ]
+
+    var titleZh: String {
         switch self {
         case .arrival: return "机场入境"
         case .ride: return "打车 · 接车"
@@ -53,7 +104,7 @@ public enum Scenario: String, CaseIterable, Identifiable, Codable, Sendable {
         case .chat: return "闲聊 · 礼貌"
         }
     }
-    public var subtitle: String {
+    var subtitleZh: String {
         switch self {
         case .arrival: return "落地签、入境卡二维码、回程票"
         case .ride: return "接车点、还要多久、按 App 价"
@@ -88,6 +139,8 @@ public enum Scenario: String, CaseIterable, Identifiable, Codable, Sendable {
         case .chat: return "bubble.left.and.bubble.right.fill"
         }
     }
+    /// 写进模型上下文的场景名（英文目标用英文标题，P6）
+    public func contextName(for target: String) -> String { target == "en" ? Self.en[self]!.0 : contextName }
     /// 写进模型上下文的场景名
     public var contextName: String {
         switch self {

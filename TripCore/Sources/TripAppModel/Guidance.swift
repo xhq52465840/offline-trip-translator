@@ -96,5 +96,5 @@ public enum PhraseBook {
         recent.ordered().map { s in Section(scene: s, phrases: s.phrases.filter { !$0.needsNativeReview } + s.phrases.filter(\.needsNativeReview)) }
     }
     /// 出示内容：对方语言为大字，中文为小字（让我自己确认点对了）
-    public static func present(_ p: Phrase, lang: String) -> (big: String, small: String) { (p.foreign(lang), p.zh) }
+    public static func present(_ p: Phrase, lang: String, myLanguage: String = Lang.tourist) -> (big: String, small: String) { (p.text(lang), p.text(myLanguage)) }
 }
