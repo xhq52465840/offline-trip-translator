@@ -126,3 +126,34 @@ final class SpeechNonBlockingTests: XCTestCase {
         XCTAssertFalse(zh.isComplete, "可下载的听写仍提示下载")
     }
 }
+
+@MainActor
+final class R9FallbackSafetyTests: XCTestCase {
+    func eng(_ out: @escaping ([ChatMessage]) -> String) async throws -> MockEngine {
+        let e = MockEngine(responder: out); try await e.load(modelURL: URL(fileURLWithPath: "/dev/null")); return e
+    }
+
+    func testEchoedChineseForIndonesianTargetFails() async throws {
+        let t = LocalModelTranslator(engine: try await eng { _ in "太贵了，能便宜一点吗" })
+        do { _ = try await t.translate("太贵了，能便宜一点吗", from: "zh-Hans", to: "id"); XCTFail() } catch {}
+        let ok = LocalModelTranslator(engine: try await eng { _ in "Terlalu mahal, bisa lebih murah?" })
+        let r = try await ok.translate("太贵了，能便宜一点吗", from: "zh-Hans", to: "id")
+        XCTAssertEqual(r, "Terlalu mahal, bisa lebih murah?")
+    }
+
+    func testDroppedPlaceholderDoesNotShowModelAmount() async throws {
+        // 模型丢了占位符并把 50rb 说成 50元
+        let t = FallbackTranslator(primary: ThrowingTranslator(), fallback: LocalModelTranslator(engine: try await eng { _ in "50元人民币还不含运费。" }), probe: LangProbe(unsupported: ["id"]))
+        let m = ConversationModel(translator: t, understander: nil, trial: TrialCounter(store: InMemoryTrialStore()))
+        await m.receiveTheirs("50rb belum termasuk ongkos")
+        let lit = m.messages[0].literal ?? ""
+        XCTAssertFalse(lit.contains("50元"), lit)
+        XCTAssertTrue(lit.contains("5万"), lit)
+        XCTAssertTrue(lit.hasPrefix("50rb belum termasuk ongkos"), lit)
+    }
+
+    func testValidatorRejectsRMBForRupiahSource() {
+        if case .rejected = OutputValidator.validate(output: "5万人民币还不含运费", literal: "5万还不包括费用", source: "50rb belum termasuk ongkos", context: []) {} else { XCTFail() }
+        XCTAssertEqual(OutputValidator.validate(output: "5万，不含车费", literal: "5万还不包括费用", source: "50rb belum termasuk ongkos", context: []), .accepted("5万，不含车费"))
+    }
+}

@@ -153,6 +153,12 @@ public enum OutputValidator {
             let w = ns.substring(with: m.range)
             if source.range(of: w, options: .caseInsensitive) == nil { return .rejected(.foreignWord(w)) }
         }
+        // r9：原文是印尼盾，输出却说「人民币 / 元」（模型把 5万 说成人民币）→ 拒绝；原文本身提到人民币 / ¥ 时放行
+        let srcLow = source.lowercased()
+        let srcMentionsCNY = ["¥", "yuan", "rmb", "cny", "renminbi", "人民币", "元"].contains { srcLow.contains($0) }
+        if !srcMentionsCNY, out.contains("人民币") || out.range(of: #"\d\s*元"#, options: .regularExpression) != nil {
+            return .rejected(.amountMismatch("人民币"))
+        }
         // 金额交叉校验
         let allowed = allowedValues(source: source, context: context)
         var covered: [NSRange] = []

@@ -25,6 +25,9 @@ public final class LocalModelTranslator: Translating {
         let out = try await engine.complete(Self.messages(text, from: from, to: to), options: GenerationOptions(maxTokens: 160, stopAtNewline: true))
         let line = out.split(separator: "\n").first.map(String.init)?.trimmingCharacters(in: .whitespaces) ?? ""
         guard !line.isEmpty, !OutputSanity.isDegenerate(line) else { throw LLMError.decodeFailed(0) }
+        // r9：中→印时模型把中文原句照抄回来 → 目标不是中文却含汉字、或目标是中文却没有汉字，都当失败
+        let hasHan = line.unicodeScalars.contains { (0x4E00...0x9FFF).contains($0.value) }
+        if to == "zh-Hans" ? !hasHan : hasHan { throw LLMError.decodeFailed(1) }
         return line
     }
 }

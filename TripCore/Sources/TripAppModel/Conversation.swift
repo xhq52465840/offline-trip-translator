@@ -202,8 +202,9 @@ public final class ConversationModel {
                 if let r = AmountNormalizer.restore(t, table: table, lang: target) {
                     literal = r
                 } else {
-                    let plain = try await translator.translate(m.source, from: lang, to: target)
                     let ds = table.keys.sorted().compactMap { table[$0]?.display(for: target) }
+                    // r9：本机模型兜底时丢了金额占位符，不再用它的整句直译（实测把 50rb 写成「50元人民币」）→ 显示原文 + 程序换算的金额
+                    let plain = usedFallback(from: lang, to: target) ? m.source : try await translator.translate(m.source, from: lang, to: target)
                     literal = target == "zh-Hans" ? plain + "（" + ds.joined(separator: "，") + "）" : plain + " (" + ds.joined(separator: ", ") + ")"
                 }
             }
