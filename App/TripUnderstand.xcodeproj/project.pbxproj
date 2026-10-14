@@ -16,6 +16,7 @@
 		5C9E3F4E3A7D39379E0FA12A /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EA28FC65F858807C558D6E /* OnboardingView.swift */; };
 		5EAACCBD6294DC32956E5E51 /* TripApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F12BFA0D303661C0CF06F4D /* TripApp.swift */; };
 		60F0A77C971A3D043789BFB4 /* OtherViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE0A60527FC2D4688F43C4C3 /* OtherViews.swift */; };
+		723FBC04692D261E2CCEA88A /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 8CD02ECDA1D56F3975857D1E /* PrivacyInfo.xcprivacy */; };
 		87F055598C4FAF198A1EC008 /* TripCore in Frameworks */ = {isa = PBXBuildFile; productRef = 6EB80A3ED1AAA16A48D92DFC /* TripCore */; };
 		8A2DA98CD6B1E097310CABE8 /* Previews.swift in Sources */ = {isa = PBXBuildFile; fileRef = D35281CB79141DF980D0F53E /* Previews.swift */; };
 		9C3E2794DA524C3EE8C252EF /* Products.storekit in Resources */ = {isa = PBXBuildFile; fileRef = 07629C0EC6DDE05834AD3CF1 /* Products.storekit */; };
@@ -47,6 +48,7 @@
 		80767C8D156583F4D93A4136 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		80EA28FC65F858807C558D6E /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		8631AE48CBD4ABA1066C6590 /* TripUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = TripUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		8CD02ECDA1D56F3975857D1E /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		913C623DB40D20DBA2631F2D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		9E9C92A92FB7E3E252C15978 /* TripCore */ = {isa = PBXFileReference; lastKnownFileType = folder; name = TripCore; path = ../TripCore; sourceTree = SOURCE_ROOT; };
 		BA0367D284B500F9C51C4102 /* SystemServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemServices.swift; sourceTree = "<group>"; };
@@ -108,6 +110,7 @@
 				80EA28FC65F858807C558D6E /* OnboardingView.swift */,
 				BE0A60527FC2D4688F43C4C3 /* OtherViews.swift */,
 				D35281CB79141DF980D0F53E /* Previews.swift */,
+				8CD02ECDA1D56F3975857D1E /* PrivacyInfo.xcprivacy */,
 				07629C0EC6DDE05834AD3CF1 /* Products.storekit */,
 				43EB91516FDF2AF190302150 /* Speech.swift */,
 				BA0367D284B500F9C51C4102 /* SystemServices.swift */,
@@ -222,6 +225,7 @@
 				AFB632D3AD432D1AAF8E033E /* Assets.xcassets in Resources */,
 				47D6D8B06540006085A54578 /* InfoPlist.strings in Resources */,
 				363935303A8DA5F4B5EC4327 /* Localizable.xcstrings in Resources */,
+				723FBC04692D261E2CCEA88A /* PrivacyInfo.xcprivacy in Resources */,
 				9C3E2794DA524C3EE8C252EF /* Products.storekit in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
