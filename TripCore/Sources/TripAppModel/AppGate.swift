@@ -47,7 +47,7 @@ public final class AppGate {
 
     static func combine(_ a: PackStatus, _ b: PackStatus) -> Readiness {
         if a == .installed && b == .installed { return .ready }
-        if a == .unsupported || b == .unsupported { return .unavailable(L10n.t("这台手机不支持这门语言的离线翻译")) }
+        if a == .unsupported || b == .unsupported { return .unavailable(L10n.t("系统没有这门语言的离线翻译，将用本机模型翻译（质量较低）")) }
         return .needsDownload(bytes: nil)
     }
 

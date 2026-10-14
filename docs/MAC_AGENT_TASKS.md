@@ -9,7 +9,7 @@
 1. **不要绕过失败**：命令失败时，把完整报错原文（verbatim）写进报告，标记该任务为 ❌/⚠️，然后继续下一个**不依赖它**的任务。不要改系统设置、不要关 SIP、不要 `sudo` 改系统目录、不要禁用签名/校验。
 2. **允许的代码修改只有一种**：T3/T4 中 Xcode 编译错误的**最小修复**（每处修复都要在报告里列出：文件、行、原因、diff）。其他任何代码不要改。
 3. **绝不提交**：`.gguf`、`.safetensors`、`.bin`、适配器权重、`finetune/runs/` 下任何东西、任何密钥/令牌/证书/个人路径以外的隐私信息。仓库 `.gitignore` 已排除这些，提交前仍需 `git status` 人工核对。
-4. **不要上传模型**到任何地方（不传 HF、不传网盘、不传对象存储）。只在报告里写本地路径、字节数、sha256。
+4. **不要上传模型**到任何地方（不传 HF、不传网盘、不传对象存储）。只在报告里写本地路径、字节数、sha256。**唯一例外（用户 2026-10-14 批准）**：r8 把 s400 一个文件上传到本仓库 GitHub Release `model-s400-v1`，见 r8 清单；其他模型文件仍不上传。
 5. 不要修改 `TripCore/Sources/TripCore/Resources/model-manifest.json` 里的地址/哈希（托管方案未定）。
 6. 所有输出写到仓库内 `reports/mac_run_<日期>_r<轮次>.md`（模板见文末），结果 JSON 放 `finetune/results/`。
 7. 长任务用 `caffeinate` 防睡眠，并把日志写到文件，不要只看终端。
@@ -30,28 +30,42 @@ mkdir -p "$WORK"
 
 ---
 
-## 当前轮次：r8 = 定稿回归 + 本机准备 GitHub Release（r7 已审阅合并；拉取 master 后按此清单执行）
+## 当前轮次：r8 = 上传 s400 到 GitHub Release + 用真实模型回归（r7 已审阅合并；拉取 master 后按此清单执行）
 
 > 用户只会说「pull master and continue」。开 PR `Mac run r8`，**不要 merge**。
-> r7 结论：mix3 不采用（s1000 印→中 106 ✓，印→英 107 < 110 且金额错 1 ✗；s600 两向都 ✗）。**最终模型 = s400**（`trip-mix2-s400-Q4_K_M.gguf`，986048640 字节，sha256 `691a1b2b1e0b73e3e2156583505300697753184477176301924877f73bf05b0a`）。
-> 盒子已改：印→英在 App 里**不再调用本地模型**，只用 Apple 翻译直译（金额照样由程序还原并加注 ≈ $）；中文目标（id→zh、en→zh）仍用 s400 理解。
-> 模型清单 `TripCore/Sources/TripCore/Resources/model-manifest.json` 已指向 GitHub Release `model-s400-v1` 的资产 `trip-mix2-s400-Q4_K_M.gguf`（地址：`https://github.com/xhq52465840/offline-trip-translator/releases/download/model-s400-v1/trip-mix2-s400-Q4_K_M.gguf`）。
+> **用户已批准：本轮由 Mac 直接把 s400 GGUF 上传到公开仓库的 GitHub Release `model-s400-v1`。** 只上传 s400 这一个模型文件和下面列出的附件；不要上传 s600/s1000、适配器、训练日志。权重**仍然不提交到 git**。
+> 最终模型 = s400：`finetune/runs/trip-mix2-s400-Q4_K_M.gguf`，986048640 字节，sha256 `691a1b2b1e0b73e3e2156583505300697753184477176301924877f73bf05b0a`。
+> 盒子新增（r8 之前）：印→英走 Apple 直译；Apple 翻译不支持 / 没装好的方向改用本地模型直译（`FallbackTranslator`），这类方向不再阻断启动；隐私清单 `PrivacyInfo.xcprivacy`。
 
-1. `git pull origin master`；`ROUND=8`；分支 `mac-run-<日期>-r8`。`swift test`（156）全绿；`python3 scripts/i18n.py check` OK；`xcodegen generate`；编译。
-2. **UI 测试一次跑完中英两遍**（`TripUITests` + `TripUITestsEnglish`），全绿。重点看 `08_amount_conversion_en`：现在应显示**直译**（例如 `Harganya Rp 100.000 (≈ $5.6) kak` 的译文行），仍要有 `≈ $5.6`；中文 `08_amount_conversion` 仍是理解后的「价格是10万（约 ¥37）」。
-3. **准备 GitHub Release（只在本机准备，由用户确认后上传）**：
-   - 再算一次 s400 的 sha256，必须等于上面的值；
-   - 在本机写好 `release/model-s400-v1/` 目录（**不要提交到 git**）：`SHA256SUMS`（一行：sha256 + 文件名）、`NOTICE.txt`（Qwen2.5-1.5B-Instruct Apache-2.0 + LoRA 训练数据许可证摘要，复制仓库 `NOTICE.md` 相关段落）、`RELEASE_NOTES.md`（模型来源、r4 评测数字：印→中 strict 105 / 金额错 0，公开集降幅，用途说明）；
-   - 把准备好的上传命令写进报告，**不要执行**，等用户本人确认：
-     `gh release create model-s400-v1 finetune/runs/trip-mix2-s400-Q4_K_M.gguf release/model-s400-v1/SHA256SUMS release/model-s400-v1/NOTICE.txt -t "Model s400 v1" -F release/model-s400-v1/RELEASE_NOTES.md`
-     （单个资产 < 2 GB，符合 GitHub Release 限制。）
-4. **真实模型回归（模拟器，轻量）**：用户确认并上传 Release 后，在 DEBUG 构建里不加 `-UITestMode` 启动，让 App 从清单地址下载并校验 s400：记录下载耗时和校验结果（sha256 通过）；然后发 3 句：
-   - 中文我方 ← 印尼语对方 `50rb belum termasuk ongkos`：应出现理解结果 + 金额 5万；
-   - 英文我方 ← 印尼语对方同一句：应只出现直译 + `≈ $`，**不调用模型**（看日志无生成）；
-   - 英文我方 ← 中文对方 `太贵了`：中文目标不涉及，记录行为即可。
-   报告 TTFT、内存（RSS）。模拟器装不了 Apple 印尼语/英语翻译包的话，记录「需真机」并跳过对应句子。
-   - 如果用户还没上传，就把第 4 步改为：把 GGUF 复制进模拟器 App 沙盒的模型目录做同样检查（不改代码），并在报告里写明。
-5. 报告 `reports/mac_run_<日期>_r8.md`，PR `Mac run r8`，**不要 merge**。全绿且无新问题时写「r8 全绿：可以进入真机 / TestFlight」。
+1. **代码**：`git pull origin master`；`ROUND=8`；分支 `mac-run-<日期>-r8`。`swift test`（161）全绿；`python3 scripts/i18n.py check` OK；`cd App && xcodegen generate`（会把 `PrivacyInfo.xcprivacy` 加进资源，确认 Build Phases 里有）；编译。中英 UI 测试一次跑完（`TripUITests` + `TripUITestsEnglish`），全绿。看 `08_amount_conversion_en`：直译 + `≈ $5.6`；`08_amount_conversion`：理解后的「约 ¥37」。
+2. **核对 sha256**：`shasum -a 256 finetune/runs/trip-mix2-s400-Q4_K_M.gguf` 和 `stat -f %z`，必须等于上面的两个值，否则**停止**并报告。
+3. **准备附件**（放 `~/trip-work/release/model-s400-v1/`，不进 git）：
+   - `SHA256SUMS`：`691a1b2b1e0b73e3e2156583505300697753184477176301924877f73bf05b0a  trip-mix2-s400-Q4_K_M.gguf`
+   - `LICENSE-Qwen2.5.txt`：Apache-2.0 全文（Qwen2.5-1.5B-Instruct 的许可证）
+   - `NOTICE.txt`：复制仓库 `NOTICE.md`，开头加一段「本文件为 Qwen2.5-1.5B-Instruct 的 LoRA 微调 + Q4_K_M 量化，训练数据来源与许可证见下」
+   - `RELEASE_NOTES.md`：用途（离线旅行 App 的印尼语→中文理解）、基座与量化、r4 评测（印→中 strict 105/120、金额错 0；公开集降幅）、已知局限（印→英不用于 App 理解；仅供参考，金额由程序换算）、sha256、对应 App 清单版本 4。
+4. **上传**（`gh auth status` 必须已登录；没登录就停下请用户 `gh auth login`）：
+   ```bash
+   cd "$REPO"; R=~/trip-work/release/model-s400-v1
+   gh release create model-s400-v1 finetune/runs/trip-mix2-s400-Q4_K_M.gguf "$R/SHA256SUMS" "$R/LICENSE-Qwen2.5.txt" "$R/NOTICE.txt" \
+     --repo xhq52465840/offline-trip-translator --title "Model s400 v1 (offline understanding, Q4_K_M)" --notes-file "$R/RELEASE_NOTES.md" --latest=false
+   ```
+   如果 tag 已存在，用 `gh release upload model-s400-v1 … --clobber`，不要删 tag。
+5. **按清单地址验证下载**（清单：`TripCore/Sources/TripCore/Resources/model-manifest.json` 的 `url`）：
+   ```bash
+   URL=$(python3 -c "import json;print(json.load(open('TripCore/Sources/TripCore/Resources/model-manifest.json'))['models'][0]['url'])")
+   curl -sIL "$URL" | grep -iE "^(HTTP|content-length|accept-ranges)"      # 最终 200、长度 986048640、支持 Range（断点续传要用）
+   curl -L -r 0-1023 -o /tmp/head.bin "$URL" && xxd /tmp/head.bin | head -1  # 以 GGUF 开头
+   curl -L -o /tmp/s400_dl.gguf "$URL" && shasum -a 256 /tmp/s400_dl.gguf   # 必须等于清单 sha256；记录耗时
+   ```
+6. **模拟器真实模型回归**（DEBUG 构建，不加 `-UITestMode`；先删掉 App 重新装，确保从清单地址下载）：
+   - 走一遍引导 → 「全部准备」：记录模型下载耗时、进度显示、sha256 校验通过（日志 / 界面变「已就绪」）。模拟器装不了 Apple 印尼语/英语包时，这些方向应显示「系统没有这门语言的离线翻译，将用本机模型翻译（质量较低）」并且**不再阻断**进入对话（这是本轮新行为，截图 `r8_prepare.png`）。
+   - 发 3 句，每句记录首字延迟（TTFT，从日志 `GenerationStats` 或秒表）、整句耗时、显示结果，截图：
+     1. 我方中文 ← 对方印尼语 `50rb belum termasuk ongkos`：应出现理解结果，金额「5万」（`r8_s1.png`）；
+     2. 我方英文 ← 对方印尼语 `harganya 100rb kak`：应只有直译（Apple 或本地模型兜底）+ `≈ $`，金额 Rp 100,000 不变（`r8_s2.png`）；
+     3. 我方中文 → 对方印尼语 `太贵了，能便宜一点吗`：应出现印尼语译文（`r8_s3.png`）。
+   - 内存：每句之后 `ps -o rss= -p <App pid>`，记录峰值。
+7. 报告 `reports/mac_run_<日期>_r8.md`：Release 链接、资产列表与大小、下载验证结果、3 句的 TTFT / 内存 / 截图、新的兜底行为截图。PR `Mac run r8`，**不要 merge**。全绿时写「r8 全绿：可以进入真机 / TestFlight（见 docs/真机验证清单.md）」。
 
 ---
 

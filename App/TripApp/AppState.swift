@@ -137,7 +137,10 @@ final class AppState: ObservableObject {
             ModelDownloader(entry: $0, directory: support.appendingPathComponent("models/\($0.id)"),
                             transport: URLSessionTransport(), environment: env)
         }
-        return AppState(tier: tier, probe: SystemPackProbe(), translator: SystemTranslator(), engine: LlamaCppEngine(),
+        // G1：Apple 翻译不支持 / 没装好的方向，改用本地模型直译
+        let probe = SystemPackProbe(), engine = LlamaCppEngine()
+        let translator = FallbackTranslator(primary: SystemTranslator(), fallback: LocalModelTranslator(engine: engine), probe: probe)
+        return AppState(tier: tier, probe: probe, translator: translator, engine: engine,
                         downloader: downloader, env: env, speechInstaller: SystemSpeechInstaller(),
                         transcriber: LiveTranscriber(), sessions: SessionStore(directory: support.appendingPathComponent("sessions")))
     }

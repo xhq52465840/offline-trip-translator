@@ -1310,6 +1310,17 @@
         }
       }
     },
+    "系统没有这门语言的离线翻译，将用本机模型翻译（质量较低）": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No offline system translation for this language; the on-device model will translate (lower quality)"
+          }
+        }
+      }
+    },
     "约 %@ GB": {
       "extractionState": "manual",
       "localizations": {
@@ -1603,17 +1614,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "This iPhone doesn't have enough memory"
-          }
-        }
-      }
-    },
-    "这台手机不支持这门语言的离线翻译": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "This phone doesn't support offline translation for this language"
           }
         }
       }

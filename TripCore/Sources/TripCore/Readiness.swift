@@ -16,7 +16,7 @@ public enum Readiness: Equatable, Sendable {
     case paused(progress: Double)
     case notEnoughSpace(needed: Int64?)
     case verifyFailed
-    case unavailable(String)           // 只允许用于对方语言听写（如「听印尼语暂不可用」）
+    case unavailable(String)           // 对方语言听写不可用，或某方向系统翻译不支持（由本地模型直译兜底，G1）
 }
 
 public struct PrepareStatus: Equatable, Sendable {
@@ -28,6 +28,7 @@ public struct PrepareStatus: Equatable, Sendable {
         items.compactMap { item, r in
             if r == .ready { return nil }
             if case .speech = item, case .unavailable = r { return nil }
+            if case .translation = item, case .unavailable = r { return nil }   // G1：系统不支持的方向用本地模型直译，不阻断
             return item
         }.sorted { "\($0)" < "\($1)" }
     }
