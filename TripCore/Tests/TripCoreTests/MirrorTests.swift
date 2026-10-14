@@ -95,7 +95,7 @@ final class MirrorTests: XCTestCase {
     func testBundledManifestHasMirrorsWithGitHubReleaseLast() throws {
         let m = try ModelManifest.bundled()
         for e in m.models {
-            XCTAssertEqual(e.orderedMirrors.map(\.id), ["cn", "global", "gh"])
+            XCTAssertEqual(e.orderedMirrors.map(\.id), ["gh"], "占位 CDN 已删；国内镜像上线后改为 [\"cn\", \"gh\"]")
             XCTAssertEqual(e.orderedMirrors.last?.url, e.url)
             XCTAssertEqual(e.sha256.count, 64)
         }

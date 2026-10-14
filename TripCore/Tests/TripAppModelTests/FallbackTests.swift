@@ -54,3 +54,49 @@ final class FallbackTests: XCTestCase {
         XCTAssertFalse(st2.isComplete)
     }
 }
+
+final class LangProbe: LanguagePackProbing {
+    var unsupported: Set<String>
+    init(unsupported: Set<String>) { self.unsupported = unsupported }
+    func translationStatus(from: String, to: String) async -> PackStatus { unsupported.contains(from) || unsupported.contains(to) ? .unsupported : .installed }
+    func speechReadiness(locale: String) async -> Readiness { .ready }
+}
+
+@MainActor
+final class FallbackMarkAndGateTests: XCTestCase {
+    func testFallbackBubbleIsMarkedLowQuality() async throws {
+        let e = MockEngine { _ in "价格是⟦A1⟧" }; try await e.load(modelURL: URL(fileURLWithPath: "/dev/null"))
+        let t = FallbackTranslator(primary: ThrowingTranslator(), fallback: LocalModelTranslator(engine: e), probe: LangProbe(unsupported: ["id"]))
+        let m = ConversationModel(translator: t, understander: nil, trial: TrialCounter(store: InMemoryTrialStore()))
+        await m.receiveTheirs("harganya 50rb")
+        XCTAssertEqual(m.messages[0].lowQuality, true)
+        let rows = Transcript.rows(m.messages, viewer: .me, rate: nil)
+        XCTAssertTrue(rows[0].note?.contains("本机模型翻译") == true, rows[0].note ?? "nil")
+        L10n.uiLanguage = "en"; defer { L10n.uiLanguage = "zh-Hans" }
+        XCTAssertTrue(Transcript.rows(m.messages, viewer: .me, rate: nil)[0].note?.contains("on-device model") == true)
+    }
+
+    func testAppleBubbleNotMarked() async throws {
+        let t = FallbackTranslator(primary: EchoTranslator(), fallback: ThrowingTranslator(), probe: LangProbe(unsupported: []))
+        let m = ConversationModel(translator: t, understander: nil, trial: TrialCounter(store: InMemoryTrialStore()))
+        await m.receiveTheirs("halo")
+        XCTAssertNil(m.messages[0].lowQuality)
+        XCTAssertNil(Transcript.rows(m.messages, viewer: .me, rate: nil)[0].note)
+    }
+
+    func testGateChecksOnlyLanguagesInUse() async {
+        // 我方中文、对方印尼语：英语包没有也不影响
+        final class P: LanguagePackProbing {
+            func translationStatus(from: String, to: String) async -> PackStatus { (from == "en" || to == "en") ? .supported : .installed }
+            func speechReadiness(locale: String) async -> Readiness { .ready }
+        }
+        let g = AppGate(tier: .a8GB, theirLanguages: ["id"], probe: P(), modelReadiness: { .ready }, defaults: UserDefaults(suiteName: "g3-\(UUID())")!)
+        g.myLanguage = "zh-Hans"
+        let d = await g.refresh(.coldLaunch)
+        XCTAssertEqual(d, .open)
+        XCTAssertNil(g.status.items[.translation("en")])
+        g.theirLanguages = ["en"]
+        let d2 = await g.refresh(.foreground)
+        XCTAssertNotEqual(d2, .open, "换成英语后才要求英语包")
+    }
+}

@@ -991,6 +991,17 @@
         }
       }
     },
+    "本机模型翻译，质量较低，重要信息请再确认": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Translated by the on-device model (lower quality) — double-check important details"
+          }
+        }
+      }
+    },
     "来源": {
       "extractionState": "manual",
       "localizations": {

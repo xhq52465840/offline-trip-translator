@@ -39,6 +39,7 @@ public enum L10nTable {
         "按住听对方": "Hold to listen",
         "按住说%@": "Hold to speak %@",
         "旅行包有效期至 %@": "Trip pass valid until %@",
+        "本机模型翻译，质量较低，重要信息请再确认": "Translated by the on-device model (lower quality) — double-check important details",
         "松手翻译，上滑取消": "Release to translate · slide up to cancel",
         "检查中": "Checking",
         "正在看这句": "Reading this message",

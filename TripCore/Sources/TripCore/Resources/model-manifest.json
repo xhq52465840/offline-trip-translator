@@ -1,5 +1,5 @@
 {
-  "version": 4,
+  "version": 5,
   "models": [
     {
       "tier": "a8GB",
@@ -8,16 +8,6 @@
       "bytes": 986048640,
       "sha256": "691a1b2b1e0b73e3e2156583505300697753184477176301924877f73bf05b0a",
       "mirrors": [
-        {
-          "id": "cn",
-          "region": "cn",
-          "url": "https://models-cn.example.com/models/trip-mix2-s400/q4_k_m/691a1b2b/trip-mix2-s400-Q4_K_M.gguf"
-        },
-        {
-          "id": "global",
-          "region": "global",
-          "url": "https://models.example.com/models/trip-mix2-s400/q4_k_m/691a1b2b/trip-mix2-s400-Q4_K_M.gguf"
-        },
         {
           "id": "gh",
           "region": "global",
@@ -33,16 +23,6 @@
       "sha256": "691a1b2b1e0b73e3e2156583505300697753184477176301924877f73bf05b0a",
       "mirrors": [
         {
-          "id": "cn",
-          "region": "cn",
-          "url": "https://models-cn.example.com/models/trip-mix2-s400/q4_k_m/691a1b2b/trip-mix2-s400-Q4_K_M.gguf"
-        },
-        {
-          "id": "global",
-          "region": "global",
-          "url": "https://models.example.com/models/trip-mix2-s400/q4_k_m/691a1b2b/trip-mix2-s400-Q4_K_M.gguf"
-        },
-        {
           "id": "gh",
           "region": "global",
           "url": "https://github.com/xhq52465840/offline-trip-translator/releases/download/model-s400-v1/trip-mix2-s400-Q4_K_M.gguf"
@@ -50,5 +30,5 @@
       ]
     }
   ],
-  "_comment": "r7 定稿：模型为 r4 采用的 mix2 s400（Qwen2.5-1.5B-Instruct + LoRA，Apache-2.0）。主地址 = GitHub Release `model-s400-v1` 资产（由用户/Mac 本机上传，盒子不上传）；cn/global 为占位 CDN，上线前替换。所有镜像同一 sha256，下载后整文件校验。"
+  "_comment": "模型 = mix2 s400（Qwen2.5-1.5B-Instruct + LoRA，Apache-2.0）。唯一真实地址 = 本仓库 GitHub Release model-s400-v1。占位 CDN 已删（避免每次白试一次）。TODO（上线前，用户）：加国内镜像 {\"id\":\"cn\",\"region\":\"cn\",\"url\":\"https://<备案域名>/models/trip-mix2-s400/q4_k_m/691a1b2b/trip-mix2-s400-Q4_K_M.gguf\"}，放在 gh 前面；同一 sha256，见 docs/整体差距审查.md M3。"
 }

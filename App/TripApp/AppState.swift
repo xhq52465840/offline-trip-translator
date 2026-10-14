@@ -85,7 +85,7 @@ final class AppState: ObservableObject {
         self.probe = probe; self.engine = engine; self.downloader = downloader; self.env = env; self.speechInstaller = speechInstaller
         self.defaults = defaults
         let dl = downloader
-        gate = AppGate(tier: tier, theirLanguages: Lang.all, probe: probe,
+        gate = AppGate(tier: tier, theirLanguages: ["id"], probe: probe,   // G3：只检查正在用的两种语言（applyLanguages 里同步）
                        modelReadiness: modelReadinessOverride ?? { dl?.readiness ?? .unavailable(L10n.t("没有适合这台手机的理解能力")) },
                        defaults: defaults)
         let store: TrialStore
@@ -161,6 +161,7 @@ final class AppState: ObservableObject {
             conversation.setLanguages(them: conversation.myLanguage == "id" ? "zh-Hans" : "id")
         }
         gate.myLanguage = conversation.myLanguage
+        gate.theirLanguages = [conversation.theirLanguage]   // G3：只检查「我方 + 当前对方」，换语言时再提示下载
         fx.currency = TargetCurrency.forLocale(conversation.myLanguage)
         defaults.set(conversation.myLanguage, forKey: "lang.me"); defaults.set(conversation.theirLanguage, forKey: "lang.them")
         tick += 1

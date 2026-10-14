@@ -62,6 +62,10 @@ public enum Transcript {
                     if fx.currency == .idr, !notes.isEmpty { nt = [nt, notes.joined(separator: ", ")].compactMap { $0 }.joined(separator: "\n") }
                 }
             }
+            // G2：本机模型兜底翻译的气泡，标注质量较低（只给我方阅读者看）
+            if m.lowQuality == true, viewer == .me {
+                nt = [nt, L10n.t("本机模型翻译，质量较低，重要信息请再确认")].compactMap { $0 }.joined(separator: "\n")
+            }
             return BubbleRow(id: m.id, side: side, primary: p, secondary: sec, note: nt, chips: chips,
                              time: time(m.createdAt, tz: tz), pending: m.status == .translating)
         }

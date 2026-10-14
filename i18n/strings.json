@@ -103,6 +103,7 @@
  "更多": "More",
  "更新中…": "Updating…",
  "有网也不会改成在线翻译、在线听写或在线模型。": "Even online, it never switches to online translation, dictation or models.",
+ "本机模型翻译，质量较低，重要信息请再确认": "Translated by the on-device model (lower quality) — double-check important details",
  "来源": "Source",
  "松手翻译，上滑取消": "Release to translate · slide up to cancel",
  "查看隐私说明": "View privacy notes",

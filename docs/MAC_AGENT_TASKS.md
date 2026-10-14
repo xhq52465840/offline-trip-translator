@@ -35,9 +35,10 @@ mkdir -p "$WORK"
 > 用户只会说「pull master and continue」。开 PR `Mac run r8`，**不要 merge**。
 > **用户已批准：本轮由 Mac 直接把 s400 GGUF 上传到公开仓库的 GitHub Release `model-s400-v1`。** 只上传 s400 这一个模型文件和下面列出的附件；不要上传 s600/s1000、适配器、训练日志。权重**仍然不提交到 git**。
 > 最终模型 = s400：`finetune/runs/trip-mix2-s400-Q4_K_M.gguf`，986048640 字节，sha256 `691a1b2b1e0b73e3e2156583505300697753184477176301924877f73bf05b0a`。
-> 盒子新增（r8 之前）：印→英走 Apple 直译；Apple 翻译不支持 / 没装好的方向改用本地模型直译（`FallbackTranslator`），这类方向不再阻断启动；隐私清单 `PrivacyInfo.xcprivacy`。
+> 盒子新增（r8 之前）：印→英走 Apple 直译；Apple 翻译不支持 / 没装好的方向改用本地模型直译（`FallbackTranslator`），这类方向不再阻断启动；隐私清单 `PrivacyInfo.xcprivacy`；
+> 本机模型兜底的气泡下方标注「本机模型翻译，质量较低，重要信息请再确认」（英文 “Translated by the on-device model (lower quality) …”）；准备检查只看**我方 + 当前对方**两种语言；清单删掉占位 CDN，只剩 GitHub（清单版本 5）。
 
-1. **代码**：`git pull origin master`；`ROUND=8`；分支 `mac-run-<日期>-r8`。`swift test`（161）全绿；`python3 scripts/i18n.py check` OK；`cd App && xcodegen generate`（会把 `PrivacyInfo.xcprivacy` 加进资源，确认 Build Phases 里有）；编译。中英 UI 测试一次跑完（`TripUITests` + `TripUITestsEnglish`），全绿。看 `08_amount_conversion_en`：直译 + `≈ $5.6`；`08_amount_conversion`：理解后的「约 ¥37」。
+1. **代码**：`git pull origin master`；`ROUND=8`；分支 `mac-run-<日期>-r8`。`swift test`（164）全绿；`python3 scripts/i18n.py check` OK；`cd App && xcodegen generate`（会把 `PrivacyInfo.xcprivacy` 加进资源，确认 Build Phases 里有）；编译。中英 UI 测试一次跑完（`TripUITests` + `TripUITestsEnglish`），全绿。看 `08_amount_conversion_en`：直译 + `≈ $5.6`；`08_amount_conversion`：理解后的「约 ¥37」。
 2. **核对 sha256**：`shasum -a 256 finetune/runs/trip-mix2-s400-Q4_K_M.gguf` 和 `stat -f %z`，必须等于上面的两个值，否则**停止**并报告。
 3. **准备附件**（放 `~/trip-work/release/model-s400-v1/`，不进 git）：
    - `SHA256SUMS`：`691a1b2b1e0b73e3e2156583505300697753184477176301924877f73bf05b0a  trip-mix2-s400-Q4_K_M.gguf`
@@ -65,7 +66,11 @@ mkdir -p "$WORK"
      2. 我方英文 ← 对方印尼语 `harganya 100rb kak`：应只有直译（Apple 或本地模型兜底）+ `≈ $`，金额 Rp 100,000 不变（`r8_s2.png`）；
      3. 我方中文 → 对方印尼语 `太贵了，能便宜一点吗`：应出现印尼语译文（`r8_s3.png`）。
    - 内存：每句之后 `ps -o rss= -p <App pid>`，记录峰值。
-7. 报告 `reports/mac_run_<日期>_r8.md`：Release 链接、资产列表与大小、下载验证结果、3 句的 TTFT / 内存 / 截图、新的兜底行为截图。PR `Mac run r8`，**不要 merge**。全绿时写「r8 全绿：可以进入真机 / TestFlight（见 docs/真机验证清单.md）」。
+7. **复核盒子的三项新改动**（每项 ✓/✗ + 截图）：
+   - **只检查两种语言**：模拟器全新安装、我方中文、对方印尼语，准备页只列中文听写、印尼语翻译 / 听写、理解能力，**不出现英语**（`r8_prepare_two_langs.png`）；进对话后把对方改成英语 → 这时才提示英语相关准备（`r8_switch_to_en.png`）。
+   - **兜底标注**：第 6 步里凡是走了本地模型直译的气泡（模拟器没有 Apple 印尼语包时，第 1、3 句都会走兜底），下方应有「本机模型翻译，质量较低，重要信息请再确认」；英文界面是英文提示（`r8_fallback_note.png`、`r8_fallback_note_en.png`）。走了 Apple 翻译的气泡不应有这行。
+   - **镜像**：下载日志里只尝试 GitHub 地址一次，没有对 `example.com` 的请求。
+8. 报告 `reports/mac_run_<日期>_r8.md`：Release 链接、资产列表与大小、下载验证结果、3 句的 TTFT / 内存 / 截图、新的兜底行为截图。PR `Mac run r8`，**不要 merge**。全绿时写「r8 全绿：可以进入真机 / TestFlight（见 docs/真机验证清单.md）」。
 
 ---
 

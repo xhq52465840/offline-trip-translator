@@ -31,6 +31,8 @@ public struct Message: Identifiable, Equatable, Codable, Sendable {
     public var showBackTranslation = false
     public var offerRetranslateAs: String?
     public var status: MessageStatus = .translating
+    /// G2：这句由本机模型兜底翻译（Apple 翻译不支持 / 没装好），质量较低；可选以兼容旧存档
+    public var lowQuality: Bool?
 
     /// 主行（PRD v2 §7.2）
     public var mainLine: String {
@@ -65,6 +67,7 @@ public final class ConversationModel {
     public var mineRewriteBudget: TimeInterval = 1.0
 
     private let translator: Translating
+    func usedFallback(from: String, to: String) -> Bool { (translator as? FallbackTranslator)?.usedFallback["\(from)>\(to)"] == true }
     private let understander: Understander?
     private let clock: Clock
 
@@ -138,7 +141,8 @@ public final class ConversationModel {
         }
         do {
             let foreign = try await translator.translate(mtInput, from: mine, to: theirs)
-            update(m.id) { $0.foreign = foreign; $0.status = .ready }
+            let lq = usedFallback(from: mine, to: theirs)
+            update(m.id) { $0.foreign = foreign; $0.status = .ready; $0.lowQuality = lq ? true : nil }
             trial.recordCompleteTurn()
             let back = try? await translator.translate(foreign, from: theirs, to: mine)
             update(m.id) {
@@ -206,7 +210,8 @@ public final class ConversationModel {
         } catch {
             update(id) { $0.status = .failed }; return
         }
-        update(id) { $0.literal = literal; $0.status = .ready }
+        let lq = usedFallback(from: lang, to: target)
+        update(id) { $0.literal = literal; $0.status = .ready; $0.lowQuality = lq ? true : nil }
         if count && full { trial.recordCompleteTurn() }
         guard full, route == .translateAndUnderstand, let u = understander else { return }
         let remaining = understandBudget - clock.now().timeIntervalSince(m.createdAt)
