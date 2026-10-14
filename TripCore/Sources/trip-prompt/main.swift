@@ -16,7 +16,7 @@ struct Draft: Codable {
     var target_template: String
     var target: String?          // P3：zh-Hans（默认）或 en
 }
-struct AmountOut: Codable { var original: String; var value: Int; var display: String }
+struct AmountOut: Codable { var original: String; var value: Int; var display: String; var display_target: String }
 struct Out: Codable {
     var id: String
     var system: String
@@ -53,7 +53,7 @@ while let line = readLine(strippingNewline: true) {
     let o = Out(id: d.id, system: b.system,
                 fewshot: PromptBuilder.fewShot(for: b.target).map { [$0.user, $0.assistant] },
                 user: b.user(context: ctx, source: d.source, literal: d.literal, glossary: gl),
-                amounts: amounts.map { AmountOut(original: $0.original, value: $0.value, display: $0.display) },
+                amounts: amounts.map { AmountOut(original: $0.original, value: $0.value, display: $0.display, display_target: $0.display(for: b.target)) },
                 target: target, validation: v)
     print(String(data: try! enc.encode(o), encoding: .utf8)!)
 }

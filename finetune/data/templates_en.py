@@ -1,0 +1,106 @@
+# -*- coding: utf-8 -*-
+"""P9：印尼语 → 英文理解的场景模板（人工撰写，非模型生成）。复用 templates.T 的原文（src）与金额槽，
+这里只给英文的「字面」（模拟系统直译：俚语缩写看不懂就原样保留）和「目标」（理解后的自然英文）。
+只覆盖 dir="them"（对方印尼语 → 我方英文）；「me」方向（英文指代澄清）不在 P9 范围。
+记号同 templates.py：«w» 俚语槽；{HON} 称呼字面；⟨A1⟩ 金额由 App 换算器按英文写法（Rp 50,000）填入。
+"""
+SLANG_EN = {"sudah": "already", "belum": "not yet", "tidak": "not", "berapa": "how much", "saya": "I", "lagi": "more",
+    "menit": "minutes", "saja": "just", "banget": "very", "terima kasih": "thank you", "lokasi": "location", "bisa": "can",
+    "yang": "the one", "dengan": "with", "sebentar": "a moment", "jalan": "road", "dulu": "first", "kalau": "if",
+    "sampai": "until", "tunggu": "wait", "gimana": "how", "bagaimana": "how"}
+FALLBACK_EN = {"tolong": "please", "sini": "here", "atau": "or", "share": "share", "kirim": "send", "dong": "please",
+    "di mana": "where", "tapi": "but", "sekarang": "now", "sana": "there", "di sini": "here"}
+HON_EN = {"kak": "sister", "pak": "sir", "bu": "ma'am", "mas": "brother"}
+PL_EN = {"lobby": "lobby", "pintu depan": "front door", "parkiran": "parking lot", "gerbang": "gate", "pom bensin": "gas station", "masjid": "mosque"}
+IT_EN = {"baju": "shirt", "sarung": "sarong", "tas": "bag", "kopi": "coffee", "kaos": "T-shirt", "topi": "hat", "patung": "wood carving", "sandal": "sandals"}
+COL_EN = {"hitam": "black", "putih": "white", "silver": "silver", "merah": "red", "abu-abu": "grey"}
+FOOD_EN = {"ayam geprek": "smashed fried chicken", "nasi goreng": "fried rice", "mie goreng": "fried noodles", "sate ayam": "chicken satay", "babi guling": "roast suckling pig"}
+LR_EN = {"kiri": "left", "kanan": "right"}
+GLOSS_EN = {"e-CD": "customs e-declaration", "VOA": "visa on arrival", "gang": "alley", "ongkir": "delivery fee", "nett": "final price incl. tax",
+    "++": "plus tax and service", "konversi": "dynamic currency conversion (DCC)", "kuota": "data allowance"}
+# 上下文（前文）英文版：tid → [(role, 原文, 对方看到/我看到的英文)]
+CTX_EN = {"rs4": [("me", "I'm allergic to peanuts", "Saya alergi kacang")],
+          "rs8": [("them", "menu mulai {A}", "Menu starts from {A}")],
+          "sh2": [("them", "{IT} ini {A}", "This {ITE} is {A}")],
+          "ht4": [("me", "The AC in my room is broken", "AC di kamar rusak")]}
+# tid → (literal_en, target_en)
+EN = {
+"ar1": ("«tolong» show QR e-CD {HON}", "Please show your customs declaration QR code"),
+"ar2": ("pay VOA {A}, «bisa» use card", "The visa on arrival is ⟨A1⟩, you can pay by card"),
+"ar3": ("return ticket «sudah» have {HON}?", "Do you have a return ticket?"),
+"ar4": ("«tunggu» in «sini» «sebentar», «saya» check passport", "Please wait here a moment, I'll check your passport"),
+"ar5": ("Bali tourist tax {A} per person, «sudah» pay?", "The Bali tourist tax is ⟨A1⟩ per person, have you paid it?"),
+"pk1": ("«saya» «sudah» at P{N} ground floor, car {COLE}", "I'm already here, at parking P{N} ground floor, a {COLE} car"),
+"pk2": ("exit arrival door, «jalan» to parking {HON}", "Come out of the arrivals exit and walk to the parking lot"),
+"pk3": ("{HON} «sudah» out «belum»? «saya» «tunggu» at pickup zone", "Are you out yet? I'm waiting at the pickup zone"),
+"pk4": ("don't follow people «yang» offer taxi «di sini»", "Don't go with people offering taxis here"),
+"rd1": ("«share» «lokasi» «saja» {HON}, address «tidak» found", "Please share your location, I can't find the address"),
+"rd2": ("jam «banget» {HON}, maybe {M} «menit» «lagi»", "Traffic is really bad, about {M} more minutes"),
+"rd3": ("add {A}, the «jalan» is far", "It's far, it'll be ⟨A1⟩ extra"),
+"rd4": ("in «sini» «tidak» allowed pickup, «jalan» a bit forward", "Pickups aren't allowed here, please walk a bit further ahead"),
+"rd5": ("«saya» otw, {M} «menit» «sampai»", "I'm on my way, arriving in {M} minutes"),
+"rd6": ("pay cash {HON}, {A} per app", "Please pay cash, ⟨A1⟩ as shown in the app"),
+"rd7": ("«saya» «sudah» in front of {PLE}, car {COLE}", "I'm already in front of the {PLE}, a {COLE} car"),
+"rd8": ("toll «atau» «tidak» {HON}? via toll add {A}", "Do you want to take the toll road? It's ⟨A1⟩ extra"),
+"lc1": ("«kirim» lok «dong» {HON}, «saya» «tidak» know the gang", "Please send me your location, I don't know which alley it is"),
+"lc2": ("the pin wrong {HON}, «yang» correct «di mana»?", "The pin is wrong, where is the right place?"),
+"lc3": ("«saya» «sudah» «sampai» point, «tapi» «tidak» see {HON}", "I've reached the pin, but I can't see you"),
+"dl1": ("order «sudah» «saya» take, otw {HON}", "I've picked up your order, on my way"),
+"dl2": ("{HON} menu {FOOD} finished, want change what?", "The {FOODE} is sold out, what would you like instead?"),
+"dl3": ("pay cash {HON}, total {A}", "Please pay cash, ⟨A1⟩ in total"),
+"dl4": ("«saya» «sudah» in front of gate, «tolong» come down", "I'm at the gate, please come down"),
+"dl5": ("ongkir up {A} because rain", "The delivery fee went up by ⟨A1⟩ because of the rain"),
+"dl6": ("«tidak» have change {HON}, exact money «saja»", "I don't have change, please pay the exact amount"),
+"rs1": ("want spicy level «berapa»? 0 «sampai» 5", "How spicy do you want it, level 0 to 5?"),
+"rs2": ("price «belum» include tax 10% and service 5%", "Prices don't include 10% tax and 5% service yet"),
+"rs3": ("{FOOD} {A}, big portion", "The {FOODE} is ⟨A1⟩, it's a big portion"),
+"rs4": ("there is peanut in the sauce {HON}", "There are peanuts in the sauce"),
+"rs5": ("total {A}, price nett", "The total is ⟨A1⟩, final price including tax"),
+"rs6": ("«yang» this «tidak» spicy, «yang» that spicy «banget»", "This one isn't spicy, that one is very spicy"),
+"rs8": ("price {N}0 ++", "It's Rp {N}0,000, plus tax and service"),
+"sh1": ("this {A}, «bisa» less a bit", "This is ⟨A1⟩, I can go a little lower"),
+"sh2": ("the {ITE} earlier {N}0 «saja»", "The {ITE} from before, Rp {N}0,000 is fine"),
+"sh3": ("buy two «bisa» {A}", "If you buy two, ⟨A1⟩"),
+"sh4": ("fixed price {HON}, «tidak» «bisa» less «lagi»", "It's a fixed price, I can't go any lower"),
+"sh6": ("{ITE} «yang» big {A}, «yang» small {B}", "The big {ITE} is ⟨A1⟩, the small one is ⟨A2⟩"),
+"mx1": ("rate today {RATE} per yuan, minimum exchange {A}", "Today's rate is ⟨A1⟩ per yuan, minimum exchange ⟨A2⟩"),
+"mx2": ("the money count «lagi» {HON} in «sini»", "Please count the money again here"),
+"mx3": ("ATM «tidak» accept this card, try BCA «saja»", "This ATM doesn't take this card, try a BCA one"),
+"mx4": ("choose rupiah, don't convert", "Choose rupiah, don't use currency conversion"),
+"mx5": ("total {A}, want denomination «berapa»?", "The total is ⟨A1⟩, which notes would you like?"),
+"py1": ("«bisa» QRIS «atau» cash, card «tidak» «bisa»", "QRIS or cash is fine, no cards"),
+"py2": ("the change «tidak» have, exact money «saja»", "No change, please pay the exact amount"),
+"py3": ("the QRIS error {HON}, cash «saja» {A}", "QRIS isn't working, please pay cash, ⟨A1⟩"),
+"py4": ("card fee 3% {HON}", "There's a 3% card fee"),
+"sm1": ("package {D} days {G}GB {A}, need passport", "A {D}-day {G}GB package is ⟨A1⟩, passport required"),
+"sm2": ("the kuota «sudah» finished, top up {A}", "Your data is used up, a top-up is ⟨A1⟩"),
+"sm3": ("eSIM «bisa», the phone «sudah» unlock «belum»?", "eSIM works, is your phone unlocked?"),
+"ht1": ("check in at {HS} noon, «sekarang» room «belum» ready", "Check-in is at {HS} pm, the room isn't ready yet"),
+"ht2": ("deposit {A}, later returned at check out", "The deposit is ⟨A1⟩, refunded at check-out"),
+"ht3": ("the hot water must «tunggu» {M} «menit» «dulu»", "You need to wait {M} minutes for the hot water first"),
+"ht4": ("technician «sudah» «saya» call, {M} «menit» «lagi» come", "I've called a technician, he'll be here in {M} minutes"),
+"ht5": ("late check out add {A} «sampai» {HS}", "Late check-out until {HS} pm is ⟨A1⟩ extra"),
+"ht6": ("breakfast 7 «sampai» 10 at floor {N}", "Breakfast is from 7 to 10 on floor {N}"),
+"tr1": ("rent car {N2} hours {A} «sudah» include gas", "Car rental for {N2} hours is ⟨A1⟩, fuel included"),
+"tr2": ("boat to Gili at {H}, must be at harbor {H0}.30", "The boat to Gili leaves at {H}, be at the harbor by {H0}:30"),
+"tr3": ("ticket «belum» include entrance ticket {A} per person", "The ticket doesn't include the entrance fee, ⟨A1⟩ per person"),
+"tr4": ("«saya» pick up at hotel {H} morning", "I'll pick you up at the hotel at {H} am"),
+"sp1": ("massage {M2} «menit» {A}, tip up to you", "A {M2}-minute massage is ⟨A1⟩, tip is up to you"),
+"sp2": ("the pressure want hard «atau» slow?", "Do you want strong or gentle pressure?"),
+"sp3": ("shower «dulu» «sebentar» {HON}, the towel in «sini»", "Please take a quick shower first, the towel is here"),
+"md1": ("drink {X}x a day after eat", "Take it {X} times a day after meals"),
+"md2": ("this diarrhea medicine, «kalau» fever must go doctor", "This is for diarrhea, if you get a fever see a doctor"),
+"md3": ("antibiotic must use doctor prescription {HON}", "Antibiotics need a doctor's prescription"),
+"md4": ("the medicine {A}, drink before sleep", "The medicine is ⟨A1⟩, take it before bed"),
+"md5": ("the pain «sudah» «berapa» days?", "How many days has it hurt?"),
+"em1": ("«sudah» report police? need loss letter", "Have you reported it to the police? You need a loss report"),
+"em2": ("«tunggu» «di sini», ambulance «sudah» «saya» call", "Wait here, I've called an ambulance"),
+"em3": ("the phone «sudah» found {HON}, take at security post", "Your phone was found, pick it up at the security post"),
+"dr1": ("straight «saja», later at intersection turn {LRE}", "Go straight, then turn {LRE} at the intersection"),
+"dr2": ("«tidak» far, walk {M} «menit»", "It's not far, a {M}-minute walk"),
+"dr3": ("enter gang «yang» next to {PLE}", "Go into the alley next to the {PLE}"),
+"ch1": ("from where {HON}? first time to Bali?", "Where are you from? First time in Bali?"),
+"ch2": ("gpp {HON}, relax «saja»", "No problem, take it easy"),
+"ch3": ("«terima kasih» {HON}, careful on the «jalan»", "Thank you, take care on the way"),
+"ch4": ("«sudah» eat «belum»?", "Have you eaten yet?"),
+}

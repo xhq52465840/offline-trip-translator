@@ -1,0 +1,31 @@
+{
+ "drafts": 1979,
+ "dropped_near_eval": 344,
+ "rejected": {},
+ "rejected_examples": {},
+ "kept": 1635,
+ "split": {
+  "train": 1250,
+  "valid": 65,
+  "test": 320
+ },
+ "test_templates": [
+  "ar5",
+  "ch2",
+  "dl3",
+  "dr1",
+  "em1",
+  "ht4",
+  "lc3",
+  "md4",
+  "mx5",
+  "pk2",
+  "py1",
+  "rd2",
+  "rs1",
+  "sh3",
+  "sm1",
+  "sp2",
+  "tr1"
+ ]
+}

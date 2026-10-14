@@ -1,0 +1,20 @@
+{
+ "train": {
+  "zh_mix": 4080,
+  "en_scene": 1250,
+  "total": 5330,
+  "en_share": 0.235
+ },
+ "valid": {
+  "zh_mix": 178,
+  "en_scene": 65,
+  "total": 243,
+  "en_share": 0.267
+ },
+ "test": {
+  "zh_mix": 405,
+  "en_scene": 320,
+  "total": 725,
+  "en_share": 0.441
+ }
+}

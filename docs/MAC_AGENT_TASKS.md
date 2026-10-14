@@ -30,6 +30,35 @@ mkdir -p "$WORK"
 
 ---
 
+## 当前轮次：r7 = P9 三语 LoRA 训练（r6 已审阅合并；拉取 master 后按此清单执行）
+
+> 用户只会说「pull master and continue」。开 PR `Mac run r7`，**不要 merge**。权重只在本机，**不上传、不提交**。
+> r6 结论：App 中英 UI 一次跑完 24 项全绿（r5、r6 连续两轮无代码缺陷，App 循环本身已完成）；s400 sha256 一致；
+> 基座印→英 strict **100**/120、金额错 0；s400 印→英 **97**、金额错 0 → 按计划 §5「≥ 基座 + 10」不达标 → **做 P9**。
+> 盒子已准备好数据：`finetune/out_en/`（英文目标场景 1250 条训练，`data/gen_en.py` + `templates_en.py`，已剔除与 cases_en/cases/cases_ext 相近的句子）、
+> `finetune/out_mix3/`（= r4 的 out_mix 4080 条 + 英文场景 1250 条，英文约 23.5%）、配置 `finetune/mlx/lora_mix3.yaml`（1000 步，适配器 `runs/mlx_adapters_mix3`）。
+
+1. `git pull origin master`；`ROUND=7`；分支 `mac-run-<日期>-r7`。T2 `swift test` 全绿；`swift build --product trip-prompt`（eval 脚本要用）。
+   App UI 测试**本轮可跳过**（App 代码自 r6 未改）；只跑 `python3 scripts/i18n.py check`。
+2. **训练**（同 6.3c/6.3d 的命令，换配置）：`python -m mlx_lm lora --config mlx/lora_mix3.yaml 2>&1 | tee runs/mlx_mix3_train.log`。约 2.5–3 小时。记录 train/val loss 曲线（每 100 步）。
+3. 对 **s600 与 s1000** 各自 fuse → GGUF Q4_K_M → sha256（目录 `runs/mlx_adapters_mix3_s$S`，GGUF 前缀 `runs/trip-mix3-s$S`）。
+4. 每个检查点跑三项评测（tag `mac_mix3_s$S`）：
+   - `eval_appfmt.py <gguf> --tag mac_mix3_s$S --limit 60`（印→中）
+   - `eval_appfmt.py <gguf> --tag mac_mix3_s${S}_en --target en --limit 60`（印→英）
+   - `eval_public.py <gguf> --tag mac_mix3_s$S`（公开集 mt_id_zh / mt_id_en / slang_norm）
+5. **采用规则（每个方向单独判定，基准都是同机基座）**：
+   - 印→中：strict ≥ 95（基座 85 + 10）且金额错 ≤ 5，且不低于 s400 的 105 − 3；
+   - 印→英：strict ≥ **110**（基座 100 + 10）且金额错 = 0；
+   - 公开集 mt_id_zh chrF、mt_id_en chrF++ 相对基座各自下降 ≤ 10。
+   报告每个检查点 × 每条规则 ✓/✗，并给出建议：
+   - 两个方向都达标 → 建议采用该检查点替换 s400；
+   - 只有印→中达标 → 保留 s400，印→英按计划 §5 在 App 里不启用本地理解（改走 Apple 翻译直译），由盒子改代码；
+   - 都不达标 → 保留 s400，报告数字即可。
+6. 被采用候选的 GGUF 留在本机，只报告路径、字节数、sha256。**s400 不要删。**
+7. 报告 `reports/mac_run_<日期>_r7.md`（训练日志摘要、评测表、每个方向的失败样例各 5 条），PR `Mac run r7`，**不要 merge**。
+
+---
+
 ## 当前轮次：r6（r5 已审阅合并；拉取 master 后按此清单执行）
 
 > 用户只会说「pull master and continue」。开 PR `Mac run r6`，**不要 merge**。不训练、不上传权重。
