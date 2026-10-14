@@ -24,7 +24,7 @@ public enum Transcript {
     }
 
     /// viewer = .me：中文为主；viewer = .partner：对方语言为主（面对面模式上半屏，旋转 180°）。
-    public static func rows(_ messages: [Message], viewer: Viewer, rate: ExchangeRate?, fx: FXContext? = nil, tz: TimeZone = .current) -> [BubbleRow] {
+    public static func rows(_ messages: [Message], viewer: Viewer, rate: ExchangeRate?, fx: FXContext? = nil, lang: String = Lang.tourist, tz: TimeZone = .current) -> [BubbleRow] {
         messages.compactMap { m in
             if m.status == .trialBlocked && viewer == .partner { return nil }
             let mine = m.role == .me
@@ -50,14 +50,16 @@ public enum Transcript {
             if let fx, viewer == .me {
                 if mine {
                     sec = sec.map { AmountAnnotator.annotateSource($0, to: fx.currency, rates: fx.rates) }
-                    let cny = CNYParser.find(in: m.source)
-                    if !cny.isEmpty {
-                        let r = cny.map { "¥\(FXFormatter.grouped(Int($0)))≈" + String(CNYParser.idrNote($0, rates: fx.rates).dropFirst(2)) }.joined(separator: "，")
-                        nt = [nt, r].compactMap { $0 }.joined(separator: "\n")
+                    let notes = ForeignCashParser.notes(in: m.source, lang: lang, rates: fx.rates)
+                    if !notes.isEmpty {
+                        nt = [nt, notes.joined(separator: lang.hasPrefix("zh") ? "，" : ", ")].compactMap { $0 }.joined(separator: "\n")
                     }
                 } else {
-                    p = AmountAnnotator.annotateChinese(p, allowed: AmountAnnotator.allowedValues(source: m.source), to: fx.currency, rates: fx.rates)
+                    p = AmountAnnotator.annotateDisplay(p, lang: lang, allowed: AmountAnnotator.allowedValues(source: m.source), to: fx.currency, rates: fx.rates)
                     sec = sec.map { AmountAnnotator.annotateSource($0, to: fx.currency, rates: fx.rates) }
+                    // 对方说了 ¥ / $（如对方是中国人或美国人、我方是印尼语）：反向标注 Rp
+                    let notes = ForeignCashParser.notes(in: m.source, lang: lang, rates: fx.rates)
+                    if fx.currency == .idr, !notes.isEmpty { nt = [nt, notes.joined(separator: ", ")].compactMap { $0 }.joined(separator: "\n") }
                 }
             }
             return BubbleRow(id: m.id, side: side, primary: p, secondary: sec, note: nt, chips: chips,

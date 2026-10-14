@@ -67,7 +67,7 @@ final class FXTests: XCTestCase {
         XCTAssertEqual(FXFormatter.approx(30_000, to: .usd, rates: r), "≈ $1.7")
         XCTAssertEqual(TargetCurrency.forLocale("zh-Hans-CN"), .cny)
         XCTAssertEqual(TargetCurrency.forLocale("en_US"), .usd)
-        XCTAssertEqual(TargetCurrency.forLocale("id"), .usd)
+        XCTAssertEqual(TargetCurrency.forLocale("id"), .idr)   // P2：印尼语用户不给印尼盾加注
     }
 
     func testTenKVsOneKVsHundredKNeverConfused() {

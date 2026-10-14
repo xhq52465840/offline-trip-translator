@@ -103,7 +103,7 @@ struct RateSettingView: View {
                 LabeledContent("1 美元", value: "≈ Rp \(Int(r.idrPerUSD.rounded()))")
                 LabeledContent("日期", value: r.date)
                 LabeledContent("来源", value: r.source)
-                LabeledContent("换算成", value: state.fx.currency == .cny ? "人民币" : "美元")
+                LabeledContent("换算成", value: { switch state.fx.currency { case .cny: return "人民币"; case .usd: return "美元"; case .idr: return "不换算（印尼盾）" } }())
             } footer: {
                 Text(state.fx.caption(now: Date()) + "。金额由程序按原文换算，只有汇率是约值，位数不会错。有网时自动更新（只下载公开汇率，不上传任何内容）。")
             }

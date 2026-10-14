@@ -177,19 +177,20 @@ public final class ConversationModel {
             if count && full { trial.recordCompleteTurn() }
             return
         }
-        // 金额占位只在目标为中文时使用（还原成「5万」写法）；其他目标见 P2
-        let (ph, table) = target == "zh-Hans" ? AmountNormalizer.placeholderize(m.source) : (m.source, [:])
+        // 金额占位（P2：所有目标语言）：中文还原成「5万」，英文「Rp 50,000」，印尼语「Rp 50.000」
+        let (ph, table) = AmountNormalizer.placeholderize(m.source)
         var literal: String
         do {
             if table.isEmpty {
                 literal = try await translator.translate(m.source, from: lang, to: target)
             } else {
                 let t = try await translator.translate(ph, from: lang, to: target)
-                if let r = AmountNormalizer.restore(t, table: table) {
+                if let r = AmountNormalizer.restore(t, table: table, lang: target) {
                     literal = r
                 } else {
                     let plain = try await translator.translate(m.source, from: lang, to: target)
-                    literal = plain + "（" + table.keys.sorted().compactMap { table[$0]?.display }.joined(separator: "，") + "）"
+                    let ds = table.keys.sorted().compactMap { table[$0]?.display(for: target) }
+                    literal = target == "zh-Hans" ? plain + "（" + ds.joined(separator: "，") + "）" : plain + " (" + ds.joined(separator: ", ") + ")"
                 }
             }
         } catch {

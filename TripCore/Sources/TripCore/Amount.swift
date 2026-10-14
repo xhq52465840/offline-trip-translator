@@ -42,13 +42,13 @@ public enum ChineseAmountFormatter {
 /// 印尼语 / 英语金额俗写解析（技术设计 v2 §5.1、§5.2）。
 public enum AmountNormalizer {
     // 1) 带单位：数字可以是千分位（50.000）或小数（1,5 / 2.5）
-    private static let unitPattern = #"(?<![\w.,])(\d{1,3}(?:\.\d{3})+|\d+(?:[.,]\d+)?)\s*(ribu|rbu|rb|juta|jt|k)(?![A-Za-z])"#
+    private static let unitPattern = #"(?<![\w.,])(\d{1,3}(?:\.\d{3})+|\d+(?:[.,]\d+)?)\s*(ribu|rbu|rb|juta|jt|k|thousand|grand|million|mil|mio)(?![A-Za-z])"#
     // 2) 不带单位的千分位整数：50.000、1.500.000
     private static let thousandsPattern = #"(?<![\w.,])(\d{1,3}(?:\.\d{3})+)(?![\d.,]*\d)"#
 
     // 0) 区间：30-40 ribu / 6-7rb / 30rb-40rb / 30 s/d 40 ribu / Rp 30.000–40.000（单位共享，取后一个单位）
     private static let num = #"(\d{1,3}(?:\.\d{3})+|\d+(?:[.,]\d+)?)"#
-    private static let unitAlt = #"(ribu|rbu|rb|juta|jt|k)"#
+    private static let unitAlt = #"(ribu|rbu|rb|juta|jt|k|thousand|million|mil|mio)"#
     private static let sep = #"\s*(?:-|–|—|~|s/d|s\.d\.?|sampai|hingga|to)\s*(?:Rp\.?\s*)?"#
     private static let rangeUnitRegex = try! NSRegularExpression(
         pattern: #"(?<![\w.,])"# + num + #"\s*"# + unitAlt + "?" + sep + num + #"\s*"# + unitAlt + #"(?![A-Za-z])"#, options: [.caseInsensitive])
@@ -60,15 +60,18 @@ public enum AmountNormalizer {
 
     // 3) 带货币前缀的整数：Rp 5000 / Rp5000 / IDR 50,000（英文逗号千分位，仅在有 Rp/IDR 前缀时认）
     private static let prefixedRegex = try! NSRegularExpression(
-        pattern: #"(?:Rp\.?|IDR)\s*(\d{1,3}(?:,\d{3})+|\d{1,3}(?:\.\d{3})+|\d{3,})(?![\d.,]*\d)(?!\s*(?:ribu|rbu|rb|juta|jt|k)(?![A-Za-z]))"#, options: [.caseInsensitive])
+        pattern: #"(?:Rp\.?|IDR)\s*(\d{1,3}(?:,\d{3})+|\d{1,3}(?:\.\d{3})+|\d{3,})(?![\d.,]*\d)(?!\s*(?:ribu|rbu|rb|juta|jt|k|thousand|million|mil|mio)(?![A-Za-z]))"#, options: [.caseInsensitive])
+    // 4) 英文后缀币种：50,000 rupiah / 50.000 IDR / 25000 rupiah（P2）
+    private static let suffixedRegex = try! NSRegularExpression(
+        pattern: #"(?<![\w.,])(\d{1,3}(?:,\d{3})+|\d{1,3}(?:\.\d{3})+|\d{3,})\s*(?:rupiahs?|IDR|Rp)(?![A-Za-z])"#, options: [.caseInsensitive])
 
     private static let unitRegex = try! NSRegularExpression(pattern: unitPattern, options: [.caseInsensitive])
     private static let thousandsRegex = try! NSRegularExpression(pattern: thousandsPattern, options: [])
 
     static func multiplier(_ unit: String) -> Int {
         switch unit.lowercased() {
-        case "rb", "rbu", "ribu", "k": return 1_000
-        case "jt", "juta": return 1_000_000
+        case "rb", "rbu", "ribu", "k", "thousand", "grand": return 1_000
+        case "jt", "juta", "million", "mil", "mio": return 1_000_000
         default: return 1
         }
     }
@@ -117,6 +120,12 @@ public enum AmountNormalizer {
             results.append(AmountMatch(original: numStr, value: v, display: ChineseAmountFormatter.format(v), range: r))
             taken.append(m.range(at: 1))
         }
+        for m in suffixedRegex.matches(in: text, range: all) where !overlaps(m.range(at: 1)) {
+            let numStr = ns.substring(with: m.range(at: 1))
+            guard let v = Int(numStr.replacingOccurrences(of: ",", with: "").replacingOccurrences(of: ".", with: "")), let r = Range(m.range(at: 1), in: text) else { continue }
+            results.append(AmountMatch(original: numStr, value: v, display: ChineseAmountFormatter.format(v), range: r))
+            taken.append(m.range(at: 1))
+        }
         for m in thousandsRegex.matches(in: text, range: NSRange(location: 0, length: ns.length)) {
             if taken.contains(where: { NSIntersectionRange($0, m.range).length > 0 }) { continue }
             let numStr = ns.substring(with: m.range(at: 1))
@@ -141,12 +150,12 @@ public enum AmountNormalizer {
     }
 
     /// 回填：把译文中的占位换成中文金额。占位丢失或重复时返回 nil（调用方回退原文翻译）。
-    public static func restore(_ translated: String, table: [String: AmountMatch]) -> String? {
+    public static func restore(_ translated: String, table: [String: AmountMatch], lang: String = "zh-Hans") -> String? {
         var out = translated
         for (key, m) in table {
             let count = out.components(separatedBy: key).count - 1
             guard count == 1 else { return nil }
-            out = out.replacingOccurrences(of: key, with: m.display)
+            out = out.replacingOccurrences(of: key, with: m.display(for: lang))
         }
         return out
     }
@@ -158,5 +167,26 @@ public enum AmountNormalizer {
         let re = try! NSRegularExpression(pattern: #"\d+"#)
         let ns = t as NSString
         return re.matches(in: t, range: NSRange(location: 0, length: ns.length)).compactMap { Int(ns.substring(with: $0.range)) }
+    }
+}
+
+/// 按目标语言写金额（P2）：中文「5万」，英文「Rp 50,000」，印尼语「Rp 50.000」
+public enum RupiahFormatter {
+    public static func grouped(_ v: Int, sep: Character) -> String {
+        var out = ""
+        for (i, ch) in String(v).reversed().enumerated() { if i > 0 && i % 3 == 0 { out.append(sep) }; out.append(ch) }
+        return String(out.reversed())
+    }
+    public static func format(_ v: Int, lang: String) -> String {
+        lang.hasPrefix("zh") ? ChineseAmountFormatter.format(v) : "Rp " + grouped(v, sep: lang == "en" ? "," : ".")
+    }
+}
+
+public extension AmountMatch {
+    func display(for lang: String) -> String {
+        if lang.hasPrefix("zh") { return display }
+        let sep: Character = lang == "en" ? "," : "."
+        if let u = upperValue { return "Rp " + RupiahFormatter.grouped(value, sep: sep) + "–" + RupiahFormatter.grouped(u, sep: sep) }
+        return "Rp " + RupiahFormatter.grouped(value, sep: sep)
     }
 }

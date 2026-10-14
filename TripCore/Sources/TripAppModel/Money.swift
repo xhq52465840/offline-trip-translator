@@ -44,7 +44,7 @@ public enum Money {
             for v in m.values where v >= 100 && !seen.contains(v) {
                 seen.insert(v)
                 out.append(AmountChip(idr: v, rupiah: rupiah(v), chinese: ChineseAmountFormatter.format(v) + "印尼盾",
-                                      cny: FXFormatter.approx(v, to: fx.currency, rates: fx.rates)))
+                                      cny: fx.currency == .idr ? nil : FXFormatter.approx(v, to: fx.currency, rates: fx.rates)))
             }
         }
         return out

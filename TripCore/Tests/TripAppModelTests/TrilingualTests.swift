@@ -103,3 +103,34 @@ final class TrilingualP1Tests: XCTestCase {
         XCTAssertFalse(BackTranslation.consistent(original: "harga 50", back: "harga 60"))
     }
 }
+
+@MainActor
+final class TrilingualP2Tests: XCTestCase {
+    func testEnglishViewerTranscript() async {
+        let tr = RecordingTranslator()
+        let m = ConversationModel(translator: tr, understander: nil, trial: TrialCounter(store: InMemoryTrialStore()))
+        m.myLanguage = "en"; m.theirLanguage = "id"
+        await m.receiveTheirs("harganya 100rb kak")
+        XCTAssertEqual(m.messages[0].literal, "[id>en]harganya Rp 100,000 kak")
+        let rows = Transcript.rows(m.messages, viewer: .me, rate: nil, fx: FXContext(rates: .bundled, currency: .usd), lang: "en")
+        XCTAssertTrue(rows[0].primary.contains("Rp 100,000 (≈ $5.6)"), rows[0].primary)
+        XCTAssertEqual(rows[0].chips.first?.cny, "≈ $5.6")
+    }
+
+    func testIndonesianViewerReverse() async {
+        let tr = RecordingTranslator()
+        let m = ConversationModel(translator: tr, understander: nil, trial: TrialCounter(store: InMemoryTrialStore()))
+        m.myLanguage = "id"; m.theirLanguage = "zh-Hans"
+        await m.receiveTheirs("给你200块")
+        let rows = Transcript.rows(m.messages, viewer: .me, rate: nil, fx: FXContext(rates: .bundled, currency: .idr), lang: "id")
+        XCTAssertEqual(rows[0].note, "¥200≈Rp 536.000")
+        XCTAssertNil(rows[0].chips.first?.cny)
+    }
+
+    func testZhViewerUnchanged() async {
+        let m = ConversationModel(translator: UITestTranslator(), understander: nil, trial: TrialCounter(store: InMemoryTrialStore()))
+        await m.receiveTheirs(UITestMode.seedAmountText)
+        let rows = Transcript.rows(m.messages, viewer: .me, rate: nil, fx: FXContext(rates: .bundled, currency: .cny))
+        XCTAssertEqual(rows[0].primary, "价格是10万（约 ¥37）")
+    }
+}
