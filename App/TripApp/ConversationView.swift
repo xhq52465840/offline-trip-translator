@@ -493,6 +493,10 @@ struct TalkButton: View {
 
 /// 出示页（PRD v2 §8）：黑底白字，只有一句。
 struct PresentView: View {
+    static func fontSize(for text: String) -> CGFloat {
+        let longest = text.split(whereSeparator: { $0 == " " || $0 == "\n" }).map(\.count).max() ?? 1
+        return min(96, max(34, 330 / (CGFloat(longest) * 0.6)))
+    }
     let text: String
     /// 对方熟悉的金额写法（Rp 50.000），大字单独一行，方便核对
     var amountLine: String? = nil
@@ -502,7 +506,8 @@ struct PresentView: View {
             Color.black.ignoresSafeArea()
             ScrollView(.vertical) {
                 Text(text)
-                    .font(.system(size: 96, weight: .bold))
+                    // 按最长单词限制字号，避免 “Indonesia” 被拆成两行（r4 截图）
+                    .font(.system(size: PresentView.fontSize(for: text), weight: .bold))
                     .minimumScaleFactor(34.0 / 96.0)
                     .foregroundStyle(.white)
                     .multilineTextAlignment(.leading)

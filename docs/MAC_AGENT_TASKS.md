@@ -30,6 +30,22 @@ mkdir -p "$WORK"
 
 ---
 
+## 当前轮次：r5（拉取 master 后按此清单执行；r4 已审阅合并）
+
+> r4 结论：`mac_mix2_s400` **采用**（strict 105、金额错 0、印→中降 4.31、印→英降 4.48）。s800 也达标（102/1/5.08/+0.32）作备选。权重仍只在 Mac 本机，**不上传**。
+
+1. `git pull origin master`，`ROUND=5`，分支 `mac-run-<日期>-r5`。
+2. T2–T4 全绿（UI 测试现为 8 项，新增 `testAmountConversionShownEnglish`）。
+3. 截图复核：
+   - `08_amount_conversion_en` 必须出现 `≈ $5.6`（r4 是 ¥，已修 `AppState.uiTest` 跟随 `-AppleLanguages`）；
+   - `04_present_fullscreen`：“Indonesia” 不再拆行（按最长单词限制字号）；
+   - `06_home`：网格可滚动，底行被 Home 指示条覆盖时**向上滚动后截一张** `06_home_scrolled`，确认最后一行（紧急求助/问路/闲聊）完整可点。仅滚动前被压住不算缺陷。
+4. **T6 跳过**（已采用 s400）。只需对 s400 GGUF 再算一次 sha256，确认与 r4 报告一致：`691a1b2b…f05b0a`、986048640 字节；把文件**保留**在原路径，不要删。
+5. **T6b（可选，仅当时间充裕）**：用 s400 GGUF 在模拟器里以真实模型（非 mock）跑 T4.6 一次，报告 TTFT/内存；不上传、不提交。
+6. 开 PR `Mac run r5`，**不要 merge**。若全绿且截图无新问题，则 App 循环可宣布完成。
+
+---
+
 ## 当前轮次：r4（拉取 master 后按此清单执行）
 
 > 用户不转述消息。Mac 代理只需 `git pull origin master`，读本节 + 下文 T0–T7 / T3b / 6.3d，开 PR 标题 `Mac run r4`。**不要合并 PR。**

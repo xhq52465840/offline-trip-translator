@@ -87,6 +87,17 @@ final class TripUITests: XCTestCase {
         shot("08_amount_conversion")
     }
 
+    func testAmountConversionShownEnglish() {
+        // 英文系统 → 美元：Rp 100.000 → ≈ $5.6（100000 / 17920）
+        let app = XCUIApplication()
+        app.launchArguments += ["-UITestMode", "mock-ready", "-UITestSeedAmount", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
+        app.launch()
+        app.buttons["startChat"].tap()
+        let conv = app.staticTexts.containing(NSPredicate(format: "label CONTAINS '$5.6'")).firstMatch
+        XCTAssertTrue(conv.waitForExistence(timeout: 10), "英文环境应显示 ≈ $5.6")
+        shot("08_amount_conversion_en")
+    }
+
     func testLaunchMemoryMetric() {
         // 基本指标（无需 Instruments）：启动到首页的内存与时间
         let app = XCUIApplication()

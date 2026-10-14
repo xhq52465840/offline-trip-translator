@@ -166,7 +166,7 @@ final class AppState: ObservableObject {
                          transcriber: PreviewTranscriber(), sessions: SessionStore(directory: dir),
                          modelReadinessOverride: { mode.modelReadiness }, defaults: defaults, trialStore: InMemoryTrialStore())
         s.fxRefreshEnabled = false            // UI 测试用内置汇率，结果可复现
-        s.fx = FXContext(rates: .bundled, currency: .cny)
+        s.fx = FXContext(rates: .bundled, currency: TargetCurrency.forLocale(Locale.preferredLanguages.first ?? "zh-Hans"))   // 跟随 -AppleLanguages，英文截图显示 $
         if ProcessInfo.processInfo.arguments.contains(UITestMode.seedAmountArgument) {
             Task { await s.conversation.receiveTheirs(UITestMode.seedAmountText) }   // 截图验证金额换算
         }
