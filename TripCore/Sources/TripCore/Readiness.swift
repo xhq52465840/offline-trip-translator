@@ -28,6 +28,8 @@ public struct PrepareStatus: Equatable, Sendable {
         items.compactMap { item, r in
             if r == .ready { return nil }
             if case .speech = item, case .unavailable = r { return nil }
+            // Mac run r8：我方改成英语后被「英语听写」阻断且关不掉。听写只是输入方式（可打字 / 粘贴），不阻断；准备页仍显示可下载
+            if item == .touristSpeech, case .unavailable = r { return nil }
             if case .translation = item, case .unavailable = r { return nil }   // G1：系统不支持的方向用本地模型直译，不阻断
             return item
         }.sorted { "\($0)" < "\($1)" }

@@ -30,6 +30,24 @@ mkdir -p "$WORK"
 
 ---
 
+## 当前轮次：r9 = 最后一轮：模拟器真实模型复测（r8 已审阅合并；拉取 master 后按此清单执行）
+
+> 用户只会说「pull master and continue」。开 PR `Mac run r9`，**不要 merge**。**r9 全绿后 Mac 循环结束**：之后再收到「continue」，只回复「Mac 循环已结束，剩下的是真机步骤（docs/真机验证清单.md）」，不要再开新轮次。
+> r8 结论：Release `model-s400-v1` 已上线，盒子独立下载核对：986048640 字节、sha256 `691a1b2b…f05b0a`、GGUF 头、支持 Range ✓；清单地址一致 ✓；隐私清单进工程 ✓；中英 UI 24 项 ✓；只检查两种语言 ✓；兜底标注中英 ✓。
+> 问题与盒子修复（本轮要验证）：
+> - 模拟器上真实模型输出整串「!!!!」→ 模拟器的 Metal 跑 llama.cpp 不可靠，`LlamaCppEngine` 在模拟器里改成纯 CPU（`gpuLayers = 0`）；另加「坏输出」检测，整串重复 / 几乎没有文字的输出当失败，绝不显示。
+> - 我方改英语后被「听英语暂不可用」阻断且关不掉 → 我方听写**不可用**时不再阻断（可打字）；可下载时仍提示下载。
+> - App 后台下载在模拟器连不上 nsurlsessiond（4097）：模拟器限制，真机验证（真机清单 A 节），不改代码。
+
+1. `git pull`；`ROUND=9`；`swift test`（167）全绿；`i18n check` OK；`xcodegen generate`；编译；中英 UI 测试 24 项全绿。
+2. 和 r8 一样把 curl 核对过的 s400 放进 App 容器（`models/trip-mix2-s400-q4_k_m/model.gguf` + `installed.json`），DEBUG 构建、不加 `-UITestMode`。
+3. 同样 3 句（我方中文 ← `50rb belum termasuk ongkos`；我方中文 → `太贵了，能便宜一点吗`；我方英文 ← `harganya 100rb kak`），记录：显示内容、秒表耗时、RSS 峰值、截图 `r9_s1/s2/s3.png`。
+   - **预期**：正文是正常的中文 / 印尼语 / 英文（不再是「!!!!」）；若模型仍输出坏结果，气泡应显示「这句还没翻译出来」而不是乱码。两种情况都如实记录。
+   - 第 3 句前在对话里把**我方**改成英语：不应再被「听英语暂不可用」阻断（截图 `r9_my_en.png`）。
+4. 报告 `reports/mac_run_<日期>_r9.md`，PR `Mac run r9`，**不要 merge**。最后一行写「Mac 循环结束」。
+
+---
+
 ## 当前轮次：r8 = 上传 s400 到 GitHub Release + 用真实模型回归（r7 已审阅合并；拉取 master 后按此清单执行）
 
 > 用户只会说「pull master and continue」。开 PR `Mac run r8`，**不要 merge**。

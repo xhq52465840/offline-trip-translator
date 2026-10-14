@@ -144,7 +144,7 @@ public enum OutputValidator {
     public static func validate(output raw: String, literal: String, source: String, context: [ContextTurn], target: String = "zh-Hans") -> ValidationResult {
         var out = raw.components(separatedBy: .newlines).first ?? ""
         out = out.trimmingCharacters(in: .whitespacesAndNewlines).trimmingCharacters(in: CharacterSet(charactersIn: "\"'「」“”"))
-        if out.isEmpty { return .rejected(.empty) }
+        if out.isEmpty || OutputSanity.isDegenerate(out) { return .rejected(.empty) }   // r8：坏输出（如整串「!!!!」）当空
         if target == "en" { return validateEnglish(out, literal: literal, source: source, context: context) }
         let ns = out as NSString
         let full = NSRange(location: 0, length: ns.length)
@@ -206,5 +206,21 @@ extension OutputValidator {
     static func sourceHasNumber(_ source: String, _ n: Int) -> Bool {
         let digits = source.replacingOccurrences(of: ".", with: "").replacingOccurrences(of: ",", with: "")
         return digits.range(of: #"(?<!\d)\#(n)(?!\d)"#, options: .regularExpression) != nil
+    }
+}
+
+/// 模型输出健全性（Mac run r8：模拟器 Metal 输出整串「!!!!」）。坏输出一律当失败，绝不显示给用户。
+public enum OutputSanity {
+    public static func isDegenerate(_ s: String) -> Bool {
+        let chars = Array(s.filter { !$0.isWhitespace })
+        guard !chars.isEmpty else { return true }
+        let letters = chars.filter { $0.isLetter }.count
+        if Double(letters) / Double(chars.count) < 0.3 { return true }
+        var run = 1
+        for i in 1..<max(1, chars.count) where i < chars.count {
+            run = chars[i] == chars[i - 1] ? run + 1 : 1
+            if run >= 8 && !chars[i].isNumber { return true }
+        }
+        return false
     }
 }

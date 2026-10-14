@@ -44,7 +44,8 @@ final class ValidatorTests: XCTestCase {
 
     func testFormatRules() {
         XCTAssertEqual(v("   ", "谢谢", "terima kasih"), .rejected(.empty))
-        XCTAssertEqual(v(String(repeating: "好", count: 81), "谢谢", "terima kasih"), .rejected(.tooLong))
+        XCTAssertEqual(v(String(repeating: "好", count: 81), "谢谢", "terima kasih"), .rejected(.empty), "r8：整串重复字先按坏输出拒绝")
+        XCTAssertEqual(v(String(repeating: "好吃的炒饭不辣", count: 12), "谢谢", "terima kasih"), .rejected(.tooLong))
         XCTAssertEqual(v("「谢谢。」\n解释：…", "谢谢", "terima kasih"), .unchanged)
         XCTAssertEqual(v("早上好！", "早上好", "selamat pagi"), .unchanged)
     }

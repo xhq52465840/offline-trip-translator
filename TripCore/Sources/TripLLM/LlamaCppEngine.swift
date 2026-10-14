@@ -16,7 +16,12 @@ public final class LlamaCppEngine: LLMEngine, @unchecked Sendable {
         public var nBatch: UInt32 = 512
         public var nThreads: Int32 = Int32(max(1, min(8, ProcessInfo.processInfo.activeProcessorCount - 1)))
         public var gpuLayers: Int32 = 99      // Apple 上走 Metal；Linux CPU 构建忽略
-        public init() {}
+        public init() {
+            #if targetEnvironment(simulator)
+            // Mac run r8：模拟器的 Metal 跑 llama.cpp 输出一串「!!!!」（同一 GGUF 在 Mac 上 llama-cpp-python 正常）→ 模拟器只用 CPU
+            gpuLayers = 0
+            #endif
+        }
     }
 
     private let queue = DispatchQueue(label: "app.tripunderstand.llama")

@@ -100,3 +100,29 @@ final class FallbackMarkAndGateTests: XCTestCase {
         XCTAssertNotEqual(d2, .open, "换成英语后才要求英语包")
     }
 }
+
+final class OutputSanityTests: XCTestCase {
+    func testDegenerate() {
+        XCTAssertTrue(OutputSanity.isDegenerate("!!!!!!!!!!!!!!!!!!!!!!!!!!!!(5万 (约 ¥19))"))
+        XCTAssertTrue(OutputSanity.isDegenerate("   "))
+        XCTAssertTrue(OutputSanity.isDegenerate("好好好好好好好好好好"))
+        XCTAssertFalse(OutputSanity.isDegenerate("5万，不含车费"))
+        XCTAssertFalse(OutputSanity.isDegenerate("Rp 1.000.000, fare not included"))
+        XCTAssertFalse(OutputSanity.isDegenerate("Terlalu mahal, bisa lebih murah?"))
+        if case .rejected = OutputValidator.validate(output: "!!!!!!!!!!!!!!!!", literal: "x", source: "x", context: []) {} else { XCTFail() }
+    }
+
+    func testFallbackDegenerateOutputFails() async throws {
+        let e = MockEngine { _ in "!!!!!!!!!!!!!!!!!!!!" }; try await e.load(modelURL: URL(fileURLWithPath: "/dev/null"))
+        do { _ = try await LocalModelTranslator(engine: e).translate("halo", from: "id", to: "zh-Hans"); XCTFail() } catch {}
+    }
+}
+
+final class SpeechNonBlockingTests: XCTestCase {
+    func testMySpeechUnavailableDoesNotBlock() {
+        let st = PrepareStatus(items: [.touristSpeech: .unavailable("听英语暂不可用"), .translation("id"): .ready, .understander: .ready])
+        XCTAssertTrue(st.isComplete, "r8：我方英语听写不可用时仍可打字使用")
+        let zh = PrepareStatus(items: [.touristSpeech: .needsDownload(bytes: nil), .translation("id"): .ready, .understander: .ready])
+        XCTAssertFalse(zh.isComplete, "可下载的听写仍提示下载")
+    }
+}

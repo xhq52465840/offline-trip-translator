@@ -24,7 +24,7 @@ public final class LocalModelTranslator: Translating {
         guard engine.isLoaded else { throw LLMError.notLoaded }
         let out = try await engine.complete(Self.messages(text, from: from, to: to), options: GenerationOptions(maxTokens: 160, stopAtNewline: true))
         let line = out.split(separator: "\n").first.map(String.init)?.trimmingCharacters(in: .whitespaces) ?? ""
-        guard !line.isEmpty else { throw LLMError.decodeFailed(0) }
+        guard !line.isEmpty, !OutputSanity.isDegenerate(line) else { throw LLMError.decodeFailed(0) }
         return line
     }
 }
@@ -48,3 +48,4 @@ public final class FallbackTranslator: Translating {
         return r
     }
 }
+
