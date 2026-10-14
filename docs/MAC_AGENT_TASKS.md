@@ -30,19 +30,56 @@ mkdir -p "$WORK"
 
 ---
 
-## 当前轮次：r5（拉取 master 后按此清单执行；r4 已审阅合并）
+## 当前轮次：r5（r5 原清单 + 三语/国际化 P1–P8 验证，合并为一张清单）
 
-> r4 结论：`mac_mix2_s400` **采用**（strict 105、金额错 0、印→中降 4.31、印→英降 4.48）。s800 也达标（102/1/5.08/+0.32）作备选。权重仍只在 Mac 本机，**不上传**。
+> 用户只会说「pull master and continue」。按本节从上到下执行，开 PR `Mac run r5`，**不要 merge**。
+> 背景：r4 结论 `mac_mix2_s400` **采用**（strict 105、金额错 0）。盒子已按 `docs/三语与国际化改造计划.md` 完成 P1–P4、P6–P8 代码（P5 真机部分、P9 未做）。权重只在 Mac 本机，**不上传、不提交**。
 
-1. `git pull origin master`，`ROUND=5`，分支 `mac-run-<日期>-r5`。
-2. T2–T4 全绿（UI 测试现为 8 项，新增 `testAmountConversionShownEnglish`）。
-3. 截图复核：
-   - `08_amount_conversion_en` 必须出现 `≈ $5.6`（r4 是 ¥，已修 `AppState.uiTest` 跟随 `-AppleLanguages`）；
-   - `04_present_fullscreen`：“Indonesia” 不再拆行（按最长单词限制字号）；
-   - `06_home`：网格可滚动，底行被 Home 指示条覆盖时**向上滚动后截一张** `06_home_scrolled`，确认最后一行（紧急求助/问路/闲聊）完整可点。仅滚动前被压住不算缺陷。
-4. **T6 跳过**（已采用 s400）。只需对 s400 GGUF 再算一次 sha256，确认与 r4 报告一致：`691a1b2b…f05b0a`、986048640 字节；把文件**保留**在原路径，不要删。
-5. **T6b（可选，仅当时间充裕）**：用 s400 GGUF 在模拟器里以真实模型（非 mock）跑 T4.6 一次，报告 TTFT/内存；不上传、不提交。
-6. 开 PR `Mac run r5`，**不要 merge**。若全绿且截图无新问题，则 App 循环可宣布完成。
+**A. 准备**
+1. `git fetch && git checkout master && git pull origin master`；`ROUND=5`；分支 `mac-run-<日期>-r5`；截图目录 `reports/screens/<日期>-r5/`。
+2. `python3 scripts/i18n.py check` 必须输出 `i18n check: OK`（字符串完整性；失败原文写进报告，不要手改生成文件——改 `i18n/strings.json` 后 `python3 scripts/i18n.py gen`）。
+3. `cd App && xcodegen generate`（project.yml 新增 `developmentLanguage`、`CFBundleLocalizations: [zh-Hans, en]`、`Localizable.xcstrings`、`en.lproj/InfoPlist.strings`）。
+
+**B. 单元测试 + 编译（T2/T3）**
+4. `cd TripCore && swift test`：盒子 Linux 上 156 项全绿，Mac 上也应全绿（新增 TrilingualTests、FXEnglishTests、PromptEnglishTests、PhraseTrilingualTests、L10nTests）。
+5. T3 编译 App 无 error；警告里如有 `Localizable.xcstrings` 相关（未用键/缺翻译）抄进报告。
+
+**C. UI 测试两遍（T4.4）**
+6. 中文界面（默认）：照 T4.4 跑一遍，共 13 项，全绿。
+7. 英文界面：同一命令加 `TEST_RUNNER_UI_LANG=en`，`-resultBundlePath "$WORK/ui_r${ROUND}_en.xcresult"`，日志 `t4_ui_en.log`。这一遍截图自动加 `_en` 后缀。
+   - `testEnglishUIHasNoChinese` 必须通过（引导页、阻断页、首页、对话页可见文字里没有汉字）。失败时把它列出的汉字字符串逐条写进报告（这是缺键，属于盒子要修的缺陷，不要改 App 掩盖）。
+   - 中文专用断言（比如 `约 ¥37`、`太贵了`）在英文遍里失败的，只记录不修，并注明是否属于测试本身假设了中文界面。
+8. 截图复核（两遍合并，逐张看）：
+   - `08_amount_conversion`：`Rp 100.000（约 ¥37）`，汇率行含 `2026-10-12`。`08_amount_conversion_en`：出现 `≈ $5.6`；
+   - `04_present_fullscreen`：“Indonesia” 不拆行；
+   - `06_home`：滚到底再截一张 `06_home_scrolled`，最后一行（紧急求助/问路/闲聊）完整可点；
+   - **P4** `10_lang_picker`：顶部有「我说 / ⇄ / 对方说」三个控件，发「太贵了」后出现英文 `Too expensive`；
+   - **P4** `11_face_to_face_lang`：英文界面，我方英文、对方中文，面对面模式下对方一侧有语言选择器；
+   - **P4** `testSwapLanguages` 通过（交换后我方显示印尼语）；
+   - **P6** `03_phrasebook` / `03_phrasebook_en`：场景标题按界面语言显示；短语出示语言跟随对方语言；
+   - **P7** 英文全套 `01…12_*_en`：无中文、无截断/重叠；设置里有「界面语言 / App language」入口（截 `13_ui_language`，手动导航即可）；
+   - **P2**：英文遍的金额芯片为 `Rp 50,000`（逗号分组）这种形式，中文遍为 `5万`。
+9. 指标照 T4.4 / 4.5 记录。
+
+**D. 模型（T6 不训练）**
+10. s400 GGUF 重算 sha256，确认和 r4 一致：`691a1b2b…f05b0a`，986048640 字节。文件留在原路径，不删、不传。
+11. **P3 基线（必做）**：用 s400 跑 id→en 理解 60 条评测（`docs/model_eval/cases_en.py`），同时复跑中文目标确认没有回归：
+    ```bash
+    cd "$REPO/finetune/mlx"   # 和 6.2 / 6.5 相同的 venv、trip-prompt 路径
+    python ../scripts/eval_appfmt.py "$S400" --tag mac_mix2_s400_en --target en --limit 60 2>&1 | tee "$WORK/t6_eval_s400_en.log" | tail -5
+    python ../scripts/eval_appfmt.py "$S400" --tag mac_mix2_s400_zh_r5 --limit 60 2>&1 | tee "$WORK/t6_eval_s400_zh.log" | tail -5
+    ```
+    报告：strict / valid / 金额错 / 平均延迟，并把每条失败的 id 和模型原文贴出来。**参考门槛**（只报告，本轮不决定是否训练）：en strict ≥ 45/60，金额错 = 0。中文复跑应和 r4 的 105 / 0 基本一致（±3）。
+    - 如果 `eval_appfmt.py --target en` 报错（盒子只用桩模块测过），允许修脚本里的明显 bug，必须写进报告并随 PR 提交。
+12. （可选，时间充裕时）T6b：s400 真实模型在模拟器里跑 T4.6 一次，中文→英文、英文→印尼语各发一句，报告 TTFT 和内存。不上传、不提交。
+
+**E. 只记录、不执行**
+13. 真机部分（P5：Apple Translation zh↔en、en↔id 语言包下载，各语言的语音识别）和 StoreKit 沙盒购买（T7）需要用户本人操作，只列在报告的「待真机」一节。
+14. 英文和印尼语短语的母语者校对见 `docs/印尼语短语核对.md`，Mac 不做。
+
+**F. 提交**
+15. 报告 `reports/mac_run_<日期>_r5.md`：每一步 ✓/✗；UI 测试中文遍、英文遍各自的 pass/fail 表；P3 评测数字；截图清单和亲眼看到的 UX 问题（写明文件名）。
+16. 开 PR `Mac run r5`，**不要 merge**。全绿且截图无新问题时，在报告里写「r5 全绿」，等审阅方回复。
 
 ---
 
