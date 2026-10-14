@@ -30,6 +30,31 @@ mkdir -p "$WORK"
 
 ---
 
+## 当前轮次：r8 = 定稿回归 + 本机准备 GitHub Release（r7 已审阅合并；拉取 master 后按此清单执行）
+
+> 用户只会说「pull master and continue」。开 PR `Mac run r8`，**不要 merge**。
+> r7 结论：mix3 不采用（s1000 印→中 106 ✓，印→英 107 < 110 且金额错 1 ✗；s600 两向都 ✗）。**最终模型 = s400**（`trip-mix2-s400-Q4_K_M.gguf`，986048640 字节，sha256 `691a1b2b1e0b73e3e2156583505300697753184477176301924877f73bf05b0a`）。
+> 盒子已改：印→英在 App 里**不再调用本地模型**，只用 Apple 翻译直译（金额照样由程序还原并加注 ≈ $）；中文目标（id→zh、en→zh）仍用 s400 理解。
+> 模型清单 `TripCore/Sources/TripCore/Resources/model-manifest.json` 已指向 GitHub Release `model-s400-v1` 的资产 `trip-mix2-s400-Q4_K_M.gguf`（地址：`https://github.com/xhq52465840/offline-trip-translator/releases/download/model-s400-v1/trip-mix2-s400-Q4_K_M.gguf`）。
+
+1. `git pull origin master`；`ROUND=8`；分支 `mac-run-<日期>-r8`。`swift test`（156）全绿；`python3 scripts/i18n.py check` OK；`xcodegen generate`；编译。
+2. **UI 测试一次跑完中英两遍**（`TripUITests` + `TripUITestsEnglish`），全绿。重点看 `08_amount_conversion_en`：现在应显示**直译**（例如 `Harganya Rp 100.000 (≈ $5.6) kak` 的译文行），仍要有 `≈ $5.6`；中文 `08_amount_conversion` 仍是理解后的「价格是10万（约 ¥37）」。
+3. **准备 GitHub Release（只在本机准备，由用户确认后上传）**：
+   - 再算一次 s400 的 sha256，必须等于上面的值；
+   - 在本机写好 `release/model-s400-v1/` 目录（**不要提交到 git**）：`SHA256SUMS`（一行：sha256 + 文件名）、`NOTICE.txt`（Qwen2.5-1.5B-Instruct Apache-2.0 + LoRA 训练数据许可证摘要，复制仓库 `NOTICE.md` 相关段落）、`RELEASE_NOTES.md`（模型来源、r4 评测数字：印→中 strict 105 / 金额错 0，公开集降幅，用途说明）；
+   - 把准备好的上传命令写进报告，**不要执行**，等用户本人确认：
+     `gh release create model-s400-v1 finetune/runs/trip-mix2-s400-Q4_K_M.gguf release/model-s400-v1/SHA256SUMS release/model-s400-v1/NOTICE.txt -t "Model s400 v1" -F release/model-s400-v1/RELEASE_NOTES.md`
+     （单个资产 < 2 GB，符合 GitHub Release 限制。）
+4. **真实模型回归（模拟器，轻量）**：用户确认并上传 Release 后，在 DEBUG 构建里不加 `-UITestMode` 启动，让 App 从清单地址下载并校验 s400：记录下载耗时和校验结果（sha256 通过）；然后发 3 句：
+   - 中文我方 ← 印尼语对方 `50rb belum termasuk ongkos`：应出现理解结果 + 金额 5万；
+   - 英文我方 ← 印尼语对方同一句：应只出现直译 + `≈ $`，**不调用模型**（看日志无生成）；
+   - 英文我方 ← 中文对方 `太贵了`：中文目标不涉及，记录行为即可。
+   报告 TTFT、内存（RSS）。模拟器装不了 Apple 印尼语/英语翻译包的话，记录「需真机」并跳过对应句子。
+   - 如果用户还没上传，就把第 4 步改为：把 GGUF 复制进模拟器 App 沙盒的模型目录做同样检查（不改代码），并在报告里写明。
+5. 报告 `reports/mac_run_<日期>_r8.md`，PR `Mac run r8`，**不要 merge**。全绿且无新问题时写「r8 全绿：可以进入真机 / TestFlight」。
+
+---
+
 ## 当前轮次：r7 = P9 三语 LoRA 训练（r6 已审阅合并；拉取 master 后按此清单执行）
 
 > 用户只会说「pull master and continue」。开 PR `Mac run r7`，**不要 merge**。权重只在本机，**不上传、不提交**。
