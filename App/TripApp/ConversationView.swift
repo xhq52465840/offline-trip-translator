@@ -140,6 +140,15 @@ struct ConversationView: View {
                 // 对方半屏（决策 D6）：对话 + 对方语言的按住说话按钮，整体旋转 180°
                 VStack(spacing: 8) {
                     TranscriptList(viewer: .partner, onPresent: { _ in })
+                    // P4：对方半屏自己选语言（用该语言写）
+                    Menu {
+                        ForEach(Lang.all.filter { $0 != state.myLanguage }, id: \.self) { l in
+                            Button(LangNames.native(l)) { state.setTheirLanguage(l) }
+                        }
+                    } label: {
+                        Label(LangNames.native(model.theirLanguage), systemImage: "globe").font(.subheadline)
+                    }
+                    .accessibilityIdentifier("partnerLangPicker")
                     TalkButton(title: state.talk.partnerTitle(lang: model.theirLanguage), symbol: "mic.fill", target: .them, prominent: true,
                                locale: Lang.speechLocale(model.theirLanguage))
                         .padding(.horizontal, 16).padding(.bottom, 8)
@@ -158,12 +167,18 @@ struct ConversationView: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .principal) {
-                Menu {
-                    ForEach(state.gate.theirLanguages, id: \.self) { l in
-                        Button(Lang.displayName(l)) { model.theirLanguage = l; state.objectWillChange.send() }
-                    }
-                } label: {
-                    Label("对方说\(Lang.displayName(model.theirLanguage))", systemImage: "globe").labelStyle(.titleAndIcon).font(.subheadline)
+                // P4：「我说 ▾ ⇄ 对方说 ▾」，双方各自选三种语言之一
+                HStack(spacing: 6) {
+                    Menu {
+                        ForEach(Lang.all, id: \.self) { l in Button(LangNames.native(l)) { state.setMyLanguage(l) } }
+                    } label: { Text("我说\(Lang.displayName(model.myLanguage))").font(.subheadline) }
+                    .accessibilityIdentifier("myLangPicker")
+                    Button { state.swapLanguages() } label: { Image(systemName: "arrow.left.arrow.right") }
+                        .accessibilityLabel("交换双方语言").accessibilityIdentifier("swapLangs")
+                    Menu {
+                        ForEach(Lang.all, id: \.self) { l in Button(LangNames.native(l)) { state.setTheirLanguage(l) } }
+                    } label: { Text("对方说\(Lang.displayName(model.theirLanguage))").font(.subheadline) }
+                    .accessibilityIdentifier("theirLangPicker")
                 }
             }
             ToolbarItemGroup(placement: .topBarTrailing) {
@@ -171,6 +186,7 @@ struct ConversationView: View {
                     Image(systemName: state.faceToFace ? "person.2.fill" : "person.2")
                 }
                 .accessibilityLabel(state.faceToFace ? "关闭面对面模式" : "面对面模式")
+                .accessibilityIdentifier("faceToFaceToggle")
                 Menu {
                     Menu("场景") {
                         Button("不选场景") { state.enter(scene: nil) }
@@ -231,7 +247,7 @@ struct ConversationView: View {
             if let hint = model.inputHint { Text(hint).font(.callout).foregroundStyle(.red) }
             if let f = state.talk.feedback { Text(f).font(.callout).foregroundStyle(.secondary) }
             HStack(alignment: .bottom) {
-                TextField("打中文，我帮你说", text: $input, axis: .vertical)
+                TextField(model.myLanguage == "zh-Hans" ? "打中文，我帮你说" : "输入\(Lang.displayName(model.myLanguage))，我帮你说", text: $input, axis: .vertical)
                     .font(.body)
                     .lineLimit(1...4)
                     .padding(10)
@@ -253,10 +269,10 @@ struct ConversationView: View {
             }
             // 单手操作：两颗大按钮占满底部，拇指可达
             HStack(spacing: 10) {
-                TalkButton(title: state.talk.buttonTitle.them, symbol: "ear", target: .them, prominent: true,
+                TalkButton(title: state.talk.buttonTitle(myLang: model.myLanguage).them, symbol: "ear", target: .them, prominent: true,
                            locale: Lang.speechLocale(model.theirLanguage))
-                TalkButton(title: state.talk.buttonTitle.me, symbol: "mic.fill", target: .me, prominent: false,
-                           locale: Lang.speechLocale(Lang.tourist))
+                TalkButton(title: state.talk.buttonTitle(myLang: model.myLanguage).me, symbol: "mic.fill", target: .me, prominent: false,
+                           locale: Lang.speechLocale(model.myLanguage))
             }
             .disabled(!model.trial.allowsFull || model.isTranslating)
             .opacity(model.trial.allowsFull ? 1 : 0.4)
@@ -276,7 +292,7 @@ struct PhraseStrip: View {
                 ForEach(scene.phrases) { p in
                     Button { state.conversation.sendPhrase(p); Haptics.play(.sent) } label: {
                         HStack(spacing: 4) {
-                            Text(p.zh).font(.callout)
+                            Text(p.text(state.myLanguage)).font(.callout)
                             if p.needsNativeReview {
                                 // 新短语尚未经母语者审校（docs/社区真实语料.md）；上线前审校后去掉标记
                                 Text("待校对").font(.caption2.weight(.semibold)).foregroundStyle(.orange)
@@ -285,7 +301,7 @@ struct PhraseStrip: View {
                         .padding(.horizontal, 12).padding(.vertical, 8)
                         .background(Color.accentColor.opacity(0.12), in: Capsule())
                     }
-                    .accessibilityHint("发给对方：\(p.foreign(state.conversation.theirLanguage))\(p.needsNativeReview ? "（译文待母语者校对）" : "")")
+                    .accessibilityHint("发给对方：\(p.text(state.conversation.theirLanguage))\(p.needsNativeReview ? "（译文待母语者校对）" : "")")
                 }
             }
             .padding(.horizontal).padding(.vertical, 6)
@@ -302,7 +318,7 @@ struct TranscriptList: View {
     private var model: ConversationModel { state.conversation }
 
     var body: some View {
-        let rows = Transcript.rows(model.messages, viewer: viewer, rate: nil, fx: viewer == .me ? state.fx : nil)
+        let rows = Transcript.rows(model.messages, viewer: viewer, rate: nil, fx: viewer == .me ? state.fx : nil, lang: model.myLanguage)
         ScrollViewReader { proxy in
             ScrollView {
                 LazyVStack(spacing: 14) {
@@ -544,4 +560,11 @@ struct PresentView: View {
 
 #Preview("大字号") {
     NavigationStack { ConversationView() }.environmentObject(AppState.preview()).dynamicTypeSize(.accessibility2)
+}
+
+/// 语言选择菜单里用各语言自己的名字（P4）
+enum LangNames {
+    static func native(_ l: String) -> String {
+        switch l { case "zh-Hans": return "中文"; case "id": return "Bahasa Indonesia"; case "en": return "English"; default: return l }
+    }
 }

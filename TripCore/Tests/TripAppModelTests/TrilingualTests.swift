@@ -169,3 +169,63 @@ final class TrilingualP3Tests: XCTestCase {
         XCTAssertEqual(eng.calls, 0)
     }
 }
+
+@MainActor
+final class TrilingualP4Tests: XCTestCase {
+    func testSwitchOnlyAffectsNewMessages() async {
+        let tr = RecordingTranslator()
+        let m = ConversationModel(translator: tr, understander: nil, trial: TrialCounter(store: InMemoryTrialStore()))
+        await m.receiveTheirs("Mahal sekali")
+        let first = m.messages[0]
+        m.setLanguages(me: "en", them: "zh-Hans")
+        XCTAssertEqual(m.messages[0], first, "已有消息不重译")
+        await m.receiveTheirs("太贵了")
+        XCTAssertEqual(m.messages[1].literal, "[zh-Hans>en]太贵了")
+        m.swapLanguages()
+        XCTAssertEqual(m.myLanguage, "zh-Hans"); XCTAssertEqual(m.theirLanguage, "en")
+        m.setLanguages(me: "en-US"); XCTAssertEqual(m.myLanguage, "en")
+    }
+
+    func testGateUsesMyLanguage() async {
+        let probe = FakeProbe()
+        let g = AppGate(tier: .a8GB, theirLanguages: Lang.all, probe: probe, modelReadiness: { .ready }, defaults: UserDefaults(suiteName: "p4-\(UUID())")!)
+        g.myLanguage = "en"
+        XCTAssertEqual(g.partnerLanguages, ["zh-Hans", "id"])
+        await g.refresh(.coldLaunch)
+        XCTAssertNotNil(g.status.items[.translation("zh-Hans")]); XCTAssertNil(g.status.items[.translation("en")])
+        let rows = PrepareRows.rows(status: g.status, theirLanguages: g.partnerLanguages, myLanguage: "en")
+        XCTAssertEqual(rows[0].title, "英语听写")
+        XCTAssertEqual(AppGate.missingText([.touristSpeech], myLanguage: "id"), "印尼语听写")
+        let same = await AppGate.pairReadiness("en", "en-US", probe: probe)
+        XCTAssertEqual(same, .ready)
+    }
+
+    func testTalkTitles() async {
+        let t = HoldToTalk(transcriber: FakeTranscriber())
+        XCTAssertEqual(t.buttonTitle(myLang: "en").me, "按住说英语")
+        XCTAssertEqual(t.buttonTitle.me, "按住说中文")
+        XCTAssertEqual(t.partnerTitle(lang: "zh-Hans"), "按住说话")
+    }
+
+    func testSessionBackCompat() async throws {
+        let old = #"{"id":"6F1C2D3E-0000-0000-0000-000000000000","createdAt":0,"updatedAt":0,"theirLanguage":"id","messages":[]}"#
+        let s = try JSONDecoder().decode(StoredSession.self, from: Data(old.utf8))
+        XCTAssertNil(s.myLanguage)
+    }
+}
+
+@MainActor
+final class UITestEnglishFlowTests: XCTestCase {
+    func testEnglishSeedFlow() async throws {
+        let eng = MockEngine(pieceDelayNanos: 0) { UITestMode.fakeUnderstanding(for: $0) }
+        try await eng.load(modelURL: URL(fileURLWithPath: "/dev/null"))
+        let m = ConversationModel(translator: UITestTranslator(), understander: Understander(engine: eng), trial: TrialCounter(store: InMemoryTrialStore()))
+        m.setLanguages(me: "en", them: "id")
+        await m.receiveTheirs(UITestMode.seedAmountText)
+        let rows = Transcript.rows(m.messages, viewer: .me, rate: nil, fx: FXContext(rates: .bundled, currency: .usd), lang: "en")
+        XCTAssertEqual(rows[0].primary, "The price is Rp 100,000 (≈ $5.6)")
+        m.setLanguages(me: "en", them: "zh-Hans")
+        await m.sendMine("Too expensive")
+        XCTAssertEqual(m.messages[1].foreign, "太贵了")
+    }
+}

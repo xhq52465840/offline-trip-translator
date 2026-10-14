@@ -5,6 +5,8 @@ public struct StoredSession: Codable, Equatable, Sendable {
     public var createdAt: Date
     public var updatedAt: Date
     public var theirLanguage: String
+    /// 我方语言（P4，可选以兼容旧存档；nil = 中文）
+    public var myLanguage: String?
     public var messages: [Message]
 }
 
@@ -49,7 +51,7 @@ public final class SessionStore {
     public func touch(_ s: StoredSession) throws { try save(s) }
 
     /// 新对话：默认把上一场归档（不可浏览，只为恢复）；勾选「同时删除上一场」则直接删除。
-    public func startNew(theirLanguage: String, deletePrevious: Bool) throws -> StoredSession {
+    public func startNew(theirLanguage: String, myLanguage: String? = nil, deletePrevious: Bool) throws -> StoredSession {
         if fm.fileExists(atPath: current.path) {
             if deletePrevious { try fm.removeItem(at: current) }
             else {
@@ -57,7 +59,7 @@ public final class SessionStore {
                 try fm.moveItem(at: current, to: directory.appendingPathComponent("session-\(ts).json"))
             }
         }
-        let s = StoredSession(id: UUID(), createdAt: now(), updatedAt: now(), theirLanguage: theirLanguage, messages: [])
+        let s = StoredSession(id: UUID(), createdAt: now(), updatedAt: now(), theirLanguage: theirLanguage, myLanguage: myLanguage, messages: [])
         try save(s)
         return s
     }

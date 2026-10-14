@@ -79,6 +79,15 @@ public final class ConversationModel {
         TrialBanner.text(trial.state)
     }
 
+    // MARK: 语言选择（P4）：只影响之后的新消息，已有消息不重译
+
+    public func setLanguages(me: String? = nil, them: String? = nil) {
+        if let me { myLanguage = Lang.normalize(me) }
+        if let them { theirLanguage = Lang.normalize(them) }
+        onChange?()
+    }
+    public func swapLanguages() { setLanguages(me: theirLanguage, them: myLanguage) }
+
     // MARK: 发送中文（PRD v2 §7.3、§7.4）
 
     public enum SendCheck: Equatable { case ok, empty, notChinese, wrongLanguage, busy }

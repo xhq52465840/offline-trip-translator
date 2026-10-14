@@ -27,6 +27,7 @@ final class AppState: ObservableObject {
     let understander: Understander
     let talk: HoldToTalk
     let sessions: SessionStore
+    let defaults: UserDefaults
     private var session: StoredSession?
     @Published var askContinue = false
     @Published var speechAlert: String?
@@ -75,15 +76,16 @@ final class AppState: ObservableObject {
     }
 
     var isBlocking: Bool { if case .block = decision { return !showPrepare } else { return false } }
-    var missingText: String { if case .block(let m) = decision { return AppGate.missingText(m) } else { return "" } }
+    var missingText: String { if case .block(let m) = decision { return AppGate.missingText(m, myLanguage: myLanguage) } else { return "" } }
 
     init(tier: DeviceTier, probe: LanguagePackProbing, translator: Translating, engine: LLMEngine,
          downloader: ModelDownloader?, env: SystemDownloadEnvironment, speechInstaller: SpeechAssetInstalling,
          transcriber: Transcribing, sessions: SessionStore,
          modelReadinessOverride: (() -> Readiness)? = nil, defaults: UserDefaults = .standard, trialStore: TrialStore? = nil) {
         self.probe = probe; self.engine = engine; self.downloader = downloader; self.env = env; self.speechInstaller = speechInstaller
+        self.defaults = defaults
         let dl = downloader
-        gate = AppGate(tier: tier, probe: probe,
+        gate = AppGate(tier: tier, theirLanguages: Lang.all, probe: probe,
                        modelReadiness: modelReadinessOverride ?? { dl?.readiness ?? .unavailable("没有适合这台手机的理解能力") },
                        defaults: defaults)
         let store: TrialStore
@@ -99,18 +101,20 @@ final class AppState: ObservableObject {
         self.sessions = sessions
         // 闭包捕获 self 之前，所有 let 存储属性必须先完成初始化（Swift 6 确定初始化检查）。
         conversation.onChange = { [weak self] in self?.tick += 1 }
+        applyLanguages(me: defaults.string(forKey: "lang.me") ?? AppState.defaultMyLanguage(), them: defaults.string(forKey: "lang.them"))
         talk.onChange = { [weak self] in self?.tick += 1 }
         conversation.onPersist = { [weak self] msgs in
             guard let self else { return }
-            if self.session == nil { self.session = try? self.sessions.startNew(theirLanguage: self.conversation.theirLanguage, deletePrevious: false) }
+            if self.session == nil { self.session = try? self.sessions.startNew(theirLanguage: self.conversation.theirLanguage, myLanguage: self.conversation.myLanguage, deletePrevious: false) }
             self.session?.messages = msgs
             self.session?.theirLanguage = self.conversation.theirLanguage
+            self.session?.myLanguage = self.conversation.myLanguage
             if let s = self.session { try? self.sessions.save(s) }
         }
         sessions.cleanup()
         switch sessions.load() {
-        case .restored(let s): session = s; conversation.theirLanguage = s.theirLanguage; conversation.restore(s.messages)
-        case .askContinue(let s): session = s; conversation.theirLanguage = s.theirLanguage; conversation.restore(s.messages); askContinue = true
+        case .restored(let s): session = s; applyLanguages(me: s.myLanguage ?? conversation.myLanguage, them: s.theirLanguage); conversation.restore(s.messages)
+        case .askContinue(let s): session = s; applyLanguages(me: s.myLanguage ?? conversation.myLanguage, them: s.theirLanguage); conversation.restore(s.messages); askContinue = true
         case .empty, .corrupt: break
         }
         downloader?.onChange = { [weak self] _ in
@@ -138,10 +142,34 @@ final class AppState: ObservableObject {
                         transcriber: LiveTranscriber(), sessions: SessionStore(directory: support.appendingPathComponent("sessions")))
     }
 
+    // MARK: 语言（P4）：双方各自选；我方默认跟随系统语言（zh/en/id，其他 → 中文）
+
+    static func defaultMyLanguage() -> String {
+        let l = Lang.normalize(Locale.preferredLanguages.first ?? "zh-Hans")
+        return Lang.all.contains(l) ? l : Lang.tourist
+    }
+    var myLanguage: String { conversation.myLanguage }
+    var theirLanguage: String { conversation.theirLanguage }
+
+    /// 设置双方语言：同步到对话、准备检查、币种（按我方语言），并持久化
+    func applyLanguages(me: String? = nil, them: String? = nil) {
+        conversation.setLanguages(me: me, them: them)
+        if conversation.theirLanguage == conversation.myLanguage && them == nil {
+            conversation.setLanguages(them: conversation.myLanguage == "id" ? "zh-Hans" : "id")
+        }
+        gate.myLanguage = conversation.myLanguage
+        fx.currency = TargetCurrency.forLocale(conversation.myLanguage)
+        defaults.set(conversation.myLanguage, forKey: "lang.me"); defaults.set(conversation.theirLanguage, forKey: "lang.them")
+        tick += 1
+    }
+    func setMyLanguage(_ l: String) { applyLanguages(me: l); Task { await refresh(.foreground) } }
+    func setTheirLanguage(_ l: String) { applyLanguages(them: l); Task { await refresh(.foreground) } }
+    func swapLanguages() { applyLanguages(me: theirLanguage, them: myLanguage); Task { await refresh(.foreground) } }
+
     func refresh(_ trigger: GateTrigger) async {
         decision = await gate.refresh(trigger)
         if trigger != .downloadFinished { Task { await refreshFX() } }
-        rows = PrepareRows.rows(status: gate.status, theirLanguages: gate.theirLanguages)
+        rows = PrepareRows.rows(status: gate.status, theirLanguages: gate.partnerLanguages, myLanguage: myLanguage)
         if decision == .open {
             await loadModelIfNeeded()
             #if canImport(UIKit)
@@ -158,7 +186,7 @@ final class AppState: ObservableObject {
         UserDefaults.standard.removePersistentDomain(forName: UITestMode.defaultsSuite)
         let defaults = UserDefaults(suiteName: UITestMode.defaultsSuite) ?? .standard
         defaults.set(mode.onboardingCompleted, forKey: "onboarding.completed")
-        let engine = MockEngine(pieceDelayNanos: 10_000_000) { _ in UITestMode.fakeUnderstanding }
+        let engine = MockEngine(pieceDelayNanos: 10_000_000) { msgs in UITestMode.fakeUnderstanding(for: msgs) }
         let dir = FileManager.default.temporaryDirectory.appendingPathComponent("uitest-sessions")
         try? FileManager.default.removeItem(at: dir)
         let s = AppState(tier: .a8GB, probe: UITestProbe(mode: mode), translator: UITestTranslator(), engine: engine,
@@ -166,7 +194,15 @@ final class AppState: ObservableObject {
                          transcriber: PreviewTranscriber(), sessions: SessionStore(directory: dir),
                          modelReadinessOverride: { mode.modelReadiness }, defaults: defaults, trialStore: InMemoryTrialStore())
         s.fxRefreshEnabled = false            // UI 测试用内置汇率，结果可复现
-        s.fx = FXContext(rates: .bundled, currency: TargetCurrency.forLocale(Locale.preferredLanguages.first ?? "zh-Hans"))   // 跟随 -AppleLanguages，英文截图显示 $
+        s.fx = FXContext(rates: .bundled, currency: .cny)
+        // 我方语言跟随 -AppleLanguages（英文截图显示 $）；`-UITestLangs en,zh-Hans` 可指定「我方,对方」（P4 UI 测试）
+        let args = ProcessInfo.processInfo.arguments
+        if let i = args.firstIndex(of: UITestMode.langsArgument), i + 1 < args.count {
+            let p = args[i + 1].split(separator: ",").map(String.init)
+            s.applyLanguages(me: p.first, them: p.count > 1 ? p[1] : nil)
+        } else {
+            s.applyLanguages(me: AppState.defaultMyLanguage(), them: AppState.defaultMyLanguage() == "id" ? "zh-Hans" : "id")
+        }
         if ProcessInfo.processInfo.arguments.contains(UITestMode.seedAmountArgument) {
             Task { await s.conversation.receiveTheirs(UITestMode.seedAmountText) }   // 截图验证金额换算
         }
@@ -194,10 +230,10 @@ final class AppState: ObservableObject {
     /// 「全部准备」：系统翻译（交给 translationTask 宿主）、听写资源、理解模型并行。
     func prepareAll() {
         var pairs: [(String, String)] = []
-        for l in gate.theirLanguages { pairs += [(l, Lang.tourist), (Lang.tourist, l)] }
+        for l in gate.partnerLanguages { pairs += [(l, myLanguage), (myLanguage, l)] }
         translationToPrepare = pairs
         Task {
-            for loc in [Lang.speechLocale(Lang.tourist)] + gate.theirLanguages.map(Lang.speechLocale) {
+            for loc in [Lang.speechLocale(myLanguage)] + gate.partnerLanguages.map(Lang.speechLocale) {
                 try? await speechInstaller.install(locale: loc)
             }
             await refresh(.downloadFinished)
@@ -210,7 +246,7 @@ final class AppState: ObservableObject {
     func speechReady(for target: TalkTarget) -> Bool {
         let item: PrepareItem = target == .me ? .touristSpeech : .speech(conversation.theirLanguage)
         if gate.status.items[item] == .ready { return true }
-        speechAlert = target == .me ? "中文还不能离线听" : "\(Lang.displayName(conversation.theirLanguage))还不能离线听"
+        speechAlert = "\(Lang.displayName(target == .me ? myLanguage : theirLanguage))还不能离线听"
         return false
     }
 
@@ -229,7 +265,7 @@ final class AppState: ObservableObject {
     // MARK: 会话
 
     func newConversation(deletePrevious: Bool) {
-        session = try? sessions.startNew(theirLanguage: conversation.theirLanguage, deletePrevious: deletePrevious)
+        session = try? sessions.startNew(theirLanguage: conversation.theirLanguage, myLanguage: conversation.myLanguage, deletePrevious: deletePrevious)
         conversation.newConversation()
     }
 

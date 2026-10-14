@@ -8,6 +8,9 @@ public final class AppGate {
     public private(set) var decision: GateDecision = .onboarding
     public let tier: DeviceTier
     public var theirLanguages: [String]
+    /// 我方语言（P4）；检查「我方 ↔ 每个对方语言」的语言包与听写
+    public var myLanguage: String = Lang.tourist
+    public var partnerLanguages: [String] { theirLanguages.filter { $0 != myLanguage } }
     public var onboardingCompleted: Bool {
         get { defaults.bool(forKey: "onboarding.completed") }
         set { defaults.set(newValue, forKey: "onboarding.completed") }
@@ -27,10 +30,10 @@ public final class AppGate {
     @discardableResult
     public func refresh(_ trigger: GateTrigger) async -> GateDecision {
         var items: [PrepareItem: Readiness] = [:]
-        items[.touristSpeech] = await probe.speechReadiness(locale: Lang.speechLocale(Lang.tourist))
-        for l in theirLanguages {
-            let a = await probe.translationStatus(from: l, to: Lang.tourist)
-            let b = await probe.translationStatus(from: Lang.tourist, to: l)
+        items[.touristSpeech] = await probe.speechReadiness(locale: Lang.speechLocale(myLanguage))
+        for l in partnerLanguages {
+            let a = await probe.translationStatus(from: l, to: myLanguage)
+            let b = await probe.translationStatus(from: myLanguage, to: l)
             items[.translation(l)] = Self.combine(a, b)
             items[.speech(l)] = await probe.speechReadiness(locale: Lang.speechLocale(l))
         }
@@ -49,10 +52,16 @@ public final class AppGate {
     }
 
     /// 阻断提示正文（PRD v2 §13）。
-    public static func missingText(_ items: [PrepareItem]) -> String {
+    /// 任意两种语言之间（P5 代码侧）：双向都装好才算就绪；同语直接就绪
+    public static func pairReadiness(_ a: String, _ b: String, probe: LanguagePackProbing) async -> Readiness {
+        if Lang.normalize(a) == Lang.normalize(b) { return .ready }
+        return combine(await probe.translationStatus(from: a, to: b), await probe.translationStatus(from: b, to: a))
+    }
+
+    public static func missingText(_ items: [PrepareItem], myLanguage: String = Lang.tourist) -> String {
         items.map { item -> String in
             switch item {
-            case .touristSpeech: return "中文听写"
+            case .touristSpeech: return "\(Lang.displayName(myLanguage))听写"
             case .translation(let l): return "\(Lang.displayName(l))翻译"
             case .speech(let l): return "\(Lang.displayName(l))听写"
             case .understander: return "理解能力"

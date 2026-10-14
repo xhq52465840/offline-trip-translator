@@ -35,12 +35,31 @@ public enum UITestMode: String, CaseIterable, Sendable {
         "太贵了": "Terlalu mahal",
         "Terlalu mahal": "太贵了",
     ]
-    public static func fakeTranslate(_ text: String) -> String { fakeTranslations[text] ?? "〔mock〕\(text)" }
+    /// 按目标语言的假翻译（P4：三语 UI 测试）；键为「目标语言|原文」，未命中再查旧表
+    public static let fakeTranslationsByTarget: [String: String] = [
+        "en|Harganya Rp ⟦N1⟧ kak": "The price is ⟦N1⟧",
+        "en|太贵了": "Too expensive",
+        "en|Terlalu mahal": "Too expensive",
+        "id|Too expensive": "Terlalu mahal",
+        "zh-Hans|Too expensive": "太贵了",
+        "en|Pak, saya sudah di lobi": "Sir, I'm already in the lobby",
+    ]
+    public static func fakeTranslate(_ text: String, to: String? = nil) -> String {
+        if let to, let v = fakeTranslationsByTarget["\(to)|\(text)"] { return v }
+        return fakeTranslations[text] ?? "〔mock〕\(text)"
+    }
     /// 启动参数：预置一条带金额的对方消息（UI 测试截图金额换算）
     public static let seedAmountArgument = "-UITestSeedAmount"
+    /// 启动参数：`-UITestLangs en,zh-Hans` 指定「我方,对方」语言（P4）
+    public static let langsArgument = "-UITestLangs"
     public static let seedAmountText = "Harganya Rp 100.000 kak"
     /// MockEngine 的固定理解输出
     public static let fakeUnderstanding = "5万，不含车费"
+    public static let fakeUnderstandingEnglish = "The price is Rp 100,000"
+    /// 按提示词语言选假理解输出
+    public static func fakeUnderstanding(for msgs: [ChatMessage]) -> String {
+        (msgs.first?.content.hasPrefix("You fix English") ?? false) ? fakeUnderstandingEnglish : fakeUnderstanding
+    }
 }
 
 /// 按模式返回的假语言包探测
@@ -53,5 +72,5 @@ public final class UITestProbe: LanguagePackProbing {
 
 public final class UITestTranslator: Translating {
     public init() {}
-    public func translate(_ text: String, from: String, to: String) async throws -> String { UITestMode.fakeTranslate(text) }
+    public func translate(_ text: String, from: String, to: String) async throws -> String { UITestMode.fakeTranslate(text, to: to) }
 }

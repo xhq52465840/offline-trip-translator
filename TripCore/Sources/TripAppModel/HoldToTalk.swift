@@ -30,11 +30,15 @@ public final class HoldToTalk {
 
     public init(transcriber: Transcribing) { self.transcriber = transcriber }
 
-    public var buttonTitle: (them: String, me: String) {
+    public var buttonTitle: (them: String, me: String) { buttonTitle(myLang: Lang.tourist) }
+
+    /// P4：我方按钮写「按住说<我方语言>」
+    public func buttonTitle(myLang: String) -> (them: String, me: String) {
+        let me = "按住说\(Lang.displayName(myLang))"
         switch phase {
-        case .recording(.them), .cancelZone(.them): return ("松手翻译，上滑取消", "按住说中文")
+        case .recording(.them), .cancelZone(.them): return ("松手翻译，上滑取消", me)
         case .recording(.me), .cancelZone(.me): return ("按住听对方", "松手翻译，上滑取消")
-        default: return ("按住听对方", "按住说中文")
+        default: return ("按住听对方", me)
         }
     }
 
@@ -46,6 +50,8 @@ public final class HoldToTalk {
         switch (lang, active) {
         case ("id", false): return "Tahan untuk bicara"
         case ("id", true): return "Lepas untuk menerjemahkan · geser ke atas untuk batal"
+        case ("zh-Hans", false): return "按住说话"
+        case ("zh-Hans", true): return "松手翻译，上滑取消"
         case (_, false): return "Hold to talk"
         case (_, true): return "Release to translate · slide up to cancel"
         }

@@ -10,10 +10,11 @@ public struct PrepareRow: Identifiable, Equatable, Sendable {
 }
 
 public enum PrepareRows {
-    public static func rows(status: PrepareStatus, theirLanguages: [String]) -> [PrepareRow] {
+    public static func rows(status: PrepareStatus, theirLanguages: [String], myLanguage: String = Lang.tourist) -> [PrepareRow] {
         func r(_ item: PrepareItem) -> Readiness { status.items[item] ?? .checking }
-        var out = [PrepareRow(id: "zh-speech", title: "中文听写", state: text(r(.touristSpeech)), actionable: actionable(r(.touristSpeech)))]
-        for l in theirLanguages {
+        let myId = myLanguage == Lang.tourist ? "zh-speech" : "\(myLanguage)-my-speech"
+        var out = [PrepareRow(id: myId, title: "\(Lang.displayName(myLanguage))听写", state: text(r(.touristSpeech)), actionable: actionable(r(.touristSpeech)))]
+        for l in theirLanguages where l != myLanguage {
             let name = Lang.displayName(l)
             out.append(PrepareRow(id: "\(l)-mt", title: "\(name)翻译", state: text(r(.translation(l))), actionable: actionable(r(.translation(l)))))
             out.append(PrepareRow(id: "\(l)-speech", title: "\(name)听写", state: text(r(.speech(l))), actionable: actionable(r(.speech(l)))))

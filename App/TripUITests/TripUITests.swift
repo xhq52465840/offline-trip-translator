@@ -98,6 +98,50 @@ final class TripUITests: XCTestCase {
         shot("08_amount_conversion_en")
     }
 
+    // MARK: P4 双方各自选语言
+
+    func launchLangs(_ langs: String, ui: String = "zh-Hans", locale: String = "zh_CN") -> XCUIApplication {
+        let app = XCUIApplication()
+        app.launchArguments += ["-UITestMode", "mock-ready", "-UITestLangs", langs, "-AppleLanguages", "(\(ui))", "-AppleLocale", locale]
+        app.launch()
+        return app
+    }
+
+    func send(_ app: XCUIApplication, _ text: String) {
+        let input = app.textFields["chatInput"].exists ? app.textFields["chatInput"] : app.textViews["chatInput"]
+        XCTAssertTrue(input.waitForExistence(timeout: 5))
+        input.tap(); input.typeText(text)
+        app.buttons["sendButton"].tap()
+    }
+
+    func testChineseMeEnglishPartner() {
+        let app = launchLangs("zh-Hans,en")
+        app.buttons["startChat"].tap()
+        XCTAssertTrue(app.buttons["theirLangPicker"].waitForExistence(timeout: 5))
+        send(app, "太贵了")
+        XCTAssertTrue(app.staticTexts["Too expensive"].waitForExistence(timeout: 10))
+        shot("10_lang_picker")
+    }
+
+    func testEnglishMeChinesePartnerAndFaceToFace() {
+        let app = launchLangs("en,zh-Hans", ui: "en", locale: "en_US")
+        app.buttons["startChat"].tap()
+        send(app, "Too expensive")
+        XCTAssertTrue(app.staticTexts["太贵了"].waitForExistence(timeout: 10))
+        app.buttons["faceToFaceToggle"].tap()
+        XCTAssertTrue(app.buttons["partnerLangPicker"].waitForExistence(timeout: 5))
+        shot("11_face_to_face_lang")
+    }
+
+    func testSwapLanguages() {
+        let app = launchLangs("zh-Hans,id")
+        app.buttons["startChat"].tap()
+        let swap = app.buttons["swapLangs"]
+        XCTAssertTrue(swap.waitForExistence(timeout: 5))
+        swap.tap()
+        XCTAssertTrue(app.buttons["myLangPicker"].label.contains("印尼") || app.buttons["myLangPicker"].label.contains("Indonesian"))
+    }
+
     func testLaunchMemoryMetric() {
         // 基本指标（无需 Instruments）：启动到首页的内存与时间
         let app = XCUIApplication()
