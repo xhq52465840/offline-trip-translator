@@ -10,6 +10,11 @@
           "description" : "30 天内离线完整使用，到期不自动续费",
           "displayName" : "单次旅行包（30 天）",
           "locale" : "zh_CN"
+        },
+        {
+          "description" : "Full offline use for 30 days, no auto-renewal",
+          "displayName" : "Trip Pass (30 days)",
+          "locale" : "en_US"
         }
       ],
       "productID" : "pass.trip30",
@@ -27,6 +32,11 @@
           "description" : "终身离线完整使用",
           "displayName" : "终身买断",
           "locale" : "zh_CN"
+        },
+        {
+          "description" : "Full offline use, forever",
+          "displayName" : "Lifetime",
+          "locale" : "en_US"
         }
       ],
       "productID" : "unlock.lifetime",
@@ -40,7 +50,7 @@
     "_locale" : "zh_CN",
     "_storefront" : "CHN"
   },
-  "subscriptionGroups" : [ ],
+  "subscriptionGroups" : [],
   "version" : {
     "major" : 4,
     "minor" : 0
