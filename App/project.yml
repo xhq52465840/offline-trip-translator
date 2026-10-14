@@ -1,6 +1,7 @@
 # XcodeGen：brew install xcodegen && xcodegen generate
 name: TripUnderstand
 options:
+  developmentLanguage: zh-Hans
   bundleIdPrefix: app.tripunderstand
   deploymentTarget:
     iOS: "17.0"
@@ -24,10 +25,10 @@ targets:
       properties:
         CFBundleDisplayName: 离线行程理解
         CFBundleDevelopmentRegion: zh-Hans   # 系统控件（返回按钮等）显示中文（Mac run r1：显示 Back）
-        CFBundleLocalizations: [zh-Hans]
+        CFBundleLocalizations: [zh-Hans, en]   # P7：英文界面（Localizable.xcstrings + en.lproj/InfoPlist.strings，由 scripts/i18n.py gen 生成）
         UISupportedInterfaceOrientations: [UIInterfaceOrientationPortrait]
         UILaunchScreen: {}
-        NSMicrophoneUsageDescription: 用来听对方说话和你说的中文。只在手机上识别，不保存录音。
+        NSMicrophoneUsageDescription: 用来听对方说话和你说的话。只在手机上识别，不保存录音。
         NSSpeechRecognitionUsageDescription: 用来把听到的话转成文字。识别在这台手机上完成。
         ITSAppUsesNonExemptEncryption: false
     entitlements:

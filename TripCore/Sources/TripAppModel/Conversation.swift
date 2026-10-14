@@ -6,11 +6,11 @@ public enum TrialBanner {
     public static func text(_ s: EntitlementState) -> String? {
         switch s {
         case .unlocked: return nil
-        case .notStarted: return "免费试用 24 小时：从第一条翻译开始计时"
-        case .expired: return "24 小时试用已结束"
+        case .notStarted: return L10n.t("免费试用 24 小时：从第一条翻译开始计时")
+        case .expired: return L10n.t("24 小时试用已结束")
         case .trial(let left):
             let h = Int((left / 3600).rounded(.up))
-            return "试用还剩约 \(h) 小时，期间不限条数" + (h <= TrialPolicy.warnHours ? " · 没网时不能购买，建议现在连网购买" : "")
+            return L10n.f("试用还剩约 %@ 小时，期间不限条数", String(h)) + (h <= TrialPolicy.warnHours ? L10n.t(" · 没网时不能购买，建议现在连网购买") : "")
         }
     }
 }
@@ -38,10 +38,10 @@ public struct Message: Identifiable, Equatable, Codable, Sendable {
         case .me: return source
         case .them:
             if let d = display ?? literal { return d }
-            return status == .failed ? "这句还没翻译出来" : "正在看这句"
+            return status == .failed ? L10n.t("这句还没翻译出来") : L10n.t("正在看这句")
         }
     }
-    public var literalLine: String? { role == .them && understood ? literal.map { "字面：\($0)" } : nil }
+    public var literalLine: String? { role == .them && understood ? literal.map { L10n.f("字面：%@", $0) } : nil }
     public var canCopyOrPresent: Bool { role == .me && status == .ready && !(foreign ?? "").isEmpty }
 }
 
@@ -106,8 +106,8 @@ public final class ConversationModel {
     public func sendMine(_ raw: String) async -> SendCheck {
         let c = Self.check(raw, lang: myLanguage)
         guard c == .ok else {
-            if c == .notChinese { flash("请用中文说你要讲的") }
-            if c == .wrongLanguage { flash("请用\(Lang.displayName(myLanguage))说你要讲的") }
+            if c == .notChinese { flash(L10n.t("请用中文说你要讲的")) }
+            if c == .wrongLanguage { flash(L10n.f("请用%@说你要讲的", Lang.displayName(myLanguage))) }
             return c
         }
         guard canSend else { return .busy }
@@ -212,7 +212,7 @@ public final class ConversationModel {
         let remaining = understandBudget - clock.now().timeIntervalSince(m.createdAt)
         guard remaining > 0.05 else { return }
         u.timeout = remaining
-        u.builder.theirLanguageName = Lang.displayName(lang)
+        u.builder.theirLanguageName = Lang.chineseName(lang)
         u.builder.target = target
         u.builder.scene = scene?.contextName(for: target)
         let outcome = await u.understand(context: contextTurns(excluding: id), source: m.source, literal: literal)
@@ -244,7 +244,7 @@ public final class ConversationModel {
         }
     }
 
-    static let referenceWords = ["这个", "那个", "刚才", "之前", "同上", "还是", "那里", "这里"]
+    static let referenceWords = ["这个", "那个", "刚才", "之前", "同上", "还是", "那里", "这里"] // i18n-ok
     static func hasReference(_ s: String) -> Bool { referenceWords.contains { s.contains($0) } }
     nonisolated static func numbers(in s: String) -> [String] {
         let re = try! NSRegularExpression(pattern: #"\d+(?:\.\d+)?"#)
@@ -271,11 +271,11 @@ extension Message {
 /// 回译一致判定（技术设计 v2 §6.1）：数字一致、否定词一致，再看字符重合率。
 public enum BackTranslation {
     public static var threshold = 0.6
-    static let negations: [Character] = ["不", "没", "别", "无"]
+    static let negations: [Character] = ["不", "没", "别", "无"] // i18n-ok
     static let negationWords: Set<String> = ["not", "no", "don't", "never", "tidak", "bukan", "jangan", "nggak", "gak", "belum", "tdk"]
     public static func consistent(original: String, back: String) -> Bool {
         if ConversationModel.numbers(in: original) != ConversationModel.numbers(in: back) { return false }
-        let cn: Set<Character> = ["一","二","两","三","四","五","六","七","八","九","十","百","千","万","半"]
+        let cn: Set<Character> = ["一","二","两","三","四","五","六","七","八","九","十","百","千","万","半"] // i18n-ok
         if original.filter({ cn.contains($0) }) != back.filter({ cn.contains($0) }) { return false }
         let words = { (s: String) in s.lowercased().split { !$0.isLetter && $0 != "'" }.map(String.init) }
         let n1 = original.contains { negations.contains($0) } || words(original).contains { negationWords.contains($0) }

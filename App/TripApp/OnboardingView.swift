@@ -12,7 +12,7 @@ struct OnboardingView: View {
                 Section {
                     VStack(alignment: .leading, spacing: 8) {
                         Text("先准备好，再出发").font(.title2.bold()).accessibilityIdentifier("onboardingTitle")
-                        Text("这个应用全部在手机上运行，不联网也能用。第一次需要在 Wi‑Fi 下准备好语言和理解能力，\(totalSize)，下载完成后才能开始用。")
+                        Text(L10n.f("这个应用全部在手机上运行，不联网也能用。第一次需要在 Wi‑Fi 下准备好语言和理解能力，%@，下载完成后才能开始用。", totalSize))
                             .foregroundStyle(.secondary)
                         Label(state.etaText, systemImage: "house.fill")
                             .font(.subheadline.weight(.semibold))
@@ -27,7 +27,7 @@ struct OnboardingView: View {
                 Section("准备期间可以先看看") {
                     NavigationLink("常用句（下载期间可用）") { PhraseBookView() }
                     NavigationLink("示例演示") { DemoView() }
-                    NavigationLink("购买 / 恢复购买") { PurchaseView() }
+                    NavigationLink("购买 / 恢复购买") { PurchaseView() }.accessibilityIdentifier("purchaseLink")
                     NavigationLink("隐私说明") { PrivacyView() }
                 }
                 PrepareRowsSection()
@@ -39,7 +39,7 @@ struct OnboardingView: View {
 
     private var totalSize: String {
         let s = PrepareRows.size(state.downloader?.entry.bytes)
-        return s.isEmpty ? "需要一些空间" : "理解能力\(s)，另加系统语言包"
+        return s.isEmpty ? L10n.t("需要一些空间") : L10n.f("理解能力%@，另加系统语言包", s)
     }
 }
 
@@ -51,7 +51,7 @@ struct PrepareRowsSection: View {
                 HStack {
                     Text(row.title)
                     Spacer()
-                    Text(row.state).foregroundStyle(row.state == "已就绪" ? Color.green : Color.secondary).font(.subheadline)
+                    Text(row.state).foregroundStyle(row.state == L10n.t("已就绪") ? Color.green : Color.secondary).font(.subheadline)
                     if row.id == "model", case .downloading = state.downloader?.readiness {
                         Button { state.downloader?.pause() } label: { Image(systemName: "pause.circle") }.buttonStyle(.borderless)
                     } else if row.id == "model", case .paused = state.downloader?.readiness {
@@ -62,7 +62,7 @@ struct PrepareRowsSection: View {
                 .onTapGesture { if row.actionable { state.prepareAll() } }
             }
         } footer: {
-            Text(state.etaText + " 准备好之后，没网也能用。")
+            Text(state.etaText + L10n.t(" 准备好之后，没网也能用。"))
         }
     }
 }
@@ -76,7 +76,7 @@ struct PrepareView: View {
             Section { Button("全部准备") { state.prepareAll() } }
             Section {
                 NavigationLink("隐私说明") { PrivacyView() }
-                NavigationLink("购买 / 恢复购买") { PurchaseView() }
+                NavigationLink("购买 / 恢复购买") { PurchaseView() }.accessibilityIdentifier("purchaseLink")
             }
         }
         .navigationTitle("离线准备")
@@ -91,13 +91,14 @@ struct BlockingSheet: View {
         VStack(spacing: 20) {
             Image(systemName: "arrow.down.circle").font(.system(size: 48))
             Text("还没准备好，暂时不能用").font(.title3.bold()).accessibilityIdentifier("blockingTitle")
-            Text("缺少：\(state.missingText)。请连上 Wi‑Fi 下载离线语言和理解能力，完成后就能断网使用。")
+            Text(L10n.f("缺少：%@。请连上 Wi‑Fi 下载离线语言和理解能力，完成后就能断网使用。", state.missingText))
                 .multilineTextAlignment(.center).foregroundStyle(.secondary)
             Button {
                 state.showPrepare = true
                 state.prepareAll()
             } label: { Text("去下载").frame(maxWidth: .infinity) }
                 .buttonStyle(.borderedProminent).controlSize(.large)
+                .accessibilityIdentifier("blockingDownload")
             NavigationLink { PhraseBookView() } label: {
                 Label("下载期间先用：常用句（出示给对方）", systemImage: "text.bubble")
             }

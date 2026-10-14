@@ -10,13 +10,13 @@ struct DemoView: View {
         List {
             Section {
                 Toggle("显示理解后的结果", isOn: $showUnderstood.animation())
-            } footer: { Text("这是预先录好的示例对话，不需要下载就能看。\n" + Copy.amountTrust) }
+            } footer: { Text(L10n.t("这是预先录好的示例对话，不需要下载就能看。") + "\n" + Copy.amountTrust) }
             ForEach(DemoScript.lines) { l in
                 VStack(alignment: l.role == .me ? .trailing : .leading, spacing: 4) {
                     Text(l.role == .me ? l.source : (showUnderstood ? l.understood : l.literal)).font(.title3)
                     Text(l.role == .me ? l.understood : l.source).font(.subheadline).foregroundStyle(.secondary)
                     if l.role == .them && showUnderstood && l.understood != l.literal {
-                        Text("字面：\(l.literal)").font(.caption).foregroundStyle(.tertiary)
+                        Text(L10n.f("字面：%@", l.literal)).font(.caption).foregroundStyle(.tertiary)
                     }
                 }
                 .frame(maxWidth: .infinity, alignment: l.role == .me ? .trailing : .leading)
@@ -58,7 +58,7 @@ final class PurchaseModel: ObservableObject {
         let ps = (try? await Product.products(for: Self.productIDs)) ?? []
         // 旅行包在前、终身在后
         products = ps.sorted { Self.productIDs.firstIndex(of: $0.id) ?? 0 < Self.productIDs.firstIndex(of: $1.id) ?? 0 }
-        if products.isEmpty { message = "价格暂时取不到" }
+        if products.isEmpty { message = L10n.t("价格暂时取不到") }
         await refreshEntitlement()
     }
 
@@ -82,11 +82,11 @@ final class PurchaseModel: ObservableObject {
             case .userCancelled, .pending: break
             @unknown default: break
             }
-        } catch { message = "没买成，可以再试" }
+        } catch { message = L10n.t("没买成，可以再试") }
     }
 
     func restore() async {
-        do { try await AppStore.sync() } catch { message = "没买成，可以再试" }
+        do { try await AppStore.sync() } catch { message = L10n.t("没买成，可以再试") }
         await refreshEntitlement()
     }
 }
@@ -98,14 +98,14 @@ struct PurchaseView: View {
         List {
             Section {
                 Text("没网能用")
-                Text("印尼语和英语都能听、能看、能递给对方")
+                Text("中文、印尼语、英语任意互译，都能听、能看、能递给对方")
                 Text("不自动续费")
                 Text(Copy.amountTrust).font(.footnote).foregroundStyle(.secondary)
             } footer: { Text("免费试用 24 小时：从第一条翻译开始计时，期间不限条数。试用结束后只能看对方消息的字面意思。购买后仍需完成离线准备。") }
             Section {
                 switch p.entitlement {
                 case .lifetime: Text("已终身买断")
-                case .passUntil(let d): Text("旅行包有效期至 \(d.formatted(date: .abbreviated, time: .omitted))")
+                case .passUntil(let d): Text(L10n.f("旅行包有效期至 %@", d.formatted(date: .abbreviated, time: .omitted)))
                 case .none: EmptyView()
                 }
                 if p.entitlement != .lifetime {
@@ -114,7 +114,7 @@ struct PurchaseView: View {
                             Task { await p.buy(prod); sync() }
                         } label: {
                             VStack(alignment: .leading) {
-                                Text(prod.id == PurchaseProduct.tripPass.rawValue ? "单次旅行包（30 天）\(prod.displayPrice)" : "终身买断 \(prod.displayPrice)")
+                                Text(prod.id == PurchaseProduct.tripPass.rawValue ? L10n.f("单次旅行包（30 天）%@", prod.displayPrice) : L10n.f("终身买断 %@", prod.displayPrice))
                                 Text(prod.id == PurchaseProduct.tripPass.rawValue ? "一次旅行够用，到期不自动续费" : "以后每次去都能用")
                                     .font(.footnote).foregroundStyle(.secondary)
                             }
@@ -122,7 +122,7 @@ struct PurchaseView: View {
                     }
                     if p.products.isEmpty { Text("价格暂时取不到").foregroundStyle(.secondary) }
                 }
-                Button("恢复购买") { Task { await p.restore(); sync() } }
+                Button("恢复购买") { Task { await p.restore(); sync() } }.accessibilityIdentifier("restorePurchases")
             }
             if let m = p.message { Text(m).foregroundStyle(.secondary) }
         }

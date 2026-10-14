@@ -1,0 +1,3 @@
+"CFBundleDisplayName" = "Trip Translator";
+"NSMicrophoneUsageDescription" = "Used to hear the other person and you. Speech is recognized on this phone only; recordings are not saved.";
+"NSSpeechRecognitionUsageDescription" = "Used to turn speech into text. Recognition happens on this phone.";

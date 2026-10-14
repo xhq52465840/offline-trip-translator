@@ -17,9 +17,9 @@ public struct FXContext: Equatable, Sendable {
     }
     /// 汇率说明行：「汇率 2026-10-12（ECB）」；超过 30 天加警告
     public func caption(now: Date) -> String {
-        let base = currency == .cny ? "汇率 \(rates.date)，换算为约值" : "Rate \(rates.date), approximate"
+        let base = L10n.f("汇率 %@，换算为约值", rates.date)
         guard ageDays(now: now) > Self.staleDays else { return base }
-        return currency == .cny ? "⚠️ 汇率已超过 \(Self.staleDays) 天（\(rates.date)），联网后自动更新" : "⚠️ Rate older than \(Self.staleDays) days (\(rates.date)); updates when online"
+        return L10n.f("⚠️ 汇率已超过 %@ 天（%@），联网后自动更新", String(Self.staleDays), rates.date)
     }
     public func isStale(now: Date) -> Bool { ageDays(now: now) > Self.staleDays }
 }

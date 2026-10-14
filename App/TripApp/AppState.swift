@@ -65,7 +65,7 @@ final class AppState: ObservableObject {
         var received: Int64 = 0
         if case .downloading(let r, _) = d.machine.state { received = r }
         if case .paused(let r, _, _) = d.machine.state { received = r }
-        if case .installed = d.machine.state { return "理解能力已就绪" }
+        if case .installed = d.machine.state { return L10n.t("理解能力已就绪") }
         return Copy.downloadAdvice(eta: eta.text(remaining: max(0, d.entry.bytes - received)))
     }
 
@@ -86,7 +86,7 @@ final class AppState: ObservableObject {
         self.defaults = defaults
         let dl = downloader
         gate = AppGate(tier: tier, theirLanguages: Lang.all, probe: probe,
-                       modelReadiness: modelReadinessOverride ?? { dl?.readiness ?? .unavailable("没有适合这台手机的理解能力") },
+                       modelReadiness: modelReadinessOverride ?? { dl?.readiness ?? .unavailable(L10n.t("没有适合这台手机的理解能力")) },
                        defaults: defaults)
         let store: TrialStore
         #if canImport(Security)
@@ -246,7 +246,7 @@ final class AppState: ObservableObject {
     func speechReady(for target: TalkTarget) -> Bool {
         let item: PrepareItem = target == .me ? .touristSpeech : .speech(conversation.theirLanguage)
         if gate.status.items[item] == .ready { return true }
-        speechAlert = "\(Lang.displayName(target == .me ? myLanguage : theirLanguage))还不能离线听"
+        speechAlert = L10n.f("%@还不能离线听", Lang.displayName(target == .me ? myLanguage : theirLanguage))
         return false
     }
 
@@ -254,7 +254,7 @@ final class AppState: ObservableObject {
         switch outcome {
         case .text(let s, .them): await conversation.receiveTheirs(s)
         case .text(let s, .me): await conversation.sendMine(s)
-        case .failed: speechAlert = "需要麦克风和语音识别权限。可在系统设置里打开。"
+        case .failed: speechAlert = L10n.t("需要麦克风和语音识别权限。可在系统设置里打开。")
         default: break
         }
         tick += 1

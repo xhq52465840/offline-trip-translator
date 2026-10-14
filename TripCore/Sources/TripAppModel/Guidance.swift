@@ -3,13 +3,13 @@ import TripCore
 
 /// 界面文案（自检报告 v3 §2.2 B3、§2.4 T1），集中在这里便于审校与测试。
 public enum Copy {
-    public static let homeTitle = "开始对话"
+    public static var homeTitle: String { L10n.t("开始对话") }
     /// 首页副标题：突出差异（离线 + 懂上下文 + 金额可信）
-    public static let homeSubtitle = "没网也能懂司机、商贩在说什么，金额不出错"
+    public static var homeSubtitle: String { L10n.t("没网也能懂司机、商贩在说什么，金额不出错") }
     /// 金额由代码换算的说明（演示页 / 购买页 / 金额胶囊长按提示）
-    public static let amountTrust = "金额由程序按固定规则换算（如 50rb = 5万印尼盾），不靠 AI 猜；人民币按你设置的汇率估算。"
+    public static var amountTrust: String { L10n.t("金额由程序按固定规则换算（如 50rb = 5万印尼盾），不靠 AI 猜；按最新汇率估算约值。") }
     public static func downloadAdvice(eta: String?) -> String {
-        "建议出发前在家用 Wi‑Fi 下载" + (eta.map { "，\($0)" } ?? "") + "。可以锁屏，会在后台继续。"
+        L10n.t("建议出发前在家用 Wi‑Fi 下载") + (eta.map { (L10n.isEnglish ? ", " : "，") + $0 } ?? "") + L10n.t("。可以锁屏，会在后台继续。")
     }
 }
 
@@ -41,10 +41,10 @@ public struct DownloadETA: Sendable {
     public func text(remaining: Int64) -> String {
         let measured = measuredBytesPerSecond
         let bps = measured ?? Self.assumedBytesPerSecond
-        if bps < 1_000 { return "网速很慢，建议换个 Wi‑Fi" }
+        if bps < 1_000 { return L10n.t("网速很慢，建议换个 Wi‑Fi") }
         let m = Self.minutes(remaining: remaining, bytesPerSecond: bps)
-        let s = m >= 60 ? "约 \(m / 60) 小时\(m % 60 == 0 ? "" : " \(m % 60) 分钟")" : "约 \(m) 分钟"
-        return measured == nil ? "Wi‑Fi 下\(s)" : "还要\(s)"
+        let s = m >= 60 ? (m % 60 == 0 ? L10n.f("约 %@ 小时", String(m / 60)) : L10n.f("约 %@ 小时 %@ 分钟", String(m / 60), String(m % 60))) : L10n.f("约 %@ 分钟", String(m))
+        return measured == nil ? L10n.f("Wi‑Fi 下%@", s) : L10n.f("还要%@", s)
     }
 }
 
@@ -66,9 +66,9 @@ public struct RecentScenes: Codable, Equatable, Sendable {
 public enum CopyHint {
     public static func text(scene: Scenario?) -> String {
         switch scene {
-        case .ride: return "已复制，回到 Grab / Gojek 聊天里粘贴发送"
-        case .delivery: return "已复制，回到外卖 App 的骑手聊天里粘贴"
-        default: return "已复制，可以粘贴到聊天里发送"
+        case .ride: return L10n.t("已复制，回到 Grab / Gojek 聊天里粘贴发送")
+        case .delivery: return L10n.t("已复制，回到外卖 App 的骑手聊天里粘贴")
+        default: return L10n.t("已复制，可以粘贴到聊天里发送")
         }
     }
 }

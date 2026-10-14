@@ -1,0 +1,1766 @@
+{
+  "sourceLanguage": "zh-Hans",
+  "strings": {
+    " · 没网时不能购买，建议现在连网购买": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": " · Purchases need internet — buy now while online"
+          }
+        }
+      }
+    },
+    " 准备好之后，没网也能用。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": " Once ready, it works without internet."
+          }
+        }
+      }
+    },
+    "%@听写": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ dictation"
+          }
+        }
+      }
+    },
+    "%@翻译": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ translation"
+          }
+        }
+      }
+    },
+    "%@还不能离线听": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ can't be heard offline yet"
+          }
+        }
+      }
+    },
+    "1 人民币": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 CNY"
+          }
+        }
+      }
+    },
+    "1 美元": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 USD"
+          }
+        }
+      }
+    },
+    "24 小时试用已结束": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "24-hour trial ended"
+          }
+        }
+      }
+    },
+    "24 小时试用已结束，购买后才能发给对方": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "24-hour trial ended — purchase to send messages"
+          }
+        }
+      }
+    },
+    "Wi‑Fi 下%@": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ on Wi‑Fi"
+          }
+        }
+      }
+    },
+    "⚠️ 汇率已超过 %@ 天（%@），联网后自动更新": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "⚠️ Rate is over %@ days old (%@); updates automatically when online"
+          }
+        }
+      }
+    },
+    "。可以锁屏，会在后台继续。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": ". You can lock the screen; it continues in the background."
+          }
+        }
+      }
+    },
+    "。金额由程序按原文换算，只有汇率是约值，位数不会错。有网时自动更新（只下载公开汇率，不上传任何内容）。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": ". Amounts are converted by rules from the original text; only the rate is approximate, the digits are never wrong. Updates automatically when online (downloads public rates only, uploads nothing)."
+          }
+        }
+      }
+    },
+    "一次旅行够用，到期不自动续费": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enough for one trip, no auto-renewal"
+          }
+        }
+      }
+    },
+    "下载中 %@%%": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Downloading %@%%"
+          }
+        }
+      }
+    },
+    "下载完成前只能用这些预先翻好的句子。点一下，把屏幕给对方看。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Until the download finishes, use these pre-translated phrases. Tap one and show the screen."
+          }
+        }
+      }
+    },
+    "下载期间先用：常用句（出示给对方）": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "While downloading: phrases (show to the other person)"
+          }
+        }
+      }
+    },
+    "下载的文件不完整，请重试": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Download incomplete, please retry"
+          }
+        }
+      }
+    },
+    "不换算（印尼盾）": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No conversion (rupiah)"
+          }
+        }
+      }
+    },
+    "不用": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No thanks"
+          }
+        }
+      }
+    },
+    "不自动续费": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No auto-renewal"
+          }
+        }
+      }
+    },
+    "不选场景": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No scene"
+          }
+        }
+      }
+    },
+    "中文": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chinese"
+          }
+        }
+      }
+    },
+    "中文、印尼语、英语任意互译，都能听、能看、能递给对方": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Translate between Chinese, Indonesian and English — listen, read, and show"
+          }
+        }
+      }
+    },
+    "交换双方语言": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Swap languages"
+          }
+        }
+      }
+    },
+    "人民币": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "CNY"
+          }
+        }
+      }
+    },
+    "以后每次去都能用": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Use it on every trip"
+          }
+        }
+      }
+    },
+    "价格暂时取不到": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Price unavailable right now"
+          }
+        }
+      }
+    },
+    "先准备好，再出发": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Get ready before you go"
+          }
+        }
+      }
+    },
+    "免费试用 24 小时：从第一条翻译开始计时": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Free 24-hour trial, starting from your first translation"
+          }
+        }
+      }
+    },
+    "免费试用 24 小时：从第一条翻译开始计时，期间不限条数。试用结束后只能看对方消息的字面意思。购买后仍需完成离线准备。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Free 24-hour trial, starting from your first translation, unlimited messages. After the trial you only see literal meanings of incoming messages. Offline setup is still required after purchase."
+          }
+        }
+      }
+    },
+    "全屏出示给对方": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Show full screen"
+          }
+        }
+      }
+    },
+    "全部准备": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Prepare all"
+          }
+        }
+      }
+    },
+    "关闭": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Close"
+          }
+        }
+      }
+    },
+    "关闭面对面模式": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Exit face-to-face mode"
+          }
+        }
+      }
+    },
+    "准备期间可以先看看": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Look around while preparing"
+          }
+        }
+      }
+    },
+    "出示": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Show"
+          }
+        }
+      }
+    },
+    "匿名使用计数": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anonymous usage counts"
+          }
+        }
+      }
+    },
+    "单次旅行包（30 天）%@": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trip pass (30 days) %@"
+          }
+        }
+      }
+    },
+    "去下载": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Download"
+          }
+        }
+      }
+    },
+    "去准备": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Prepare"
+          }
+        }
+      }
+    },
+    "发给对方：%@": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Send to them: %@"
+          }
+        }
+      }
+    },
+    "发送": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Send"
+          }
+        }
+      }
+    },
+    "取消": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cancel"
+          }
+        }
+      }
+    },
+    "只保留前 500 字": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Only the first 500 characters are kept"
+          }
+        }
+      }
+    },
+    "只统计次数和耗时，不含任何原文、译文、录音或剪贴板内容。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Counts and timings only — never any text, translations, recordings or clipboard content."
+          }
+        }
+      }
+    },
+    "听%@暂不可用": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Listening to %@ is unavailable"
+          }
+        }
+      }
+    },
+    "在哪儿？选一个，会多一些常用句": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Where are you? Pick one for extra phrases"
+          }
+        }
+      }
+    },
+    "场景": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scene"
+          }
+        }
+      }
+    },
+    "复制": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Copy"
+          }
+        }
+      }
+    },
+    "好": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "OK"
+          }
+        }
+      }
+    },
+    "字面：%@": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Literal: %@"
+          }
+        }
+      }
+    },
+    "对方看到的意思：%@": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "What they'll see: %@"
+          }
+        }
+      }
+    },
+    "对方语言": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Their language"
+          }
+        }
+      }
+    },
+    "对方说%@": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "They speak %@"
+          }
+        }
+      }
+    },
+    "对话": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Conversation"
+          }
+        }
+      }
+    },
+    "对话、录音、翻译、理解全部在这台手机上完成；录音不保存。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Conversations, recording, translation and understanding all happen on this phone; recordings are not kept."
+          }
+        }
+      }
+    },
+    "对话只存在这台手机上，清除后无法恢复。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Conversations exist only on this phone and can't be recovered once cleared."
+          }
+        }
+      }
+    },
+    "已取消": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cancelled"
+          }
+        }
+      }
+    },
+    "已复制": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Copied"
+          }
+        }
+      }
+    },
+    "已复制，可以粘贴到聊天里发送": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Copied — paste it into the chat to send"
+          }
+        }
+      }
+    },
+    "已复制，回到 Grab / Gojek 聊天里粘贴发送": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Copied — paste it into your Grab / Gojek chat"
+          }
+        }
+      }
+    },
+    "已复制，回到外卖 App 的骑手聊天里粘贴": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Copied — paste it into the rider chat in your delivery app"
+          }
+        }
+      }
+    },
+    "已就绪": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ready"
+          }
+        }
+      }
+    },
+    "已暂停 %@%%": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Paused %@%%"
+          }
+        }
+      }
+    },
+    "已终身买断": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lifetime unlocked"
+          }
+        }
+      }
+    },
+    "常用句（下载期间可用）": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Phrases (available while downloading)"
+          }
+        }
+      }
+    },
+    "常用句（离线可用）": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Phrases (offline)"
+          }
+        }
+      }
+    },
+    "建议出发前在家用 Wi‑Fi 下载": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Best downloaded on home Wi‑Fi before you leave"
+          }
+        }
+      }
+    },
+    "开始准备": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Start setup"
+          }
+        }
+      }
+    },
+    "开始对话": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Start conversation"
+          }
+        }
+      }
+    },
+    "开始新对话": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "New conversation"
+          }
+        }
+      }
+    },
+    "开始新对话并删除上一场": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "New conversation and delete the last one"
+          }
+        }
+      }
+    },
+    "当前不是 Wi‑Fi，要用流量下载%@吗？": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You're not on Wi‑Fi. Download %@ using cellular data?"
+          }
+        }
+      }
+    },
+    "待校对": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Needs review"
+          }
+        }
+      }
+    },
+    "恢复购买": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Restore purchases"
+          }
+        }
+      }
+    },
+    "我说%@": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "I speak %@"
+          }
+        }
+      }
+    },
+    "打中文，我帮你说": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Type in Chinese, I'll say it for you"
+          }
+        }
+      }
+    },
+    "把对方的话贴进来，或按住「听对方」": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Paste their message, or hold \"Listen\""
+          }
+        }
+      }
+    },
+    "按住听对方": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hold to listen"
+          }
+        }
+      }
+    },
+    "按住说%@": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hold to speak %@"
+          }
+        }
+      }
+    },
+    "换算成": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Convert to"
+          }
+        }
+      }
+    },
+    "接着上次的对话？": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Continue your last conversation?"
+          }
+        }
+      }
+    },
+    "新对话": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "New conversation"
+          }
+        }
+      }
+    },
+    "旅行包有效期至 %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trip pass valid until %@"
+          }
+        }
+      }
+    },
+    "日期": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Date"
+          }
+        }
+      }
+    },
+    "显示理解后的结果": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Show understood meaning"
+          }
+        }
+      }
+    },
+    "更多": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "More"
+          }
+        }
+      }
+    },
+    "更新中…": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Updating…"
+          }
+        }
+      }
+    },
+    "有网也不会改成在线翻译、在线听写或在线模型。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Even online, it never switches to online translation, dictation or models."
+          }
+        }
+      }
+    },
+    "来源": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Source"
+          }
+        }
+      }
+    },
+    "松手翻译，上滑取消": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Release to translate · slide up to cancel"
+          }
+        }
+      }
+    },
+    "查看隐私说明": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "View privacy notes"
+          }
+        }
+      }
+    },
+    "检查中": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Checking"
+          }
+        }
+      }
+    },
+    "正在换成对方的话": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Translating for them"
+          }
+        }
+      }
+    },
+    "正在看这句": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reading this message"
+          }
+        }
+      }
+    },
+    "汇率": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Exchange rate"
+          }
+        }
+      }
+    },
+    "汇率 %@，换算为约值": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rate %@, converted values are approximate"
+          }
+        }
+      }
+    },
+    "汇率设置": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Exchange rate settings"
+          }
+        }
+      }
+    },
+    "没买成，可以再试": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Purchase didn't go through, please try again"
+          }
+        }
+      }
+    },
+    "没听清，按住再说一次": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Didn't catch that — hold and say it again"
+          }
+        }
+      }
+    },
+    "没有账号。买断状态由 App Store 恢复。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No account. Purchases are restored via the App Store."
+          }
+        }
+      }
+    },
+    "没有适合这台手机的理解能力": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No understanding model fits this phone"
+          }
+        }
+      }
+    },
+    "没网也能懂司机、商贩在说什么，金额不出错": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Understand drivers and vendors offline, with amounts always right"
+          }
+        }
+      }
+    },
+    "没网能用": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Works offline"
+          }
+        }
+      }
+    },
+    "清除": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Clear"
+          }
+        }
+      }
+    },
+    "清除本机对话": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Clear conversations on this phone"
+          }
+        }
+      }
+    },
+    "清除本机所有对话？": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Clear all conversations on this phone?"
+          }
+        }
+      }
+    },
+    "现在更新汇率": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Update rate now"
+          }
+        }
+      }
+    },
+    "理解能力": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Understanding"
+          }
+        }
+      }
+    },
+    "理解能力%@，另加系统语言包": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Understanding model %@, plus system language packs"
+          }
+        }
+      }
+    },
+    "理解能力已就绪": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Understanding ready"
+          }
+        }
+      }
+    },
+    "用流量下载": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Download with cellular"
+          }
+        }
+      }
+    },
+    "界面语言": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "App language"
+          }
+        }
+      }
+    },
+    "示例演示": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Demo"
+          }
+        }
+      }
+    },
+    "离线准备": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Offline setup"
+          }
+        }
+      }
+    },
+    "离线行程理解": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Offline Trip Understanding"
+          }
+        }
+      }
+    },
+    "空间不够": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Not enough storage"
+          }
+        }
+      }
+    },
+    "空间不够，还需要%@": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Not enough storage, %@ more needed"
+          }
+        }
+      }
+    },
+    "约 %@ GB": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "About %@ GB"
+          }
+        }
+      }
+    },
+    "约 %@ MB": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "About %@ MB"
+          }
+        }
+      }
+    },
+    "约 %@ 分钟": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "About %@ min"
+          }
+        }
+      }
+    },
+    "约 %@ 小时": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "About %@ h"
+          }
+        }
+      }
+    },
+    "约 %@ 小时 %@ 分钟": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "About %@ h %@ min"
+          }
+        }
+      }
+    },
+    "终身买断 %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lifetime %@"
+          }
+        }
+      }
+    },
+    "继续": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Continue"
+          }
+        }
+      }
+    },
+    "缺少：%@。请连上 Wi‑Fi 下载离线语言和理解能力，完成后就能断网使用。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Missing: %@. Connect to Wi‑Fi to download offline languages and understanding; then it works without internet."
+          }
+        }
+      }
+    },
+    "网络只用于下载语言包和理解能力、App Store 购买，以及可关闭的匿名计数。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The network is only used to download language packs and understanding, App Store purchases, and optional anonymous counts."
+          }
+        }
+      }
+    },
+    "网速很慢，建议换个 Wi‑Fi": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Network is slow, try another Wi‑Fi"
+          }
+        }
+      }
+    },
+    "美元": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "USD"
+          }
+        }
+      }
+    },
+    "翻译刚复制的这句": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Translate the copied text"
+          }
+        }
+      }
+    },
+    "设置": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Settings"
+          }
+        }
+      }
+    },
+    "试用还剩约 %@ 小时，期间不限条数": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "About %@ h of trial left, unlimited messages"
+          }
+        }
+      }
+    },
+    "请用%@说你要讲的": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Please say it in %@"
+          }
+        }
+      }
+    },
+    "请用中文说你要讲的": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Please say it in Chinese"
+          }
+        }
+      }
+    },
+    "购买": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Purchase"
+          }
+        }
+      }
+    },
+    "购买 / 恢复购买": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Purchase / Restore"
+          }
+        }
+      }
+    },
+    "跟随系统": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "System default"
+          }
+        }
+      }
+    },
+    "输入%@，我帮你说": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Type in %@, I'll say it for you"
+          }
+        }
+      }
+    },
+    "还没准备好，暂时不能用": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Not ready yet"
+          }
+        }
+      }
+    },
+    "还要%@": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ left"
+          }
+        }
+      }
+    },
+    "这个应用全部在手机上运行，不联网也能用。第一次需要在 Wi‑Fi 下准备好语言和理解能力，%@，下载完成后才能开始用。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This app runs entirely on your phone and works offline. The first time, prepare languages and understanding on Wi‑Fi (%@); you can start once the download finishes."
+          }
+        }
+      }
+    },
+    "这句像%@，按%@重译": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This looks like %@ — retranslate as %@"
+          }
+        }
+      }
+    },
+    "这句已经在对话里了": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This message is already in the conversation"
+          }
+        }
+      }
+    },
+    "这句还没翻译出来": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Not translated yet"
+          }
+        }
+      }
+    },
+    "这台 iPhone 内存不足，暂不支持": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This iPhone doesn't have enough memory"
+          }
+        }
+      }
+    },
+    "这台手机不支持这门语言的离线翻译": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This phone doesn't support offline translation for this language"
+          }
+        }
+      }
+    },
+    "这是预先录好的示例对话，不需要下载就能看。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This is a pre-recorded demo conversation; no download needed."
+          }
+        }
+      }
+    },
+    "进入通用对话": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open general conversation"
+          }
+        }
+      }
+    },
+    "重新打开 App 后完全生效。对话里双方说什么语言在对话页顶部选。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Takes full effect after reopening the app. Choose each side's language at the top of the conversation."
+          }
+        }
+      }
+    },
+    "金额由程序按固定规则换算（如 50rb = 5万印尼盾），不靠 AI 猜；按最新汇率估算约值。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Amounts are converted by fixed rules (e.g. 50rb = Rp 50,000), not guessed by AI; approximate values use the latest rate."
+          }
+        }
+      }
+    },
+    "隐私": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Privacy"
+          }
+        }
+      }
+    },
+    "隐私说明": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Privacy notes"
+          }
+        }
+      }
+    },
+    "需要 6GB 或以上内存的 iPhone。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Requires an iPhone with 6 GB of memory or more."
+          }
+        }
+      }
+    },
+    "需要一些空间": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Needs some storage"
+          }
+        }
+      }
+    },
+    "需要下载": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Download required"
+          }
+        }
+      }
+    },
+    "需要下载 · %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Download required · %@"
+          }
+        }
+      }
+    },
+    "需要麦克风和语音识别权限。可在系统设置里打开。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Microphone and speech recognition access are needed. Turn them on in Settings."
+          }
+        }
+      }
+    },
+    "面对面模式": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Face-to-face mode"
+          }
+        }
+      }
+    },
+    "（译文待母语者校对）": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "(translation pending native review)"
+          }
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}

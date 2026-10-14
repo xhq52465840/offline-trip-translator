@@ -28,8 +28,16 @@ public enum Lang {
     public static func speechLocale(_ id: String) -> String {
         switch id { case "id": return "id-ID"; case "en": return "en-US"; case "zh-Hans": return "zh-CN"; default: return id }
     }
+    /// 界面上的语言名（跟随界面语言，P7）
     public static func displayName(_ id: String) -> String {
-        switch id { case "id": return "印尼语"; case "en": return "英语"; case "zh-Hans": return "中文"; default: return id }
+        if L10n.isEnglish {
+            switch id { case "id": return "Indonesian"; case "en": return "English"; case "zh-Hans": return "Chinese"; default: return id }
+        }
+        return chineseName(id)
+    }
+    /// 中文提示词里用的语言名（与界面语言无关）
+    public static func chineseName(_ id: String) -> String {
+        switch id { case "id": return "印尼语"; case "en": return "英语"; case "zh-Hans": return "中文"; default: return id } // i18n-ok
     }
 }
 
@@ -50,4 +58,13 @@ public enum LangRoute: Equatable, Sendable {
 public enum L10n {
     nonisolated(unsafe) public static var uiLanguage: String = "zh-Hans"
     public static var isEnglish: Bool { uiLanguage == "en" }
+    /// 中文原文即键；英文表见 L10nTable.swift（由 i18n/strings.json 生成，scripts/i18n.py 校验）
+    public static func t(_ zh: String) -> String { isEnglish ? (L10nTable.en[zh] ?? zh) : zh }
+    /// 只用 %@（参数一律先转成 String），避免格式符类型不匹配崩溃
+    public static func f(_ zh: String, _ args: String...) -> String { String(format: t(zh), arguments: args.map { $0 as NSString }) }
+    /// 系统语言 / App 内设置 → 界面语言：中文系统用中文，其余用英文
+    public static func resolve(preferred: [String], override: String?) -> String {
+        if let o = override, o == "zh-Hans" || o == "en" { return o }
+        return (preferred.first ?? "zh-Hans").lowercased().hasPrefix("zh") ? "zh-Hans" : "en"
+    }
 }

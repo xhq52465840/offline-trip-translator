@@ -24,8 +24,8 @@ public final class ClipboardHint {
         dismissedChangeCount = lastChangeCount
         let t = text.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !t.isEmpty else { return nil }
-        if let l = lastSource, l == t { notice = "这句已经在对话里了"; return nil }
-        notice = t.count > 500 ? "只保留前 500 字" : nil
+        if let l = lastSource, l == t { notice = L10n.t("这句已经在对话里了"); return nil }
+        notice = t.count > 500 ? L10n.t("只保留前 500 字") : nil
         return String(t.prefix(500))
     }
 }

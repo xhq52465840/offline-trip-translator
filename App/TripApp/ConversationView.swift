@@ -68,6 +68,7 @@ struct HomeView: View {
                         NavigationLink("离线准备") { PrepareView() }
                         NavigationLink("汇率设置") { RateSettingView() }
                         NavigationLink("隐私") { PrivacyView() }
+                        NavigationLink("界面语言") { UILanguageView() }
                         NavigationLink("购买") { PurchaseView() }
                     } label: { Image(systemName: "gearshape").accessibilityLabel("设置") }
                 }
@@ -99,13 +100,13 @@ struct RateSettingView: View {
         let r = state.fx.rates
         Form {
             Section {
-                LabeledContent("1 人民币", value: "≈ Rp \(Int(r.idrPerCNY.rounded()))")
-                LabeledContent("1 美元", value: "≈ Rp \(Int(r.idrPerUSD.rounded()))")
+                LabeledContent("1 人民币", value: "≈ Rp " + String(Int(r.idrPerCNY.rounded())))
+                LabeledContent("1 美元", value: "≈ Rp " + String(Int(r.idrPerUSD.rounded())))
                 LabeledContent("日期", value: r.date)
                 LabeledContent("来源", value: r.source)
-                LabeledContent("换算成", value: { switch state.fx.currency { case .cny: return "人民币"; case .usd: return "美元"; case .idr: return "不换算（印尼盾）" } }())
+                LabeledContent("换算成", value: { switch state.fx.currency { case .cny: return L10n.t("人民币"); case .usd: return L10n.t("美元"); case .idr: return L10n.t("不换算（印尼盾）") } }())
             } footer: {
-                Text(state.fx.caption(now: Date()) + "。金额由程序按原文换算，只有汇率是约值，位数不会错。有网时自动更新（只下载公开汇率，不上传任何内容）。")
+                Text(state.fx.caption(now: Date()) + L10n.t("。金额由程序按原文换算，只有汇率是约值，位数不会错。有网时自动更新（只下载公开汇率，不上传任何内容）。"))
             }
             Section {
                 Button(refreshing ? "更新中…" : "现在更新汇率") {
@@ -163,7 +164,7 @@ struct ConversationView: View {
             PhraseStrip(scene: model.scene ?? .chat)   // 通用对话也给几句寒暄短语，少一步
             inputBar
         }
-        .navigationTitle(model.scene?.title ?? "对话")
+        .navigationTitle(model.scene?.title ?? L10n.t("对话"))
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .principal) {
@@ -171,13 +172,13 @@ struct ConversationView: View {
                 HStack(spacing: 6) {
                     Menu {
                         ForEach(Lang.all, id: \.self) { l in Button(LangNames.native(l)) { state.setMyLanguage(l) } }
-                    } label: { Text("我说\(Lang.displayName(model.myLanguage))").font(.subheadline) }
+                    } label: { Text(L10n.f("我说%@", Lang.displayName(model.myLanguage))).font(.subheadline) }
                     .accessibilityIdentifier("myLangPicker")
                     Button { state.swapLanguages() } label: { Image(systemName: "arrow.left.arrow.right") }
                         .accessibilityLabel("交换双方语言").accessibilityIdentifier("swapLangs")
                     Menu {
                         ForEach(Lang.all, id: \.self) { l in Button(LangNames.native(l)) { state.setTheirLanguage(l) } }
-                    } label: { Text("对方说\(Lang.displayName(model.theirLanguage))").font(.subheadline) }
+                    } label: { Text(L10n.f("对方说%@", Lang.displayName(model.theirLanguage))).font(.subheadline) }
                     .accessibilityIdentifier("theirLangPicker")
                 }
             }
@@ -247,7 +248,7 @@ struct ConversationView: View {
             if let hint = model.inputHint { Text(hint).font(.callout).foregroundStyle(.red) }
             if let f = state.talk.feedback { Text(f).font(.callout).foregroundStyle(.secondary) }
             HStack(alignment: .bottom) {
-                TextField(model.myLanguage == "zh-Hans" ? "打中文，我帮你说" : "输入\(Lang.displayName(model.myLanguage))，我帮你说", text: $input, axis: .vertical)
+                TextField(model.myLanguage == "zh-Hans" ? L10n.t("打中文，我帮你说") : L10n.f("输入%@，我帮你说", Lang.displayName(model.myLanguage)), text: $input, axis: .vertical)
                     .font(.body)
                     .lineLimit(1...4)
                     .padding(10)
@@ -301,7 +302,7 @@ struct PhraseStrip: View {
                         .padding(.horizontal, 12).padding(.vertical, 8)
                         .background(Color.accentColor.opacity(0.12), in: Capsule())
                     }
-                    .accessibilityHint("发给对方：\(p.text(state.conversation.theirLanguage))\(p.needsNativeReview ? "（译文待母语者校对）" : "")")
+                    .accessibilityHint(L10n.f("发给对方：%@", p.text(state.conversation.theirLanguage)) + (p.needsNativeReview ? L10n.t("（译文待母语者校对）") : ""))
                 }
             }
             .padding(.horizontal).padding(.vertical, 6)
@@ -391,7 +392,7 @@ struct BubbleView: View {
 
     @ViewBuilder private func actions(_ m: Message) -> some View {
         if m.role == .them, let lang = m.offerRetranslateAs {
-            Button("这句像\(Lang.displayName(lang))，按\(Lang.displayName(lang))重译") { onRetranslate(lang) }.font(.footnote)
+            Button(L10n.f("这句像%@，按%@重译", Lang.displayName(lang), Lang.displayName(lang))) { onRetranslate(lang) }.font(.footnote)
         }
         if m.role == .me {
             switch m.status {
@@ -471,7 +472,7 @@ struct TalkButton: View {
             .frame(maxWidth: .infinity, minHeight: 64)
             .background(prominent ? Color.accentColor : Color(.tertiarySystemFill), in: RoundedRectangle(cornerRadius: 18))
             .foregroundStyle(prominent ? Color.white : Color.primary)
-            .accessibilityLabel(target == .them ? "按住听对方" : "按住说中文")
+            .accessibilityLabel(title)
             .accessibilityAddTraits(.isButton)
             .gesture(
                 DragGesture(minimumDistance: 0)

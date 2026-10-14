@@ -37,7 +37,7 @@ final class SystemPackProbe: LanguagePackProbing {
         #endif
         if let r = SFSpeechRecognizer(locale: loc), r.supportsOnDeviceRecognition { return .ready }
         // 只有对方语言听写可以是「暂不可用」；中文听写缺失视为需要下载（由 AppGate 阻断）
-        return locale.hasPrefix("zh") ? .needsDownload(bytes: nil) : .unavailable("听\(Lang.displayName(String(locale.prefix(2))))暂不可用")
+        return locale.hasPrefix("zh") ? .needsDownload(bytes: nil) : .unavailable(L10n.f("听%@暂不可用", Lang.displayName(String(locale.prefix(2)))))
     }
 }
 

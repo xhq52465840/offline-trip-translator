@@ -11,7 +11,9 @@ final class FXStoreTests: XCTestCase {
         XCTAssertFalse(fx.isStale(now: d0)); XCTAssertEqual(fx.caption(now: d0), "汇率 2026-10-12，换算为约值")
         let later = d0.addingTimeInterval(40 * 86_400)
         XCTAssertTrue(fx.isStale(now: later)); XCTAssertTrue(fx.caption(now: later).contains("超过 30 天"))
-        XCTAssertTrue(FXContext(rates: .bundled, currency: .usd).caption(now: later).contains("older than 30 days"))
+        // P7：说明文字跟随界面语言（不再跟随换算币种）
+        L10n.uiLanguage = "en"; defer { L10n.uiLanguage = "zh-Hans" }
+        XCTAssertTrue(FXContext(rates: .bundled, currency: .usd).caption(now: later).contains("over 30 days old"))
     }
 
     func testRefreshAcceptsSaneRejectsWild() async {

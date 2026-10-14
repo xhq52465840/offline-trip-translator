@@ -1,1 +1,3 @@
 "CFBundleDisplayName" = "离线行程理解";
+"NSMicrophoneUsageDescription" = "用来听对方说话和你说的话。只在手机上识别，不保存录音。";
+"NSSpeechRecognitionUsageDescription" = "用来把听到的话转成文字。识别在这台手机上完成。";

@@ -14,11 +14,15 @@ public struct ExchangeRate: Equatable, Codable, Sendable {
     /// 1 人民币 = idrPerCny 印尼盾
     public var idrPerCny: Double
     public var updatedNote: String
-    public static let `default` = ExchangeRate(idrPerCny: 2300, updatedNote: "示例汇率，请在设置里按实际修改")
+    public static let `default` = ExchangeRate(idrPerCny: 2300, updatedNote: "示例汇率，请在设置里按实际修改") // i18n-ok
     public init(idrPerCny: Double, updatedNote: String) { self.idrPerCny = idrPerCny; self.updatedNote = updatedNote }
 }
 
 public enum Money {
+    /// 胶囊里的读法：中文「5万印尼盾」，英文「50,000 rupiah」（P7，跟随界面语言）
+    public static func spoken(_ v: Int) -> String {
+        L10n.isEnglish ? RupiahFormatter.grouped(v, sep: ",") + " rupiah" : ChineseAmountFormatter.format(v) + "印尼盾" // i18n-ok
+    }
     public static func rupiah(_ v: Int) -> String {
         let s = String(v)
         var out = ""
@@ -34,7 +38,7 @@ public enum Money {
     }
 
     public static func chip(_ idr: Int, rate: ExchangeRate?) -> AmountChip {
-        AmountChip(idr: idr, rupiah: rupiah(idr), chinese: ChineseAmountFormatter.format(idr) + "印尼盾", cny: cny(idr, rate: rate))
+        AmountChip(idr: idr, rupiah: rupiah(idr), chinese: Money.spoken(idr), cny: cny(idr, rate: rate))
     }
 
     /// 新：按 FXContext（人民币或美元）生成胶囊，cny 字段放「约 ¥37」/「≈ $5.6」
@@ -43,7 +47,7 @@ public enum Money {
         for m in AmountNormalizer.findAmounts(in: text) {
             for v in m.values where v >= 100 && !seen.contains(v) {
                 seen.insert(v)
-                out.append(AmountChip(idr: v, rupiah: rupiah(v), chinese: ChineseAmountFormatter.format(v) + "印尼盾",
+                out.append(AmountChip(idr: v, rupiah: rupiah(v), chinese: Money.spoken(v),
                                       cny: fx.currency == .idr ? nil : FXFormatter.approx(v, to: fx.currency, rates: fx.rates)))
             }
         }

@@ -6,14 +6,19 @@ import XCTest
 final class TripUITests: XCTestCase {
     override func setUp() { continueAfterFailure = false }
 
+    /// UI 语言：环境变量 UI_LANG=en 时整套测试按英文界面跑（P7；Mac 用 TEST_RUNNER_UI_LANG=en 再跑一遍，截图加 _en 后缀）
+    var uiLang: String { ProcessInfo.processInfo.environment["UI_LANG"] == "en" ? "en" : "zh-Hans" }
+    var isEn: Bool { uiLang == "en" }
+
     func launch(_ mode: String) -> XCUIApplication {
         let app = XCUIApplication()
-        app.launchArguments += ["-UITestMode", mode, "-AppleLanguages", "(zh-Hans)", "-AppleLocale", "zh_CN"]
+        app.launchArguments += ["-UITestMode", mode, "-AppleLanguages", "(\(uiLang))", "-AppleLocale", isEn ? "en_US" : "zh_CN"]
         app.launch()
         return app
     }
 
     func shot(_ name: String) {
+        let name = isEn && !name.hasSuffix("_en") ? name + "_en" : name
         let s = XCUIScreen.main.screenshot()
         let a = XCTAttachment(screenshot: s); a.name = name; a.lifetime = .keepAlways; add(a)
         if let dir = ProcessInfo.processInfo.environment["SCREEN_DIR"], !dir.isEmpty {
@@ -31,7 +36,7 @@ final class TripUITests: XCTestCase {
     func testBlockingSheetOnLaunchWhenNotReady() {
         let app = launch("mock-not-ready")
         XCTAssertTrue(app.staticTexts["blockingTitle"].waitForExistence(timeout: 10))
-        XCTAssertTrue(app.buttons["去下载"].exists)
+        XCTAssertTrue(app.buttons["blockingDownload"].exists)
         shot("02_blocking_sheet")
     }
 
@@ -51,17 +56,18 @@ final class TripUITests: XCTestCase {
 
     func testPurchasePageOpens() {
         let app = launch("mock-onboarding")
-        let link = app.buttons["购买 / 恢复购买"]
+        let link = app.buttons["purchaseLink"]
         if !link.waitForExistence(timeout: 5) { app.swipeUp() }
         XCTAssertTrue(link.waitForExistence(timeout: 5))
         link.tap()
-        XCTAssertTrue(app.buttons["恢复购买"].waitForExistence(timeout: 10))
+        XCTAssertTrue(app.buttons["restorePurchases"].waitForExistence(timeout: 10))
         sleep(2)   // 等 StoreKit 本地配置的价格加载
         shot("05_purchase")
     }
 
     func testHomeAndChatWithMockEngine() {
-        let app = launch("mock-ready")
+        // 我方固定中文（英文界面跑时也一样），保证 zh→id 主路径无回归
+        let app = launchLangs("zh-Hans,id", ui: uiLang, locale: isEn ? "en_US" : "zh_CN")
         let start = app.buttons["startChat"]
         XCTAssertTrue(start.waitForExistence(timeout: 10))
         shot("06_home")
@@ -140,6 +146,32 @@ final class TripUITests: XCTestCase {
         XCTAssertTrue(swap.waitForExistence(timeout: 5))
         swap.tap()
         XCTAssertTrue(app.buttons["myLangPicker"].label.contains("印尼") || app.buttons["myLangPicker"].label.contains("Indonesian"))
+    }
+
+    // MARK: P7 英文界面：可见文字里不能有汉字（对方/我方语言是中文的气泡除外，所以这里用 en↔id）
+
+    func assertNoHan(_ app: XCUIApplication, _ screen: String) {
+        let han = NSPredicate(format: "label MATCHES %@", ".*[\\u4e00-\\u9fff].*")
+        for q in [app.staticTexts, app.buttons, app.navigationBars.staticTexts] {
+            let hits = q.matching(han).allElementsBoundByIndex.map(\.label)
+            XCTAssertTrue(hits.isEmpty, "\(screen) 英文界面出现汉字：\(hits)")
+        }
+    }
+
+    func testEnglishUIHasNoChinese() {
+        for mode in ["mock-onboarding", "mock-not-ready"] {
+            let app = XCUIApplication()
+            app.launchArguments += ["-UITestMode", mode, "-UITestLangs", "en,id", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
+            app.launch()
+            sleep(2); assertNoHan(app, mode); shot("12_no_han_\(mode)_en")
+            app.terminate()
+        }
+        let app = launchLangs("en,id", ui: "en", locale: "en_US")
+        XCTAssertTrue(app.buttons["startChat"].waitForExistence(timeout: 10))
+        assertNoHan(app, "home"); shot("12_no_han_home_en")
+        app.buttons["startChat"].tap()
+        XCTAssertTrue(app.buttons["theirLangPicker"].waitForExistence(timeout: 5))
+        assertNoHan(app, "conversation"); shot("12_no_han_conversation_en")
     }
 
     func testLaunchMemoryMetric() {

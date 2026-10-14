@@ -34,11 +34,11 @@ public final class HoldToTalk {
 
     /// P4：我方按钮写「按住说<我方语言>」
     public func buttonTitle(myLang: String) -> (them: String, me: String) {
-        let me = "按住说\(Lang.displayName(myLang))"
+        let me = L10n.f("按住说%@", Lang.displayName(myLang))
         switch phase {
-        case .recording(.them), .cancelZone(.them): return ("松手翻译，上滑取消", me)
-        case .recording(.me), .cancelZone(.me): return ("按住听对方", "松手翻译，上滑取消")
-        default: return ("按住听对方", me)
+        case .recording(.them), .cancelZone(.them): return (L10n.t("松手翻译，上滑取消"), me)
+        case .recording(.me), .cancelZone(.me): return (L10n.t("按住听对方"), L10n.t("松手翻译，上滑取消"))
+        default: return (L10n.t("按住听对方"), me)
         }
     }
 
@@ -50,8 +50,8 @@ public final class HoldToTalk {
         switch (lang, active) {
         case ("id", false): return "Tahan untuk bicara"
         case ("id", true): return "Lepas untuk menerjemahkan · geser ke atas untuk batal"
-        case ("zh-Hans", false): return "按住说话"
-        case ("zh-Hans", true): return "松手翻译，上滑取消"
+        case ("zh-Hans", false): return "按住说话" // i18n-ok
+        case ("zh-Hans", true): return "松手翻译，上滑取消" // i18n-ok
         case (_, false): return "Hold to talk"
         case (_, true): return "Release to translate · slide up to cancel"
         }
@@ -89,11 +89,11 @@ public final class HoldToTalk {
         switch phase {
         case .pressing, .idle: return .none                         // 不足 0.3 秒
         case .cancelZone:
-            transcriber.cancel(); feedback = "已取消"; return .cancelled
+            transcriber.cancel(); feedback = L10n.t("已取消"); return .cancelled
         case .recording(let t):
             phase = .recognizing; onChange?()
             let text = await transcriber.finish().trimmingCharacters(in: .whitespacesAndNewlines)
-            if text.isEmpty { feedback = "没听清，按住再说一次"; return .empty }
+            if text.isEmpty { feedback = L10n.t("没听清，按住再说一次"); return .empty }
             return .text(String(text.prefix(500)), t)
         case .recognizing: return .none
         }

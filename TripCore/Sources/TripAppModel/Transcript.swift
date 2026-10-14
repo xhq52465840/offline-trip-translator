@@ -36,7 +36,7 @@ public enum Transcript {
             switch (viewer, mine) {
             case (.me, true):
                 primary = m.source; secondary = m.foreign
-                note = m.showBackTranslation ? m.backTranslation.map { "对方看到的意思：\($0)" } : nil
+                note = m.showBackTranslation ? m.backTranslation.map { L10n.f("对方看到的意思：%@", $0) } : nil
             case (.me, false):
                 primary = m.mainLine; secondary = m.source
                 note = m.literalLine

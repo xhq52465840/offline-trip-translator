@@ -47,7 +47,7 @@ public final class AppGate {
 
     static func combine(_ a: PackStatus, _ b: PackStatus) -> Readiness {
         if a == .installed && b == .installed { return .ready }
-        if a == .unsupported || b == .unsupported { return .unavailable("这台手机不支持这门语言的离线翻译") }
+        if a == .unsupported || b == .unsupported { return .unavailable(L10n.t("这台手机不支持这门语言的离线翻译")) }
         return .needsDownload(bytes: nil)
     }
 
@@ -61,11 +61,11 @@ public final class AppGate {
     public static func missingText(_ items: [PrepareItem], myLanguage: String = Lang.tourist) -> String {
         items.map { item -> String in
             switch item {
-            case .touristSpeech: return "\(Lang.displayName(myLanguage))听写"
-            case .translation(let l): return "\(Lang.displayName(l))翻译"
-            case .speech(let l): return "\(Lang.displayName(l))听写"
-            case .understander: return "理解能力"
+            case .touristSpeech: return L10n.f("%@听写", Lang.displayName(myLanguage))
+            case .translation(let l): return L10n.f("%@翻译", Lang.displayName(l))
+            case .speech(let l): return L10n.f("%@听写", Lang.displayName(l))
+            case .understander: return L10n.t("理解能力")
             }
-        }.joined(separator: "、")
+        }.joined(separator: L10n.isEnglish ? ", " : "、")
     }
 }
