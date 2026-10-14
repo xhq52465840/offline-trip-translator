@@ -28,6 +28,9 @@ public struct PromptBuilder: Sendable {
         self.theirLanguageName = theirLanguageName; self.maxContextTurns = maxContextTurns; self.scene = scene
     }
 
+    /// 本地模型能输出「理解」的目标语言（P1：只有中文；P3 加英文）
+    public static func supportsUnderstanding(target: String) -> Bool { target == "zh-Hans" }
+
     public var system: String {
         """
         你是旅行对话的中文译文修正器。游客是中国人，对方说\(theirLanguageName)。只修改「字面」这句中文，让它符合这场对话和原文真实意思。

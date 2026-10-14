@@ -53,6 +53,8 @@ public struct SystemClock: Clock { public init() {}; public func now() -> Date {
 public final class ConversationModel {
     public private(set) var messages: [Message] = []
     public var theirLanguage: String = "id"
+    /// 我方语言（三语改造 P1）：zh-Hans / id / en，默认中文，行为与改造前一致
+    public var myLanguage: String = Lang.tourist
     /// 当前场景，写进模型上下文（UX 改版）
     public var scene: Scenario? { didSet { understander?.builder.scene = scene?.contextName } }
     public var onChange: (() -> Void)?
@@ -79,40 +81,44 @@ public final class ConversationModel {
 
     // MARK: 发送中文（PRD v2 §7.3、§7.4）
 
-    public enum SendCheck: Equatable { case ok, empty, notChinese, busy }
+    public enum SendCheck: Equatable { case ok, empty, notChinese, wrongLanguage, busy }
 
-    public static func check(_ raw: String) -> SendCheck {
+    /// 我方语言为中文时要求含汉字（旧行为）；为印尼语/英语时不能含汉字，且要有字母或数字。
+    public static func check(_ raw: String, lang: String = Lang.tourist) -> SendCheck {
         let t = raw.trimmingCharacters(in: .whitespacesAndNewlines)
         if t.isEmpty { return .empty }
-        if t.unicodeScalars.contains(where: { $0.properties.isIdeographic }) { return .ok }
         if t.allSatisfy({ $0.isNumber || $0 == "." }) { return .ok }
-        return .notChinese
+        let han = t.unicodeScalars.contains(where: { $0.properties.isIdeographic })
+        if Lang.normalize(lang) == "zh-Hans" { return han ? .ok : .notChinese }
+        return han ? .wrongLanguage : .ok
     }
 
     @discardableResult
     public func sendMine(_ raw: String) async -> SendCheck {
-        let c = Self.check(raw)
+        let c = Self.check(raw, lang: myLanguage)
         guard c == .ok else {
             if c == .notChinese { flash("请用中文说你要讲的") }
+            if c == .wrongLanguage { flash("请用\(Lang.displayName(myLanguage))说你要讲的") }
             return c
         }
         guard canSend else { return .busy }
         let text = String(raw.trimmingCharacters(in: .whitespacesAndNewlines).prefix(500))
-        var m = Message(id: UUID(), role: .me, createdAt: clock.now(), source: text, sourceLocale: Lang.tourist,
-                        foreignLocaleHint: theirLanguage)
+        let mine = myLanguage, theirs = theirLanguage
+        var m = Message(id: UUID(), role: .me, createdAt: clock.now(), source: text, sourceLocale: mine,
+                        foreignLocaleHint: theirs)
         if !trial.allowsFull {
             m.status = .trialBlocked
             append(m); return .ok
         }
         append(m)
-        if text.allSatisfy({ $0.isNumber || $0 == "." }) {
+        if text.allSatisfy({ $0.isNumber || $0 == "." }) || LangRoute.route(from: mine, to: theirs) == .same {
             update(m.id) { $0.foreign = text; $0.status = .ready }
             trial.recordCompleteTurn(); return .ok
         }
         // 指代澄清（技术设计 v2 §8.1）：金额不一致则用原文
         var mtInput = text
         var rewritten = false
-        if let u = understander, Self.hasReference(text), messages.count > 1 {
+        if mine == "zh-Hans", let u = understander, Self.hasReference(text), messages.count > 1 {
             let ctx = contextTurns(excluding: m.id)
             u.timeout = mineRewriteBudget
             if case .replaced(let s) = await u.understand(context: ctx, source: text, literal: text),
@@ -121,10 +127,10 @@ public final class ConversationModel {
             }
         }
         do {
-            let foreign = try await translator.translate(mtInput, from: Lang.tourist, to: theirLanguage)
+            let foreign = try await translator.translate(mtInput, from: mine, to: theirs)
             update(m.id) { $0.foreign = foreign; $0.status = .ready }
             trial.recordCompleteTurn()
-            let back = try? await translator.translate(foreign, from: theirLanguage, to: Lang.tourist)
+            let back = try? await translator.translate(foreign, from: theirs, to: mine)
             update(m.id) {
                 $0.backTranslation = back
                 $0.showBackTranslation = back != nil && (rewritten || !BackTranslation.consistent(original: text, back: back!))
@@ -137,8 +143,8 @@ public final class ConversationModel {
 
     /// 场景快捷短语：预置译文，不调用翻译、不计试用条数，立即可出示。
     public func sendPhrase(_ p: Phrase) {
-        var m = Message(id: UUID(), role: .me, createdAt: clock.now(), source: p.zh, sourceLocale: Lang.tourist, foreignLocaleHint: theirLanguage)
-        m.foreign = p.foreign(theirLanguage)
+        var m = Message(id: UUID(), role: .me, createdAt: clock.now(), source: p.text(myLanguage), sourceLocale: myLanguage, foreignLocaleHint: theirLanguage)
+        m.foreign = p.text(theirLanguage)
         m.status = .ready
         append(m)
     }
@@ -150,7 +156,7 @@ public final class ConversationModel {
         guard !text.isEmpty else { return }
         let lang = theirLanguage
         var m = Message(id: UUID(), role: .them, createdAt: clock.now(), source: text, sourceLocale: lang)
-        if let g = LanguageGuess.guess(text), g != lang { m.offerRetranslateAs = g }
+        if let g = LanguageGuess.guess(text), g != lang, g != myLanguage { m.offerRetranslateAs = g }
         append(m)
         await translateTheirs(id: m.id, as: lang)
     }
@@ -164,17 +170,25 @@ public final class ConversationModel {
     private func translateTheirs(id: UUID, as lang: String, count: Bool = true) async {
         guard let m = messages.first(where: { $0.id == id }) else { return }
         let full = trial.allowsFull
-        let (ph, table) = AmountNormalizer.placeholderize(m.source)
+        let target = myLanguage
+        let route = LangRoute.route(from: lang, to: target)
+        if route == .same {
+            update(id) { $0.literal = $0.source; $0.status = .ready }
+            if count && full { trial.recordCompleteTurn() }
+            return
+        }
+        // 金额占位只在目标为中文时使用（还原成「5万」写法）；其他目标见 P2
+        let (ph, table) = target == "zh-Hans" ? AmountNormalizer.placeholderize(m.source) : (m.source, [:])
         var literal: String
         do {
             if table.isEmpty {
-                literal = try await translator.translate(m.source, from: lang, to: Lang.tourist)
+                literal = try await translator.translate(m.source, from: lang, to: target)
             } else {
-                let t = try await translator.translate(ph, from: lang, to: Lang.tourist)
+                let t = try await translator.translate(ph, from: lang, to: target)
                 if let r = AmountNormalizer.restore(t, table: table) {
                     literal = r
                 } else {
-                    let plain = try await translator.translate(m.source, from: lang, to: Lang.tourist)
+                    let plain = try await translator.translate(m.source, from: lang, to: target)
                     literal = plain + "（" + table.keys.sorted().compactMap { table[$0]?.display }.joined(separator: "，") + "）"
                 }
             }
@@ -183,7 +197,7 @@ public final class ConversationModel {
         }
         update(id) { $0.literal = literal; $0.status = .ready }
         if count && full { trial.recordCompleteTurn() }
-        guard full, let u = understander else { return }
+        guard full, route == .translateAndUnderstand, let u = understander else { return }
         let remaining = understandBudget - clock.now().timeIntervalSince(m.createdAt)
         guard remaining > 0.05 else { return }
         u.timeout = remaining
@@ -245,12 +259,14 @@ extension Message {
 public enum BackTranslation {
     public static var threshold = 0.6
     static let negations: [Character] = ["不", "没", "别", "无"]
+    static let negationWords: Set<String> = ["not", "no", "don't", "never", "tidak", "bukan", "jangan", "nggak", "gak", "belum", "tdk"]
     public static func consistent(original: String, back: String) -> Bool {
         if ConversationModel.numbers(in: original) != ConversationModel.numbers(in: back) { return false }
         let cn: Set<Character> = ["一","二","两","三","四","五","六","七","八","九","十","百","千","万","半"]
         if original.filter({ cn.contains($0) }) != back.filter({ cn.contains($0) }) { return false }
-        let n1 = original.filter { negations.contains($0) }.count > 0
-        let n2 = back.filter { negations.contains($0) }.count > 0
+        let words = { (s: String) in s.lowercased().split { !$0.isLetter && $0 != "'" }.map(String.init) }
+        let n1 = original.contains { negations.contains($0) } || words(original).contains { negationWords.contains($0) }
+        let n2 = back.contains { negations.contains($0) } || words(back).contains { negationWords.contains($0) }
         if n1 != n2 { return false }
         let a = OutputValidator.normalize(original), b = OutputValidator.normalize(back)
         guard !a.isEmpty, !b.isEmpty else { return a == b }
@@ -264,10 +280,12 @@ public enum BackTranslation {
 
 /// 粘贴语言猜测（技术设计 1.1 §10）：只用于提示「按英语重译」。
 public enum LanguageGuess {
-    static let id: Set<String> = ["yang","tidak","nggak","gak","gk","sudah","udh","udah","belum","bisa","bs","mau","ini","itu","saja","aja","dong","ya","di","ke","dari","untuk","dengan","ada","harga","ongkos","ribu","rb","berapa","brp","kak","pak"]
+    static let id: Set<String> = ["yang","tidak","nggak","gak","gk","sudah","udh","udah","belum","bisa","bs","mau","ini","itu","saja","aja","dong","ya","di","ke","dari","untuk","dengan","ada","harga","ongkos","ribu","rb","berapa","brp","kak","pak","saya","depan","pintu","sampai","kurang","uang","kecil","sini","mana","tunggu","terima","kasih","sekali","mahal"]
     static let en: Set<String> = ["the","and","you","this","that","with","for","not","can","please","pls","price","wait","how","much","where","is","it's","i'm"]
     public static func guess(_ text: String) -> String? {
-        if text.unicodeScalars.contains(where: { $0.properties.isIdeographic }) { return nil }
+        let scalars = text.unicodeScalars.filter { !$0.properties.isWhitespace }
+        let han = scalars.filter { $0.properties.isIdeographic }.count
+        if han > 0 { return Double(han) / Double(max(1, scalars.count)) >= 0.3 ? "zh-Hans" : nil }
         let words = text.lowercased().split { !$0.isLetter && $0 != "'" }.map(String.init)
         let i = words.filter { id.contains($0) }.count, e = words.filter { en.contains($0) }.count
         if i >= 2 && i > e { return "id" }

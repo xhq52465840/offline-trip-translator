@@ -12,6 +12,10 @@ public struct Phrase: Identifiable, Equatable, Sendable {
         self.zh = zh; self.id_ = id; self.en = en; self.needsNativeReview = needsNativeReview
     }
     public func foreign(_ lang: String) -> String { lang == "en" ? en : id_ }
+    /// 三语：按语言取这句（P1）
+    public func text(_ lang: String) -> String {
+        switch Lang.normalize(lang) { case "en": return en; case "id": return id_; default: return zh }
+    }
 }
 
 /// 场景（UX 改版，见 docs/场景与痛点研究.md）：只是「可选的上下文提示 + 快捷短语」，
