@@ -3,10 +3,10 @@ import XCTest
 /// 关键路径 UI 测试（模拟器，无需下载模型 / Apple Translation）。
 /// App 以 `-UITestMode <mode>` 启动（DEBUG 才生效），见 TripAppModel.UITestMode。
 /// 截图：作为 XCTAttachment 保留；若设置环境变量 SCREEN_DIR（xcodebuild 用 TEST_RUNNER_SCREEN_DIR=...），同时写 PNG 到该目录。
-final class TripUITests: XCTestCase {
+class TripUITests: XCTestCase {
     override func setUp() { continueAfterFailure = false }
 
-    /// UI 语言：环境变量 UI_LANG=en 时整套测试按英文界面跑（P7；Mac 用 TEST_RUNNER_UI_LANG=en 再跑一遍，截图加 _en 后缀）
+    /// UI 语言：默认中文；子类 `TripUITestsEnglish` 覆盖为英文（r5：TEST_RUNNER_UI_LANG 在 Xcode 16.2 上没进测试进程，改用子类，一次 xcodebuild test 中英两遍都跑）
     var uiLang: String { ProcessInfo.processInfo.environment["UI_LANG"] == "en" ? "en" : "zh-Hans" }
     var isEn: Bool { uiLang == "en" }
 
@@ -172,6 +172,15 @@ final class TripUITests: XCTestCase {
         app.buttons["startChat"].tap()
         XCTAssertTrue(app.buttons["theirLangPicker"].waitForExistence(timeout: 5))
         assertNoHan(app, "conversation"); shot("12_no_han_conversation_en")
+        // r5 #4：常用句页的分段控件曾显示「中文」
+        app.terminate()
+        let nr = XCUIApplication()
+        nr.launchArguments += ["-UITestMode", "mock-not-ready", "-UITestLangs", "en,id", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
+        nr.launch()
+        let link = nr.buttons["blockingPhraseBook"]
+        XCTAssertTrue(link.waitForExistence(timeout: 10)); link.tap()
+        XCTAssertTrue(nr.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'phrase_'")).firstMatch.waitForExistence(timeout: 5))
+        assertNoHan(nr, "phrasebook"); shot("12_no_han_phrasebook_en")
     }
 
     func testLaunchMemoryMetric() {
@@ -186,4 +195,11 @@ final class TripUITests: XCTestCase {
             app.terminate()
         }
     }
+}
+
+/// 英文界面整套再跑一遍（继承全部用例；截图自动加 _en）。只跑这一遍：`-only-testing:TripUITests/TripUITestsEnglish`
+final class TripUITestsEnglish: TripUITests {
+    override var uiLang: String { "en" }
+    override func testLaunchMemoryMetric() {}          // 指标只在中文遍测一次
+    override func testEnglishUIHasNoChinese() {}       // 已在中文遍类里显式用英文跑过
 }

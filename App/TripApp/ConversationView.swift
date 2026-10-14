@@ -168,17 +168,19 @@ struct ConversationView: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .principal) {
-                // P4：「我说 ▾ ⇄ 对方说 ▾」，双方各自选三种语言之一
+                // P4：「我方语言 ⇄ 对方语言」；r5：英文「I speak … / They speak …」太宽被裁切 → 只显示语言名（我方加粗），完整说法放在无障碍标签
                 HStack(spacing: 6) {
                     Menu {
                         ForEach(Lang.all, id: \.self) { l in Button(LangNames.native(l)) { state.setMyLanguage(l) } }
-                    } label: { Text(L10n.f("我说%@", Lang.displayName(model.myLanguage))).font(.subheadline) }
+                    } label: { Text(Lang.displayName(model.myLanguage)).font(.subheadline.weight(.semibold)).lineLimit(1).minimumScaleFactor(0.7) }
+                    .accessibilityLabel(L10n.f("我说%@", Lang.displayName(model.myLanguage)))
                     .accessibilityIdentifier("myLangPicker")
                     Button { state.swapLanguages() } label: { Image(systemName: "arrow.left.arrow.right") }
                         .accessibilityLabel("交换双方语言").accessibilityIdentifier("swapLangs")
                     Menu {
                         ForEach(Lang.all, id: \.self) { l in Button(LangNames.native(l)) { state.setTheirLanguage(l) } }
-                    } label: { Text(L10n.f("对方说%@", Lang.displayName(model.theirLanguage))).font(.subheadline) }
+                    } label: { Text(Lang.displayName(model.theirLanguage)).font(.subheadline).lineLimit(1).minimumScaleFactor(0.7) }
+                    .accessibilityLabel(L10n.f("对方说%@", Lang.displayName(model.theirLanguage)))
                     .accessibilityIdentifier("theirLangPicker")
                 }
             }

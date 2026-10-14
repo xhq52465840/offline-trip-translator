@@ -32,7 +32,8 @@ struct OnboardingView: View {
                 }
                 PrepareRowsSection()
             }
-            .navigationTitle("离线准备")
+            .contentMargins(.bottom, 48, for: .scrollContent)   // r5：最后一行不被 Home 指示条挡住
+        .navigationTitle("离线准备")
             .cellularConfirm()
         }
     }
@@ -88,11 +89,13 @@ struct PrepareView: View {
 struct BlockingSheet: View {
     @EnvironmentObject var state: AppState
     var body: some View {
-        VStack(spacing: 20) {
+        // r5：英文缺包说明较长，medium 高度下被截成「downloa…」→ 可滚动 + 可拉到 large，文字不截断
+        ScrollView { VStack(spacing: 20) {
             Image(systemName: "arrow.down.circle").font(.system(size: 48))
             Text("还没准备好，暂时不能用").font(.title3.bold()).accessibilityIdentifier("blockingTitle")
             Text(L10n.f("缺少：%@。请连上 Wi‑Fi 下载离线语言和理解能力，完成后就能断网使用。", state.missingText))
                 .multilineTextAlignment(.center).foregroundStyle(.secondary)
+                .fixedSize(horizontal: false, vertical: true)
             Button {
                 state.showPrepare = true
                 state.prepareAll()
@@ -105,8 +108,9 @@ struct BlockingSheet: View {
             .accessibilityIdentifier("blockingPhraseBook")
             NavigationLink("查看隐私说明") { PrivacyView() }
         }
-        .padding(24)
-        .presentationDetents([.medium])
+        .padding(24) }
+        .presentationDetents([.medium, .large])
+        .presentationDragIndicator(.visible)
     }
 }
 

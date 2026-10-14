@@ -145,7 +145,7 @@ struct PhraseBookView: View {
         List {
             Section {
                 Picker("对方语言", selection: $lang) {
-                    ForEach(Lang.all.filter { $0 != state.myLanguage }, id: \.self) { l in Text(LangNames.native(l)).tag(l) }
+                    ForEach(Lang.all.filter { $0 != state.myLanguage }, id: \.self) { l in Text(Lang.displayName(l)).tag(l) }   // r5：英文界面不再显示「中文」
                 }.pickerStyle(.segmented)
             } footer: { Text("下载完成前只能用这些预先翻好的句子。点一下，把屏幕给对方看。") }
             ForEach(PhraseBook.sections(recent: state.recentScenes)) { sec in
@@ -167,6 +167,7 @@ struct PhraseBookView: View {
                 }
             }
         }
+        .contentMargins(.bottom, 48, for: .scrollContent)   // r5：最后一行不被 Home 指示条挡住
         .navigationTitle("常用句（离线可用）")
         .accessibilityIdentifier("phraseBook")
         .onAppear { if lang == state.myLanguage { lang = state.myLanguage == "id" ? "zh-Hans" : "id" } }
