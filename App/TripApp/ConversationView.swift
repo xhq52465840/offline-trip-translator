@@ -149,6 +149,7 @@ struct ConversationView: View {
         .navigationDestination(isPresented: $state.showPrepare) { PrepareView() }
         .fullScreenCover(item: $presenting) { m in PresentView(text: m.foreign ?? "", amountLine: PresentContent.amountLine(foreign: m.foreign ?? "", source: m.source)) }
         .accessibilityIdentifier("conversationHome")
+        .cellularConfirm()
     }
 
     /// v4 状态条：替代阻断弹窗；非就绪时出现，点一下开始下载/去准备页。下载期间快捷句、金额、Apple 翻译照常可用。

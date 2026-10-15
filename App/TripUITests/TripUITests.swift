@@ -71,10 +71,24 @@ class TripUITests: XCTestCase {
         app.buttons["presentClose"].tap()
     }
 
-    func testPurchasePageOpens() {
+    /// v4 V6：首次打开两步 —— 选语言 → 开始用 → 直接到对话页（不经过准备列表）
+    func testFirstLaunchTwoSteps() {
         let app = launch("mock-onboarding")
-        let link = app.buttons["purchaseLink"]
-        if !link.waitForExistence(timeout: 5) { app.swipeUp() }
+        XCTAssertTrue(app.staticTexts["onboardingTitle"].waitForExistence(timeout: 10))
+        XCTAssertTrue(app.buttons["onboardMe_zh-Hans"].exists)
+        app.buttons["onboardThem_en"].tap()
+        shot("01b_first_launch_pick")
+        app.buttons["onboardStart"].tap()
+        XCTAssertTrue(waitHome(app), "点开始后应直接进入对话页")
+        XCTAssertTrue(app.buttons["theirLangPicker"].label.contains(isEn ? "English" : "英"), app.buttons["theirLangPicker"].label)
+        shot("01c_first_launch_done")
+    }
+
+    func testPurchasePageOpens() {
+        let app = launch("mock-ready")
+        let menu = app.buttons["settingsMenu"]
+        XCTAssertTrue(menu.waitForExistence(timeout: 10)); menu.tap()
+        let link = app.buttons[isEn ? "Purchase" : "购买"]
         XCTAssertTrue(link.waitForExistence(timeout: 5))
         link.tap()
         XCTAssertTrue(app.buttons["restorePurchases"].waitForExistence(timeout: 10))
@@ -241,7 +255,8 @@ class TripUITests: XCTestCase {
     func assertNoHan(_ app: XCUIApplication, _ screen: String) {
         let han = NSPredicate(format: "label MATCHES %@", ".*[\\u4e00-\\u9fff].*")
         for q in [app.staticTexts, app.buttons, app.navigationBars.staticTexts] {
-            let hits = q.matching(han).allElementsBoundByIndex.map(\.label)
+            // 语言名用各自的文字（「中文」）是有意的，不算
+            let hits = q.matching(han).allElementsBoundByIndex.map(\.label).filter { $0 != "中文" && !$0.hasPrefix("中文") }
             XCTAssertTrue(hits.isEmpty, "\(screen) 英文界面出现汉字：\(hits)")
         }
     }

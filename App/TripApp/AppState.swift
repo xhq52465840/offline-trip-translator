@@ -239,6 +239,14 @@ final class AppState: ObservableObject {
         try? await understander.warmUp()   // 预先算好系统提示 + 少样本的 KV
     }
 
+    /// v4 V6：首次打开选完语言 → 标记完成、后台开始全部准备、直接进对话页
+    func finishOnboarding(me: String, them: String) {
+        applyLanguages(me: me, them: them)
+        gate.onboardingCompleted = true
+        prepareAll()
+        Task { await refresh(.coldLaunch) }
+    }
+
     /// 「全部准备」：系统翻译（交给 translationTask 宿主）、听写资源、理解模型并行。
     func prepareAll() {
         var pairs: [(String, String)] = []

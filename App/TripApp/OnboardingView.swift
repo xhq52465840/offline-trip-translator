@@ -2,45 +2,56 @@ import SwiftUI
 import TripCore
 import TripAppModel
 
-/// 首次启动的强制准备（PRD v2 §4.3）。隐私、购买、示例演示页可以在准备期间浏览（审核风险缓解）。
+/// v4 首次打开：只做两件事 —— 选「我说 / 对方说」，点「开始用」。下载在后台进行，期间快捷句、金额换算可用。
+/// 购买、隐私、汇率都在对话页的「设置」里，首屏不出现。
 struct OnboardingView: View {
     @EnvironmentObject var state: AppState
+    @State private var me = FirstLaunch.defaults(preferred: Locale.preferredLanguages).me
+    @State private var them = FirstLaunch.defaults(preferred: Locale.preferredLanguages).them
 
     var body: some View {
-        NavigationStack {
-            List {
-                Section {
-                    VStack(alignment: .leading, spacing: 8) {
-                        Text("先准备好，再出发").font(.title2.bold()).accessibilityIdentifier("onboardingTitle")
-                        Text(L10n.f("这个应用全部在手机上运行，不联网也能用。第一次需要在 Wi‑Fi 下准备好语言和理解能力，%@，下载完成后才能开始用。", totalSize))
-                            .foregroundStyle(.secondary)
-                        Label(state.etaText, systemImage: "house.fill")
-                            .font(.subheadline.weight(.semibold))
-                            .accessibilityLabel(state.etaText)
-                    }.padding(.vertical, 4)
+        ScrollView {
+            VStack(alignment: .leading, spacing: 18) {
+                Text("你好！先选语言").font(.largeTitle.bold()).accessibilityIdentifier("onboardingTitle")
+                    .accessibilityAddTraits(.isHeader)
+                Text("其余都在后台准备，马上就能用常用句").foregroundStyle(.secondary)
+                picker(title: "我说", selection: me, id: "onboardMe") { l in (me, them) = FirstLaunch.pick(me: l, them: them, changed: .me) }
+                picker(title: "对方说", selection: them, id: "onboardThem") { l in (me, them) = FirstLaunch.pick(me: me, them: l, changed: .them) }
+                VStack(alignment: .leading, spacing: 4) {
+                    Label(FirstLaunch.downloadLine(bytes: state.downloader?.entry.bytes), systemImage: "arrow.down.circle")
+                        .font(.subheadline.weight(.semibold))
+                    Text(L10n.t("下载完成前：常用句和金额换算可用；翻译会提示「准备中」")).font(.footnote).foregroundStyle(.secondary)
                 }
-                // 主按钮放在清单前，首屏可见（Mac run r1：原来在首屏以下）
-                Section {
-                    Button("开始准备") { state.prepareAll() }.font(.headline)
+                Button {
+                    state.finishOnboarding(me: me, them: them)
+                } label: {
+                    Text("开始用").font(.title2.bold()).frame(maxWidth: .infinity, minHeight: 60)
                 }
-                // 准备期间能用的入口紧跟主按钮，不再被 Home 条压住
-                Section("准备期间可以先看看") {
-                    NavigationLink("常用句（下载期间可用）") { PhraseBookView() }
-                    NavigationLink("示例演示") { DemoView() }
-                    NavigationLink("购买 / 恢复购买") { PurchaseView() }.accessibilityIdentifier("purchaseLink")
-                    NavigationLink("隐私说明") { PrivacyView() }
-                }
-                PrepareRowsSection()
+                .buttonStyle(.borderedProminent)
+                .accessibilityIdentifier("onboardStart")
             }
-            .contentMargins(.bottom, 48, for: .scrollContent)   // r5：最后一行不被 Home 指示条挡住
-        .navigationTitle("离线准备")
-            .cellularConfirm()
+            .padding(24)
         }
     }
 
-    private var totalSize: String {
-        let s = PrepareRows.size(state.downloader?.entry.bytes)
-        return s.isEmpty ? L10n.t("需要一些空间") : L10n.f("理解能力%@，另加系统语言包", s)
+    private func picker(title: LocalizedStringKey, selection: String, id: String, onPick: @escaping (String) -> Void) -> some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text(title).font(.headline)
+            ForEach(Lang.all, id: \.self) { l in
+                Button { onPick(l) } label: {
+                    HStack {
+                        Text(LangNames.native(l)).font(.title3.weight(.semibold))
+                        Spacer()
+                        if l == selection { Image(systemName: "checkmark.circle.fill") }
+                    }
+                    .padding(.horizontal, 16).frame(minHeight: 52)
+                    .foregroundStyle(l == selection ? Color.white : Color.primary)
+                    .background(l == selection ? Color.accentColor : Color(.secondarySystemBackground), in: RoundedRectangle(cornerRadius: 14))
+                }
+                .accessibilityAddTraits(l == selection ? .isSelected : [])
+                .accessibilityIdentifier("\(id)_\(l)")
+            }
+        }
     }
 }
 

@@ -188,6 +188,17 @@
         }
       }
     },
+    "下载完成前：常用句和金额换算可用；翻译会提示「准备中」": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Until the download finishes, phrases and money conversion work; translations will say “preparing”"
+          }
+        }
+      }
+    },
     "下载期间先用：常用句（出示给对方）": {
       "extractionState": "manual",
       "localizations": {
@@ -353,13 +364,13 @@
         }
       }
     },
-    "先准备好，再出发": {
+    "你好！先选语言": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Get ready before you go"
+            "value": "Hi! Pick your languages"
           }
         }
       }
@@ -430,13 +441,13 @@
         }
       }
     },
-    "准备期间可以先看看": {
+    "其余都在后台准备，马上就能用常用句": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Look around while preparing"
+            "value": "Everything else gets ready in the background — phrases work right away"
           }
         }
       }
@@ -661,6 +672,17 @@
         }
       }
     },
+    "对方说": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "They speak"
+          }
+        }
+      }
+    },
     "对方说%@": {
       "extractionState": "manual",
       "localizations": {
@@ -815,17 +837,6 @@
         }
       }
     },
-    "常用句（下载期间可用）": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Phrases (available while downloading)"
-          }
-        }
-      }
-    },
     "常用句（离线可用）": {
       "extractionState": "manual",
       "localizations": {
@@ -844,17 +855,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Best downloaded on home Wi‑Fi before you leave"
-          }
-        }
-      }
-    },
-    "开始准备": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Start setup"
           }
         }
       }
@@ -892,6 +892,17 @@
         }
       }
     },
+    "开始用": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Start"
+          }
+        }
+      }
+    },
     "当前不是 Wi‑Fi，要用流量下载%@吗？": {
       "extractionState": "manual",
       "localizations": {
@@ -921,6 +932,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Restore purchases"
+          }
+        }
+      }
+    },
+    "我说": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "I speak"
           }
         }
       }
@@ -1464,13 +1486,13 @@
         }
       }
     },
-    "理解能力%@，另加系统语言包": {
+    "理解能力 %@": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Understanding model %@, plus system language packs"
+            "value": "Understanding %@"
           }
         }
       }
@@ -1860,17 +1882,6 @@
         }
       }
     },
-    "这个应用全部在手机上运行，不联网也能用。第一次需要在 Wi‑Fi 下准备好语言和理解能力，%@，下载完成后才能开始用。": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "This app runs entirely on your phone and works offline. The first time, prepare languages and understanding on Wi‑Fi (%@); you can start once the download finishes."
-          }
-        }
-      }
-    },
     "这句像%@，按%@重译": {
       "extractionState": "manual",
       "localizations": {
@@ -2021,17 +2032,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Requires an iPhone with 6 GB of memory or more."
-          }
-        }
-      }
-    },
-    "需要一些空间": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Needs some storage"
           }
         }
       }

@@ -65,3 +65,23 @@ public enum DemoScript {
         Line(role: .them, source: "yang tadi 40 saja", literal: "刚才的40就行", understood: "刚才那个价格，4万就行"), // i18n-ok
     ]
 }
+
+/// v4 首次打开：只选「我说 / 对方说」，点开始后后台下载。这里是默认值与互斥规则（有单测）。
+public enum FirstLaunch {
+    /// 我方跟随系统语言（zh/en/id，其他 → 中文）；对方默认印尼语（我方是印尼语时默认中文）
+    public static func defaults(preferred: [String]) -> (me: String, them: String) {
+        let l = Lang.normalize(preferred.first ?? Lang.tourist)
+        let me = Lang.all.contains(l) ? l : Lang.tourist
+        return (me, me == "id" ? "zh-Hans" : "id")
+    }
+    /// 选了与另一方相同的语言 → 把另一方换成剩下的默认语言
+    public static func pick(me: String, them: String, changed: TalkTarget) -> (me: String, them: String) {
+        guard me == them else { return (me, them) }
+        if changed == .me { return (me, me == "id" ? "zh-Hans" : "id") }
+        return (them == "zh-Hans" ? "id" : "zh-Hans", them)
+    }
+    public static func downloadLine(bytes: Int64?) -> String {
+        let s = PrepareRows.size(bytes)
+        return s.isEmpty ? L10n.t("理解能力") : L10n.f("理解能力 %@", s)
+    }
+}
