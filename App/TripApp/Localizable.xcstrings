@@ -969,6 +969,39 @@
         }
       }
     },
+    "按住说话": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hold to talk"
+          }
+        }
+      }
+    },
+    "换成对方说": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Switch to them"
+          }
+        }
+      }
+    },
+    "换成我说": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Switch to me"
+          }
+        }
+      }
+    },
     "换算成": {
       "extractionState": "manual",
       "localizations": {
@@ -1174,6 +1207,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Reading this message"
+          }
+        }
+      }
+    },
+    "正在识别…": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Recognizing…"
           }
         }
       }
@@ -1574,6 +1618,17 @@
         }
       }
     },
+    "给对方看（面对面）": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Show to them (face to face)"
+          }
+        }
+      }
+    },
     "继续": {
       "extractionState": "manual",
       "localizations": {
@@ -1658,6 +1713,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "About %@ h of trial left, unlimited messages"
+          }
+        }
+      }
+    },
+    "说错人了？这句是对方说的，重说": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wrong person? That was them — say it again"
+          }
+        }
+      }
+    },
+    "说错人了？这句是我说的，重说": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wrong person? That was me — say it again"
           }
         }
       }
@@ -1812,6 +1889,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "This is a pre-recorded demo conversation; no download needed."
+          }
+        }
+      }
+    },
+    "这次听对方说%@ · 松手翻译": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Listening to them (%@) · release to translate"
+          }
+        }
+      }
+    },
+    "这次听我说%@ · 松手翻译": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Listening to me (%@) · release to translate"
           }
         }
       }

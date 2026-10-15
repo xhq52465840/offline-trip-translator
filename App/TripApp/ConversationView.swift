@@ -207,6 +207,14 @@ struct ConversationView: View {
         }
     }
 
+    private var talkTitle: String {
+        switch state.talk.phase {
+        case .recording, .cancelZone: return L10n.t("松手翻译，上滑取消")
+        case .recognizing: return L10n.t("正在识别…")
+        default: return L10n.t("按住说话")
+        }
+    }
+
     private var inputBar: some View {
         VStack(spacing: 8) {
             if let hint = model.inputHint { Text(hint).font(.callout).foregroundStyle(.red) }
@@ -232,12 +240,24 @@ struct ConversationView: View {
                 .accessibilityLabel("发送")
                 .accessibilityIdentifier("sendButton")
             }
-            // 单手操作：两颗大按钮占满底部，拇指可达
-            HStack(spacing: 10) {
-                TalkButton(title: state.talk.buttonTitle(myLang: model.myLanguage).them, symbol: "ear", target: .them, prominent: true,
-                           locale: Lang.speechLocale(model.theirLanguage))
-                TalkButton(title: state.talk.buttonTitle(myLang: model.myLanguage).me, symbol: "mic.fill", target: .me, prominent: false,
-                           locale: Lang.speechLocale(model.myLanguage))
+            // v4 V4：一个大「按住说话」（自动判断谁在说）+「给对方看」
+            let who = state.nextTalk
+            VStack(spacing: 6) {
+                TalkButton(title: talkTitle, symbol: "mic.fill", target: who, prominent: true,
+                           locale: Lang.speechLocale(who == .me ? model.myLanguage : model.theirLanguage), minHeight: 96,
+                           caption: TalkRouter.caption(who, myLanguage: model.myLanguage, theirLanguage: model.theirLanguage))
+                    .accessibilityIdentifier("holdToTalk")
+                HStack {
+                    Button(TalkRouter.switchLabel(who)) { state.toggleNextTalk() }
+                        .font(.footnote).accessibilityIdentifier("switchSpeaker")
+                    Spacer()
+                }
+                Button { withAnimation { state.faceToFace = true }; Haptics.play(.sent) } label: {
+                    Label("给对方看（面对面）", systemImage: "rectangle.portrait.and.arrow.forward")
+                        .font(.headline).frame(maxWidth: .infinity, minHeight: 52)
+                }
+                .buttonStyle(.bordered)
+                .accessibilityIdentifier("showToPartner")
             }
             .disabled(!model.trial.allowsFull || model.isTranslating)
             .opacity(model.trial.allowsFull ? 1 : 0.4)
@@ -375,6 +395,10 @@ struct BubbleView: View {
     }
 
     @ViewBuilder private func actions(_ m: Message) -> some View {
+        if state.lastVoiceMessageID == m.id {
+            Button(m.role == .me ? L10n.t("说错人了？这句是对方说的，重说") : L10n.t("说错人了？这句是我说的，重说")) { state.wrongSpeaker(m.id) }
+                .font(.footnote).accessibilityIdentifier("wrongSpeaker")
+        }
         if m.role == .them, let lang = m.offerRetranslateAs {
             Button(L10n.f("这句像%@，按%@重译", Lang.displayName(lang), Lang.displayName(lang))) { onRetranslate(lang) }.font(.footnote)
         }
@@ -484,15 +508,21 @@ struct TalkButton: View {
     let target: TalkTarget
     let prominent: Bool
     let locale: String
+    var minHeight: CGFloat = 64
+    var caption: String? = nil
     @State private var ticker: Task<Void, Never>?
 
     var body: some View {
-        Label(title, systemImage: symbol)
-            .font(.headline)
-            .frame(maxWidth: .infinity, minHeight: 64)
+        VStack(spacing: 4) {
+            Label(title, systemImage: symbol)
+                .font(minHeight > 64 ? .title.bold() : .headline)
+            if let caption { Text(caption).font(.footnote).opacity(0.85) }
+        }
+            .frame(maxWidth: .infinity, minHeight: minHeight)
             .background(prominent ? Color.accentColor : Color(.tertiarySystemFill), in: RoundedRectangle(cornerRadius: 18))
             .foregroundStyle(prominent ? Color.white : Color.primary)
             .accessibilityLabel(title)
+            .accessibilityValue(caption ?? "")
             .accessibilityAddTraits(.isButton)
             .gesture(
                 DragGesture(minimumDistance: 0)

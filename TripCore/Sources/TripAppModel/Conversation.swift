@@ -234,6 +234,9 @@ public final class ConversationModel {
 
     public var onPersist: (([Message]) -> Void)?
 
+    /// v4「说错人了」：删掉这一句（只在本机）
+    public func remove(_ id: UUID) { messages.removeAll { $0.id == id }; onChange?(); onPersist?(messages) }
+
     public func newConversation() { messages = []; onChange?(); onPersist?(messages) }
 
     /// 恢复上次的这场（被系统杀掉后再打开）。翻译中的半截消息改为失败，不产生半截气泡。

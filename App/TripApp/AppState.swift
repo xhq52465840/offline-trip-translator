@@ -262,10 +262,27 @@ final class AppState: ObservableObject {
         return false
     }
 
+    /// v4 V4：单按钮自动判定这一句是谁说的（TripAppModel.TalkRouter，有单测）
+    @Published var forcedTalk: TalkTarget?
+    @Published var lastVoiceMessageID: UUID?
+    var nextTalk: TalkTarget { TalkRouter.predict(messages: conversation.messages, forced: forcedTalk) }
+    func toggleNextTalk() { forcedTalk = nextTalk == .me ? .them : .me; tick += 1 }
+    /// 「说错人了」：删掉这句，下一次按住改听另一方
+    func wrongSpeaker(_ id: UUID) {
+        guard let m = conversation.messages.first(where: { $0.id == id }) else { return }
+        conversation.remove(id)
+        forcedTalk = m.role == .me ? .them : .me
+        lastVoiceMessageID = nil
+        tick += 1
+    }
+
     func handleTalk(_ outcome: HoldToTalk.Outcome) async {
         switch outcome {
-        case .text(let s, .them): await conversation.receiveTheirs(s)
-        case .text(let s, .me): await conversation.sendMine(s)
+        case .text(let s, let t):
+            let who = TalkRouter.resolve(t, text: s, myLanguage: myLanguage, theirLanguage: theirLanguage)
+            forcedTalk = nil
+            if who == .them { await conversation.receiveTheirs(s) } else { await conversation.sendMine(s) }
+            lastVoiceMessageID = conversation.messages.last?.id
         case .failed: speechAlert = L10n.t("需要麦克风和语音识别权限。可在系统设置里打开。")
         default: break
         }

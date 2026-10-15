@@ -154,6 +154,25 @@ class TripUITests: XCTestCase {
         XCTAssertTrue(app.staticTexts["Terlalu mahal, bisa kurang?"].waitForExistence(timeout: 5), "快捷回复应直接发出印尼语")
     }
 
+    func holdToTalk(_ app: XCUIApplication) -> XCUIElement { app.descendants(matching: .any)["holdToTalk"].firstMatch }
+
+    /// v4 V4：只有一个大「按住说话」，空对话先听我；可手动换成对方；还有「给对方看」
+    func testSingleHoldToTalkAndSwitch() {
+        let app = launchLangs("zh-Hans,id", ui: uiLang, locale: isEn ? "en_US" : "zh_CN")
+        let talk = holdToTalk(app)
+        XCTAssertTrue(talk.waitForExistence(timeout: 10))
+        XCTAssertTrue(app.buttons["showToPartner"].exists)
+        XCTAssertFalse(app.buttons[isEn ? "Hold to listen" : "按住听对方"].exists, "旧的双按钮应已移除")
+        let sw = app.buttons["switchSpeaker"]
+        XCTAssertTrue(sw.exists)
+        let before = sw.label
+        XCTAssertEqual(before, isEn ? "Switch to them" : "换成对方说")
+        sw.tap()
+        XCTAssertNotEqual(app.buttons["switchSpeaker"].label, before)
+        XCTAssertTrue(talk.frame.height >= 90, "按住说话按钮高度应 ≥ 96pt：\(talk.frame.height)")
+        shot("15_single_talk_button")
+    }
+
     // MARK: P4 双方各自选语言
 
     func launchLangs(_ langs: String, ui: String = "zh-Hans", locale: String = "zh_CN") -> XCUIApplication {
