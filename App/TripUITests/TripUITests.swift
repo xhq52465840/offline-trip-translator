@@ -101,8 +101,11 @@ class TripUITests: XCTestCase {
         app.launchArguments += ["-UITestMode", "mock-ready", "-UITestSeedAmount", "-AppleLanguages", "(zh-Hans)", "-AppleLocale", "zh_CN"]
         app.launch()
         XCTAssertTrue(waitHome(app))
-        let conv = app.staticTexts.containing(NSPredicate(format: "label CONTAINS '约 ¥37'")).firstMatch
-        XCTAssertTrue(conv.waitForExistence(timeout: 10), "应显示 约 ¥37（100.000 / 2677.5）")
+        // v4 V2：金额卡片（整卡一个无障碍元素，label 含换算）
+        let card = moneyCard(app)
+        XCTAssertTrue(card.waitForExistence(timeout: 10), "应出现金额卡片")
+        XCTAssertTrue(card.label.contains("约 ¥37"), "应显示 约 ¥37（100.000 / 2677.5）：\(card.label)")
+        XCTAssertTrue(card.label.hasPrefix("对方报价"))
         XCTAssertTrue(app.staticTexts["rateCaption"].exists)
         XCTAssertTrue(app.staticTexts["rateCaption"].label.contains("2026-10-12"))
         shot("08_amount_conversion")
@@ -114,9 +117,27 @@ class TripUITests: XCTestCase {
         app.launchArguments += ["-UITestMode", "mock-ready", "-UITestSeedAmount", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
         app.launch()
         XCTAssertTrue(waitHome(app))
-        let conv = app.staticTexts.containing(NSPredicate(format: "label CONTAINS '$5.6'")).firstMatch
-        XCTAssertTrue(conv.waitForExistence(timeout: 10), "英文环境应显示 ≈ $5.6")
+        let card = moneyCard(app)
+        XCTAssertTrue(card.waitForExistence(timeout: 10))
+        XCTAssertTrue(card.label.contains("$5.6"), "英文环境应显示 ≈ $5.6：\(card.label)")
+        XCTAssertFalse(card.label.contains("印尼盾"), "英文界面金额卡不应有中文单位")
         shot("08_amount_conversion_en")
+    }
+
+    func moneyCard(_ app: XCUIApplication) -> XCUIElement { app.descendants(matching: .any)["moneyCard"].firstMatch }
+
+    /// v4 V2：点金额卡片 → 全屏出示金额
+    func testMoneyCardPresentsFullScreen() {
+        let app = XCUIApplication()
+        app.launchArguments += ["-UITestMode", "mock-ready", "-UITestSeedAmount", "-AppleLanguages", "(\(uiLang))", "-AppleLocale", isEn ? "en_US" : "zh_CN"]
+        app.launch()
+        let card = moneyCard(app)
+        XCTAssertTrue(card.waitForExistence(timeout: 10))
+        shot("13_money_card")
+        card.tap()
+        XCTAssertTrue(app.staticTexts["presentText"].waitForExistence(timeout: 5))
+        XCTAssertEqual(app.staticTexts["presentText"].label, "Rp 100.000")
+        app.buttons["presentClose"].tap()
     }
 
     // MARK: P4 双方各自选语言

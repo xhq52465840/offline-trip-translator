@@ -325,6 +325,10 @@ struct BubbleView: View {
         HStack(alignment: .bottom) {
             if trailing { Spacer(minLength: 32) }
             VStack(alignment: trailing ? .trailing : .leading, spacing: 6) {
+                // v4 V2：金额卡片永远在气泡最上方、字号最大；数字只来自程序
+                if viewer == .me, let card = MoneyCard.make(chips: row.chips, source: message?.source ?? "", fromPartner: message?.role != .me) {
+                    MoneyCardView(card: card)
+                }
                 Text(row.primary)
                     .font(.title3.weight(.semibold))
                     .foregroundStyle(row.pending ? Color.secondary : Color.primary)
@@ -335,7 +339,7 @@ struct BubbleView: View {
                         .multilineTextAlignment(trailing ? .trailing : .leading)
                 }
                 if !row.chips.isEmpty {
-                    FlowChips(chips: row.chips)
+                    if viewer != .me { FlowChips(chips: row.chips) }
                     Text(state.fx.caption(now: Date()))
                         .font(.caption2)
                         .foregroundStyle(state.fx.isStale(now: Date()) ? Color.orange : Color.secondary)
@@ -387,6 +391,42 @@ struct BubbleView: View {
                 }
             }
         }
+    }
+}
+
+/// v4 金额卡片：原币大字 → ≈ 本币（强调色）→ 读法 + 条件。点一下全屏出示给对方。
+struct MoneyCardView: View {
+    let card: MoneyCard
+    @State private var showing: AmountChip?
+    var body: some View {
+        VStack(alignment: .leading, spacing: 6) {
+            Text(card.header).font(.footnote).foregroundStyle(.secondary)
+            ForEach(card.lines) { chip in
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(chip.rupiah)
+                        .font(.system(.largeTitle, design: .rounded).weight(.heavy).monospacedDigit())
+                        .minimumScaleFactor(0.6).lineLimit(1)
+                    if let c = chip.cny {
+                        Text(c).font(.system(.title, design: .rounded).weight(.bold).monospacedDigit()).foregroundStyle(.orange)
+                    }
+                    Text(card.detail(for: chip)).font(.callout).foregroundStyle(.primary)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+                .accessibilityIdentifier("amountChip")
+                .onTapGesture { showing = chip }
+            }
+        }
+        .padding(14)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(Color.orange.opacity(0.14), in: RoundedRectangle(cornerRadius: 16))
+        .overlay(RoundedRectangle(cornerRadius: 16).stroke(Color.orange.opacity(0.6), lineWidth: 1.5))
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(card.accessibilityText)
+        .accessibilityHint(L10n.t("点卡片可全屏给对方看"))
+        .accessibilityAddTraits(.isButton)
+        .accessibilityAction { showing = card.lines.first }
+        .accessibilityIdentifier("moneyCard")
+        .fullScreenCover(item: $showing) { c in PresentView(text: c.rupiah, amountLine: c.cny) }
     }
 }
 

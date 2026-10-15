@@ -210,6 +210,28 @@
         }
       }
     },
+    "不含税": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "excl. tax"
+          }
+        }
+      }
+    },
+    "不含运费": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "excl. delivery"
+          }
+        }
+      }
+    },
     "不换算（印尼盾）": {
       "extractionState": "manual",
       "localizations": {
@@ -239,6 +261,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "No auto-renewal"
+          }
+        }
+      }
+    },
+    "不还价": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "fixed price"
           }
         }
       }
@@ -518,6 +551,17 @@
         }
       }
     },
+    "含运费": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "incl. delivery"
+          }
+        }
+      }
+    },
     "听%@暂不可用": {
       "extractionState": "manual",
       "localizations": {
@@ -569,6 +613,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Literal: %@"
+          }
+        }
+      }
+    },
+    "对方报价": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Their price"
           }
         }
       }
@@ -859,6 +914,17 @@
         }
       }
     },
+    "我说的金额": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Amount I said"
+          }
+        }
+      }
+    },
     "打中文，我帮你说": {
       "extractionState": "manual",
       "localizations": {
@@ -1090,6 +1156,50 @@
         }
       }
     },
+    "每人": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "per person"
+          }
+        }
+      }
+    },
+    "每公斤": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "per kg"
+          }
+        }
+      }
+    },
+    "每小时": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "per hour"
+          }
+        }
+      }
+    },
+    "每晚": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "per night"
+          }
+        }
+      }
+    },
     "汇率": {
       "extractionState": "manual",
       "localizations": {
@@ -1218,6 +1328,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Clear all conversations on this phone?"
+          }
+        }
+      }
+    },
+    "点卡片可全屏给对方看": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tap to show full screen"
           }
         }
       }
