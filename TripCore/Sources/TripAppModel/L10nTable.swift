@@ -94,6 +94,5 @@ public enum L10nTable {
         "需要下载": "Download required",
         "需要下载 · %@": "Download required · %@",
         "需要麦克风和语音识别权限。可在系统设置里打开。": "Microphone and speech recognition access are needed. Turn them on in Settings.",
-        "（译文待母语者校对）": "(translation pending native review)",
     ]
 }

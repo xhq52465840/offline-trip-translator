@@ -991,6 +991,17 @@
         }
       }
     },
+    "改一下再发": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Edit before sending"
+          }
+        }
+      }
+    },
     "新对话": {
       "extractionState": "manual",
       "localizations": {
@@ -1119,6 +1130,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "View privacy notes"
+          }
+        }
+      }
+    },
+    "根据对方的话推荐": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Suggested from what they said"
           }
         }
       }
@@ -1911,17 +1933,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Face-to-face mode"
-          }
-        }
-      }
-    },
-    "（译文待母语者校对）": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "(translation pending native review)"
           }
         }
       }

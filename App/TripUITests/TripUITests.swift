@@ -140,6 +140,20 @@ class TripUITests: XCTestCase {
         app.buttons["presentClose"].tap()
     }
 
+    /// v4 V3：对方报价后出现还价快捷回复；还价金额由程序算（100.000 × 80% = 80.000）；点一下直接发送
+    func testContextualRepliesAfterPrice() {
+        let app = XCUIApplication()
+        app.launchArguments += ["-UITestMode", "mock-ready", "-UITestSeedAmount", "-UITestLangs", "zh-Hans,id", "-AppleLanguages", "(\(uiLang))", "-AppleLocale", isEn ? "en_US" : "zh_CN"]
+        app.launch()
+        let counter = app.buttons["reply_8万印尼盾行吗？"]
+        XCTAssertTrue(counter.waitForExistence(timeout: 10), "应出现程序计算的还价")
+        let bargain = app.buttons["reply_太贵了，便宜点"]
+        XCTAssertTrue(bargain.exists)
+        shot("14_context_replies")
+        bargain.tap()
+        XCTAssertTrue(app.staticTexts["Terlalu mahal, bisa kurang?"].waitForExistence(timeout: 5), "快捷回复应直接发出印尼语")
+    }
+
     // MARK: P4 双方各自选语言
 
     func launchLangs(_ langs: String, ui: String = "zh-Hans", locale: String = "zh_CN") -> XCUIApplication {

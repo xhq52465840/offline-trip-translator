@@ -89,7 +89,8 @@ struct ConversationView: View {
             }
             TranscriptList(viewer: .me, onPresent: { presenting = $0 })
             clipboardBar
-            PhraseStrip(scene: model.scene ?? .chat)   // 通用对话也给几句寒暄短语，少一步
+            // v4 V3：按对方上一句推荐回复；还没有对方消息时用场景短语
+            PhraseStrip(scene: model.scene ?? .chat, input: $input)
             inputBar
         }
         .navigationTitle(model.scene?.title ?? L10n.t("对话"))
@@ -250,26 +251,42 @@ struct ConversationView: View {
 struct PhraseStrip: View {
     @EnvironmentObject var state: AppState
     let scene: Scenario
+    @Binding var input: String
+    @Environment(\.dynamicTypeSize) private var typeSize
+
+    private var suggestion: (kind: ContextReplies.Kind, phrases: [Phrase])? { ContextReplies.suggest(messages: state.conversation.messages) }
+
     var body: some View {
-        ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: 8) {
-                ForEach(scene.phrases) { p in
-                    Button { state.conversation.sendPhrase(p); Haptics.play(.sent) } label: {
-                        HStack(spacing: 4) {
-                            Text(p.text(state.myLanguage)).font(.callout)
-                            if p.needsNativeReview {
-                                // 新短语尚未经母语者审校（docs/社区真实语料.md）；上线前审校后去掉标记
-                                Text("待校对").font(.caption2.weight(.semibold)).foregroundStyle(.orange)
-                            }
-                        }
-                        .padding(.horizontal, 12).padding(.vertical, 8)
-                        .background(Color.accentColor.opacity(0.12), in: Capsule())
-                    }
-                    .accessibilityHint(L10n.f("发给对方：%@", p.text(state.conversation.theirLanguage)) + (p.needsNativeReview ? L10n.t("（译文待母语者校对）") : ""))
+        let s = suggestion
+        let phrases = s?.phrases ?? scene.phrases
+        VStack(alignment: .leading, spacing: 2) {
+            if s != nil {
+                Text("根据对方的话推荐").font(.caption).foregroundStyle(.secondary).padding(.horizontal)
+            }
+            // 大字号（AX）时改为纵向列表，不截断
+            if typeSize.isAccessibilitySize {
+                VStack(alignment: .leading, spacing: 6) { ForEach(phrases) { chip($0) } }.padding(.horizontal)
+            } else {
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: 8) { ForEach(phrases) { chip($0) } }.padding(.horizontal).padding(.vertical, 6)
                 }
             }
-            .padding(.horizontal).padding(.vertical, 6)
         }
+        .accessibilityIdentifier(s.map { "contextReplies_\($0.kind.rawValue)" } ?? "sceneReplies")
+    }
+
+    private func chip(_ p: Phrase) -> some View {
+        Button { state.conversation.sendPhrase(p); Haptics.play(.sent) } label: {
+            Text(p.text(state.myLanguage)).font(.callout)
+                .padding(.horizontal, 12).padding(.vertical, 8)
+                .frame(minHeight: 44)
+                .background(Color.accentColor.opacity(0.12), in: Capsule())
+        }
+        .contextMenu {
+            Button("改一下再发") { input = p.text(state.myLanguage) }
+        }
+        .accessibilityHint(L10n.f("发给对方：%@", p.text(state.conversation.theirLanguage)))
+        .accessibilityIdentifier("reply_\(p.zh)")
     }
 }
 
