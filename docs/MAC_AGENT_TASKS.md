@@ -30,10 +30,39 @@ mkdir -p "$WORK"
 
 ---
 
-## ⛔ Mac 循环已结束（2026-10-14，r9 审阅后）
+## ▶️ 当前轮次：r10 —— v4 交互改版验收（2026-10-15 重新开启 Mac 循环）
 
-**给 Mac 代理：不要再开新轮次。** 用户说「pull master and continue」时，只做 `git pull origin master` 并回复：
-「Mac 循环已结束（r1–r9）。剩下的是真机和上架步骤，见 docs/真机验证清单.md；需要 Mac 时用户会给新指令。」不训练、不上传、不开 PR。
+**用户说「pull master and continue」就做这一节。** 方案：`docs/交互改版方案_v4.md`；线框：`docs/wireframes/01–04*.png`。
+盒子已实现 V1–V7（每阶段一个提交），`swift test` 200 项全绿、`i18n check` OK、`swiftc -parse` 通过。**盒子不能编译 SwiftUI**，所以你的首要任务是：编译、跑 UI 测试、截图对照线框。
+
+规则不变：只允许 Xcode 编译错误的最小修复（列出文件/行/diff）；不改业务逻辑；不提交权重；不合并 PR。
+
+### r10 清单
+
+1. **准备**：`git pull origin master`；`ROUND=10`；分支 `mac-run-<日期>-r10`；`cd TripCore && swift test`（期望 200，全绿）；`python3 scripts/i18n.py check` = OK；`cd App && xcodegen generate`；编译 TripUnderstand（模拟器 + Generic iOS Device）。编译错误按规则 2 最小修复（盒子只做了 `-parse`，可能有类型错误，重点看 `ConversationView.swift`、`OnboardingView.swift`、`AppState.swift`）。
+2. **UI 测试中英两遍**（`TripUITests` 中文 19 项 + `TripUITestsEnglish` 英文 17 项），`TEST_RUNNER_SCREEN_DIR=$SCREENS`。全绿；失败的贴原文和截图。新增/改动用例：
+   - `testFirstLaunchTwoSteps`、`testStatusBarInsteadOfBlockingSheet`、`testPhraseBookFromSettingsAndPresent`、`testPurchasePageOpens`（改从设置进入）
+   - `testMoneyCardPresentsFullScreen`、`testAmountConversionShown(English)`（改查金额卡 label）
+   - `testContextualRepliesAfterPrice`、`testSingleHoldToTalkAndSwitch`、`testFaceToFaceShowsAmounts`、`testEmptyConversationStarters`、`testAccessibilityXXXLMoneyCard`
+   - 回归：`testHomeAndChatWithMockEngine`（zh→id）、`testChineseMeEnglishPartner`、`testEnglishMeChinesePartnerAndFaceToFace`、`testSwapLanguages`、`testEnglishUIHasNoChinese`
+3. **截图对照线框**（报告里每张线框放一张对应截图，逐条写 ✅/❌）：
+   - 线框 01 对话首页 ↔ `06_home`、`17_empty_starters`、`15_single_talk_button`：冷启动直接是对话页；没有场景网格；「按住说话」是全屏最大元素且高度 ≥ 96pt；下面有「给对方看（面对面）」；左上角设置菜单里有 离线准备/汇率/常用句/隐私/界面语言/购买/使用统计。
+   - 线框 02 金额卡 + 情境回复 ↔ `13_money_card`、`14_context_replies`、`08_amount_conversion(_en)`：卡片在气泡最上方、原币字号最大、≈¥/$ 第二行强调色；英文界面没有「万印尼盾」；快捷回复区标题「根据对方的话推荐」，含「太贵了，便宜点」和程序算出的「8万印尼盾行吗？」（100.000×80%）；点一下直接发出印尼语。
+   - 线框 03 面对面 ↔ `11_face_to_face_lang`、`16_face_to_face_amount`：上半屏倒置，显示最新一句（对方语言）+ `Rp 100.000` 大字 + 对方按住说话；下半屏我的语言 + 金额卡 + 按住说话 + 退出/大字出示。
+   - 线框 04 首次打开 ↔ `01_onboarding`、`01b_first_launch_pick`、`01c_first_launch_done`：只有「我说/对方说」两组 + 下载大小一行 + 「开始用」；没有购买/隐私/准备列表；点开始后直接进对话页（mock 下顶部出现状态条）。
+4. **状态条三种状态**（截图 + 结论）：
+   - `mock-not-ready` → `02_status_bar_not_ready`：顶部状态条、**没有**阻断弹窗、输入框可用、快捷句可点。
+   - 模拟器里把 Mac 断网（或飞行模式模拟）后用 `mock-not-ready` 启动：状态条应变成「连上网后自动继续下载」。只记录结果，不需要改代码。
+   - 真实构建（非 mock）首次启动走一遍：选语言 → 开始用 → 状态条显示「理解能力准备中 xx%」（模拟器后台 URLSession 4097 是已知限制，记录即可）。
+5. **无障碍**：Accessibility Inspector 跑对话页、金额卡、面对面、首次打开，贴告警；`18_ax5_money_card` 人工看是否截断；打开旁白：金额卡读成一整句「对方报价 10万印尼盾，约 ¥37…」，按住说话按钮旁白下「点一下开始、再点一下结束」能录一句（模拟器无麦克风可只确认没崩溃）。
+6. **回归**：照 r9 的三条样例（zh→id、id→zh 含金额、英文 fallback）在模拟器真模型下各跑一次，输出贴原文；确认低质量标签、金额只由程序生成没有变化。
+7. **交付**：报告 `reports/mac_run_<日期>_r10.md`；截图 `reports/screens/<日期>-r10/`；开 PR「Mac run r10」，不要合并。
+
+---
+
+## （历史）⛔ Mac 循环曾在 r9 后结束（2026-10-14）—— 已被上面的 r10 取代
+
+（以下为 r9 结束时的说明，仅存档；现在请执行 r10。）
 
 最终状态：
 - 模型：s400（`trip-mix2-s400-Q4_K_M.gguf`，986048640 字节，sha256 `691a1b2b…f05b0a`），已在 GitHub Release `model-s400-v1`，盒子独立下载核对一致；清单 v5 只指向它。
