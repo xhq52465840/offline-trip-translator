@@ -49,6 +49,7 @@ public enum L10nTable {
         "按住听对方": "Hold to listen",
         "按住说%@": "Hold to speak %@",
         "按住说话": "Hold to talk",
+        "按住说话，松开翻译。使用旁白时：点一下开始，再点一下结束": "Hold to talk, release to translate. With VoiceOver: tap once to start, tap again to stop",
         "换成对方说": "Switch to them",
         "换成我说": "Switch to me",
         "旅行包有效期至 %@": "Trip pass valid until %@",

@@ -103,7 +103,11 @@ final class AppState: ObservableObject {
         talk = HoldToTalk(transcriber: transcriber)
         self.sessions = sessions
         // 闭包捕获 self 之前，所有 let 存储属性必须先完成初始化（Swift 6 确定初始化检查）。
-        conversation.onChange = { [weak self] in self?.tick += 1 }
+        conversation.onChange = { [weak self] in
+            guard let self else { return }
+            self.tick += 1
+            if self.conversation.messages.contains(where: { $0.status == .ready }) { self.uxMetrics.markFirstTranslation(Date()) }
+        }
         applyLanguages(me: defaults.string(forKey: "lang.me") ?? AppState.defaultMyLanguage(), them: defaults.string(forKey: "lang.them"))
         talk.onChange = { [weak self] in self?.tick += 1 }
         conversation.onPersist = { [weak self] msgs in
@@ -243,6 +247,7 @@ final class AppState: ObservableObject {
     func finishOnboarding(me: String, them: String) {
         applyLanguages(me: me, them: them)
         gate.onboardingCompleted = true
+        uxMetrics.markFirstLaunch(Date())
         prepareAll()
         Task { await refresh(.coldLaunch) }
     }
@@ -271,6 +276,8 @@ final class AppState: ObservableObject {
     }
 
     /// v4 V4：单按钮自动判定这一句是谁说的（TripAppModel.TalkRouter，有单测）
+    /// v4 V7：本机指标（不上传）
+    lazy var uxMetrics = UXMetrics(defaults: defaults)
     @Published var forcedTalk: TalkTarget?
     @Published var lastVoiceMessageID: UUID?
     var nextTalk: TalkTarget { TalkRouter.predict(messages: conversation.messages, forced: forcedTalk) }
@@ -279,6 +286,7 @@ final class AppState: ObservableObject {
     func wrongSpeaker(_ id: UUID) {
         guard let m = conversation.messages.first(where: { $0.id == id }) else { return }
         conversation.remove(id)
+        uxMetrics.record(.wrongSpeaker)
         forcedTalk = m.role == .me ? .them : .me
         lastVoiceMessageID = nil
         tick += 1
@@ -291,6 +299,7 @@ final class AppState: ObservableObject {
             forcedTalk = nil
             if who == .them { await conversation.receiveTheirs(s) } else { await conversation.sendMine(s) }
             lastVoiceMessageID = conversation.messages.last?.id
+            uxMetrics.record(.voiceTurn)
         case .failed: speechAlert = L10n.t("需要麦克风和语音识别权限。可在系统设置里打开。")
         default: break
         }

@@ -201,6 +201,27 @@ class TripUITests: XCTestCase {
         shot("16_face_to_face_amount")
     }
 
+    /// v4 V7：空对话显示 3 句示例，点一下就发出去
+    func testEmptyConversationStarters() {
+        let app = launchLangs("zh-Hans,id", ui: uiLang, locale: isEn ? "en_US" : "zh_CN")
+        let starter = app.buttons["starter_多少钱？"]
+        XCTAssertTrue(starter.waitForExistence(timeout: 10))
+        shot("17_empty_starters")
+        starter.tap()
+        XCTAssertTrue(app.staticTexts["Berapa harganya?"].waitForExistence(timeout: 5))
+    }
+
+    /// v4 V7：最大辅助字号下金额卡和按钮不截断（截图人工看）；快捷回复变纵向
+    func testAccessibilityXXXLMoneyCard() {
+        let app = XCUIApplication()
+        app.launchArguments += ["-UITestMode", "mock-ready", "-UITestSeedAmount", "-UITestLangs", "zh-Hans,id",
+                                "-AppleLanguages", "(\(uiLang))", "-AppleLocale", isEn ? "en_US" : "zh_CN",
+                                "-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryAccessibilityXXXL"]
+        app.launch()
+        XCTAssertTrue(moneyCard(app).waitForExistence(timeout: 10))
+        shot("18_ax5_money_card")
+    }
+
     // MARK: P4 双方各自选语言
 
     func launchLangs(_ langs: String, ui: String = "zh-Hans", locale: String = "zh_CN") -> XCUIApplication {

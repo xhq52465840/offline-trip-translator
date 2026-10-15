@@ -97,6 +97,7 @@ struct ConversationView: View {
                     NavigationLink("隐私") { PrivacyView() }
                     NavigationLink("界面语言") { UILanguageView() }
                     NavigationLink("购买") { PurchaseView() }
+                    NavigationLink("使用统计（仅本机）") { LocalMetricsView() }
                 } label: { Image(systemName: "gearshape").accessibilityLabel("设置") }
                 .accessibilityIdentifier("settingsMenu")
             }
@@ -245,7 +246,7 @@ struct ConversationView: View {
                         .font(.footnote).accessibilityIdentifier("switchSpeaker")
                     Spacer()
                 }
-                Button { withAnimation { state.faceToFace = true }; Haptics.play(.sent) } label: {
+                Button { withAnimation { state.faceToFace = true }; state.uxMetrics.record(.faceToFace); Haptics.play(.sent) } label: {
                     Label("给对方看（面对面）", systemImage: "rectangle.portrait.and.arrow.forward")
                         .font(.headline).frame(maxWidth: .infinity, minHeight: 52)
                 }
@@ -289,7 +290,7 @@ struct PhraseStrip: View {
     }
 
     private func chip(_ p: Phrase) -> some View {
-        Button { state.conversation.sendPhrase(p); Haptics.play(.sent) } label: {
+        Button { state.conversation.sendPhrase(p); state.uxMetrics.record(.quickReply); Haptics.play(.sent) } label: {
             Text(p.text(state.myLanguage)).font(.callout)
                 .padding(.horizontal, 12).padding(.vertical, 8)
                 .frame(minHeight: 44)
@@ -317,8 +318,29 @@ struct TranscriptList: View {
             ScrollView {
                 LazyVStack(spacing: 14) {
                     if rows.isEmpty {
-                        Text(viewer == .me ? "把对方的话贴进来，或按住「听对方」" : "Silakan bicara · Please speak")
-                            .font(.title3).foregroundStyle(.secondary).padding(.top, 60)
+                        if viewer == .me {
+                            // v4 V7：空对话给 3 句大号示例，点一下就发送
+                            VStack(alignment: .leading, spacing: 12) {
+                                Text("点一句试试，或按住下面的大按钮说话").font(.headline).foregroundStyle(.secondary)
+                                ForEach(ContextReplies.starters) { p in
+                                    Button {
+                                        model.sendPhrase(p); state.uxMetrics.record(.starterTap); Haptics.play(.sent)
+                                    } label: {
+                                        VStack(alignment: .leading, spacing: 2) {
+                                            Text(p.text(model.myLanguage)).font(.title2.bold())
+                                            Text(p.text(model.theirLanguage)).font(.callout).foregroundStyle(.secondary)
+                                        }
+                                        .padding(14).frame(maxWidth: .infinity, alignment: .leading)
+                                        .background(Color(.secondarySystemBackground), in: RoundedRectangle(cornerRadius: 16))
+                                    }
+                                    .buttonStyle(.plain)
+                                    .accessibilityIdentifier("starter_\(p.zh)")
+                                }
+                            }
+                            .padding(.top, 24)
+                        } else {
+                            Text("Silakan bicara · Please speak").font(.title3).foregroundStyle(.secondary).padding(.top, 60)
+                        }
                     }
                     ForEach(rows) { r in
                         let m = model.messages.first { $0.id == r.id }
@@ -425,6 +447,27 @@ struct BubbleView: View {
                 }
             }
         }
+    }
+}
+
+/// v4 V7：本机使用统计（不上传），可复制给开发者
+struct LocalMetricsView: View {
+    @EnvironmentObject var state: AppState
+    var body: some View {
+        Form {
+            Section {
+                Text(state.uxMetrics.summary).font(.footnote.monospaced()).textSelection(.enabled)
+                    .accessibilityIdentifier("metricsSummary")
+            } footer: { Text("只记在这台手机上，不会上传。可以复制后发给我们帮助改进。") }
+            Section {
+                Button("复制") {
+                    #if canImport(UIKit)
+                    UIPasteboard.general.string = state.uxMetrics.summary
+                    #endif
+                }
+            }
+        }
+        .navigationTitle("使用统计（仅本机）")
     }
 }
 
@@ -607,7 +650,19 @@ struct TalkButton: View {
             .foregroundStyle(prominent ? Color.white : Color.primary)
             .accessibilityLabel(title)
             .accessibilityValue(caption ?? "")
+            .accessibilityHint(L10n.t("按住说话，松开翻译。使用旁白时：点一下开始，再点一下结束"))
             .accessibilityAddTraits(.isButton)
+            // v4 V7：旁白用户无法按住 → 点一下开始、再点一下结束
+            .accessibilityAction {
+                if state.talk.phase == .idle {
+                    guard state.speechReady(for: target) else { return }
+                    state.talk.press(target, locale: locale, at: Date().addingTimeInterval(-HoldToTalk.minPress))
+                    startTicker()
+                } else {
+                    ticker?.cancel(); ticker = nil
+                    Task { await state.handleTalk(await state.talk.release(at: Date())) }
+                }
+            }
             .gesture(
                 DragGesture(minimumDistance: 0)
                     .onChanged { v in

@@ -375,6 +375,17 @@
         }
       }
     },
+    "使用统计（仅本机）": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Usage stats (on this phone only)"
+          }
+        }
+      }
+    },
     "免费试用 24 小时：从第一条翻译开始计时": {
       "extractionState": "manual",
       "localizations": {
@@ -558,6 +569,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Counts and timings only — never any text, translations, recordings or clipboard content."
+          }
+        }
+      }
+    },
+    "只记在这台手机上，不会上传。可以复制后发给我们帮助改进。": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stored only on this phone, never uploaded. You can copy it and send it to us to help improve the app."
           }
         }
       }
@@ -991,17 +1013,6 @@
         }
       }
     },
-    "把对方的话贴进来，或按住「听对方」": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Paste their message, or hold \"Listen\""
-          }
-        }
-      }
-    },
     "按住听对方": {
       "extractionState": "manual",
       "localizations": {
@@ -1031,6 +1042,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Hold to talk"
+          }
+        }
+      }
+    },
+    "按住说话，松开翻译。使用旁白时：点一下开始，再点一下结束": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hold to talk, release to translate. With VoiceOver: tap once to start, tap again to stop"
           }
         }
       }
@@ -1449,6 +1471,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Clear all conversations on this phone?"
+          }
+        }
+      }
+    },
+    "点一句试试，或按住下面的大按钮说话": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tap a phrase to try, or hold the big button below to talk"
           }
         }
       }
