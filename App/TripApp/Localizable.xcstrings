@@ -595,6 +595,17 @@
         }
       }
     },
+    "大字出示": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Show large"
+          }
+        }
+      }
+    },
     "好": {
       "extractionState": "manual",
       "localizations": {
@@ -657,6 +668,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "They speak %@"
+          }
+        }
+      }
+    },
+    "对方说：": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "They said:"
           }
         }
       }
@@ -921,6 +943,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Amount I said"
+          }
+        }
+      }
+    },
+    "我说：": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "I said:"
           }
         }
       }
@@ -1922,6 +1955,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Download resumes when you're online"
+          }
+        }
+      }
+    },
+    "退出": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Exit"
           }
         }
       }

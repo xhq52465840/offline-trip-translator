@@ -58,34 +58,26 @@ struct ConversationView: View {
     private var model: ConversationModel { state.conversation }
 
     var body: some View {
+        if state.faceToFace {
+            // v4 V5：面对面分屏（全屏，上半屏倒置给对方）
+            FaceToFaceView(onPresent: { presenting = $0 })
+                .toolbar(.hidden, for: .navigationBar)
+                .alert(state.speechAlert ?? "", isPresented: Binding(get: { state.speechAlert != nil }, set: { if !$0 { state.speechAlert = nil } })) {
+                    Button("好", role: .cancel) { state.speechAlert = nil }
+                }
+                .fullScreenCover(item: $presenting) { m in PresentView(text: m.foreign ?? m.source, amountLine: PresentContent.amountLine(foreign: m.foreign ?? m.source, source: m.source)) }
+        } else {
+            conversation
+        }
+    }
+
+    private var conversation: some View {
         VStack(spacing: 0) {
             statusBar
             if let banner = model.bannerText {
                 NavigationLink { PurchaseView() } label: {
                     Text(banner).font(.footnote).frame(maxWidth: .infinity).padding(8).background(Color.yellow.opacity(0.25))
                 }
-            }
-            if state.faceToFace {
-                // 对方半屏（决策 D6）：对话 + 对方语言的按住说话按钮，整体旋转 180°
-                VStack(spacing: 8) {
-                    TranscriptList(viewer: .partner, onPresent: { _ in })
-                    // P4：对方半屏自己选语言（用该语言写）
-                    Menu {
-                        ForEach(Lang.all.filter { $0 != state.myLanguage }, id: \.self) { l in
-                            Button(LangNames.native(l)) { state.setTheirLanguage(l) }
-                        }
-                    } label: {
-                        Label(LangNames.native(model.theirLanguage), systemImage: "globe").font(.subheadline)
-                    }
-                    .accessibilityIdentifier("partnerLangPicker")
-                    TalkButton(title: state.talk.partnerTitle(lang: model.theirLanguage), symbol: "mic.fill", target: .them, prominent: true,
-                               locale: Lang.speechLocale(model.theirLanguage))
-                        .padding(.horizontal, 16).padding(.bottom, 8)
-                        .accessibilityLabel(state.talk.partnerTitle(lang: model.theirLanguage))
-                }
-                .rotationEffect(.degrees(180))
-                .background(Color(.secondarySystemBackground))
-                Divider()
             }
             TranscriptList(viewer: .me, onPresent: { presenting = $0 })
             clipboardBar
@@ -468,6 +460,97 @@ struct MoneyCardView: View {
         .accessibilityAction { showing = card.lines.first }
         .accessibilityIdentifier("moneyCard")
         .fullScreenCover(item: $showing) { c in PresentView(text: c.rupiah, amountLine: c.cny) }
+    }
+}
+
+/// v4 面对面：上半屏对方语言（旋转 180°）= 最新一句 + 金额 + 对方的按住说话；下半屏我的语言 + 金额卡 + 我的按住说话 + 退出 / 大字出示。
+struct FaceToFaceView: View {
+    @EnvironmentObject var state: AppState
+    var onPresent: (Message) -> Void
+    private var model: ConversationModel { state.conversation }
+
+    var body: some View {
+        let c = FaceToFaceContent.make(messages: model.messages, myLanguage: model.myLanguage, theirLanguage: model.theirLanguage)
+        VStack(spacing: 0) {
+            partnerHalf(c)
+                .rotationEffect(.degrees(180))
+                .background(Color(.secondarySystemBackground))
+            Divider().frame(height: 2).background(Color.primary.opacity(0.4))
+            myHalf(c)
+        }
+        .onAppear { setIdle(true) }
+        .onDisappear { setIdle(false) }
+        .accessibilityIdentifier("faceToFace")
+    }
+
+    private func setIdle(_ off: Bool) {
+        #if canImport(UIKit)
+        UIApplication.shared.isIdleTimerDisabled = off   // 面对面时屏幕常亮
+        #endif
+    }
+
+    private func partnerHalf(_ c: FaceToFaceContent) -> some View {
+        VStack(alignment: .leading, spacing: 10) {
+            if let t = c.partnerText {
+                if let l = c.partnerLabel { Text(l).font(.headline).foregroundStyle(.secondary) }
+                ScrollView { Text(t).font(.system(size: 40, weight: .bold)).minimumScaleFactor(0.5).frame(maxWidth: .infinity, alignment: .leading) }
+                    .accessibilityIdentifier("partnerText")
+                ForEach(c.partnerAmounts, id: \.self) { a in
+                    Text(a).font(.system(size: 44, weight: .heavy).monospacedDigit())
+                        .padding(.horizontal, 14).padding(.vertical, 6)
+                        .background(Color.orange.opacity(0.18), in: RoundedRectangle(cornerRadius: 14))
+                        .accessibilityIdentifier("partnerAmount")
+                }
+            } else {
+                Spacer()
+                Text(FaceToFaceContent.partnerEmpty(lang: model.theirLanguage)).font(.title).foregroundStyle(.secondary)
+                    .frame(maxWidth: .infinity)
+            }
+            Spacer(minLength: 0)
+            Menu {
+                ForEach(Lang.all.filter { $0 != state.myLanguage }, id: \.self) { l in
+                    Button(LangNames.native(l)) { state.setTheirLanguage(l) }
+                }
+            } label: { Label(LangNames.native(model.theirLanguage), systemImage: "globe").font(.subheadline) }
+            .accessibilityIdentifier("partnerLangPicker")
+            TalkButton(title: state.talk.partnerTitle(lang: model.theirLanguage), symbol: "mic.fill", target: .them, prominent: true,
+                       locale: Lang.speechLocale(model.theirLanguage), minHeight: 80)
+                .accessibilityIdentifier("partnerTalk")
+        }
+        .padding(16)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
+
+    private func myHalf(_ c: FaceToFaceContent) -> some View {
+        VStack(alignment: .leading, spacing: 10) {
+            if let t = c.myText {
+                if let l = c.myLabel { Text(l).font(.subheadline).foregroundStyle(.secondary) }
+                Text(t).font(.title2.bold()).lineLimit(3).minimumScaleFactor(0.6)
+                    .accessibilityIdentifier("myText")
+                if let id = c.lastMessageID, let m = model.messages.first(where: { $0.id == id }),
+                   let card = MoneyCard.make(chips: Money.chips(in: m.role == .me ? (m.foreign ?? "") : m.source, fx: state.fx),
+                                             source: m.source, fromPartner: m.role == .them) {
+                    MoneyCardView(card: card)
+                }
+            }
+            Spacer(minLength: 0)
+            TalkButton(title: L10n.f("按住说%@", Lang.displayName(model.myLanguage)), symbol: "mic.fill", target: .me, prominent: true,
+                       locale: Lang.speechLocale(model.myLanguage), minHeight: 80)
+                .accessibilityIdentifier("myTalk")
+            HStack(spacing: 12) {
+                Button { withAnimation { state.faceToFace = false } } label: {
+                    Label("退出", systemImage: "xmark").frame(maxWidth: .infinity, minHeight: 48)
+                }
+                .buttonStyle(.bordered).accessibilityIdentifier("faceToFaceExit")
+                Button {
+                    if let m = model.messages.last(where: { $0.role == .me && $0.canCopyOrPresent }) { onPresent(m) }
+                } label: { Label("大字出示", systemImage: "textformat.size").frame(maxWidth: .infinity, minHeight: 48) }
+                .buttonStyle(.bordered).accessibilityIdentifier("faceToFacePresent")
+                .disabled(!model.messages.contains { $0.role == .me && $0.canCopyOrPresent })
+            }
+        }
+        .padding(16)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }
 

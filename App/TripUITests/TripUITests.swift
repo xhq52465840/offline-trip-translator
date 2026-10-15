@@ -173,6 +173,20 @@ class TripUITests: XCTestCase {
         shot("15_single_talk_button")
     }
 
+    /// v4 V5：对方报价后进面对面，上半屏有 Rp 金额（程序解析），下半屏有金额卡
+    func testFaceToFaceShowsAmounts() {
+        let app = XCUIApplication()
+        app.launchArguments += ["-UITestMode", "mock-ready", "-UITestSeedAmount", "-UITestLangs", "zh-Hans,id", "-AppleLanguages", "(\(uiLang))", "-AppleLocale", isEn ? "en_US" : "zh_CN"]
+        app.launch()
+        XCTAssertTrue(moneyCard(app).waitForExistence(timeout: 10))
+        app.buttons["showToPartner"].tap()
+        let amt = app.descendants(matching: .any)["partnerAmount"].firstMatch
+        XCTAssertTrue(amt.waitForExistence(timeout: 5))
+        XCTAssertEqual(amt.label, "Rp 100.000")
+        XCTAssertTrue(moneyCard(app).exists)
+        shot("16_face_to_face_amount")
+    }
+
     // MARK: P4 双方各自选语言
 
     func launchLangs(_ langs: String, ui: String = "zh-Hans", locale: String = "zh_CN") -> XCUIApplication {
@@ -203,9 +217,14 @@ class TripUITests: XCTestCase {
         XCTAssertTrue(waitHome(app))
         send(app, "Too expensive")
         XCTAssertTrue(app.staticTexts["太贵了"].waitForExistence(timeout: 10))
-        app.buttons["faceToFaceToggle"].tap()
+        app.buttons["showToPartner"].tap()
         XCTAssertTrue(app.buttons["partnerLangPicker"].waitForExistence(timeout: 5))
+        // v4 V5：上半屏显示最新一句的对方语言版本（这里对方是中文）
+        XCTAssertTrue(app.descendants(matching: .any)["partnerText"].firstMatch.exists)
+        XCTAssertTrue(app.buttons["faceToFaceExit"].exists)
         shot("11_face_to_face_lang")
+        app.buttons["faceToFaceExit"].tap()
+        XCTAssertTrue(waitHome(app))
     }
 
     func testSwapLanguages() {
