@@ -33,18 +33,35 @@ class TripUITests: XCTestCase {
         shot("01_onboarding")
     }
 
-    func testBlockingSheetOnLaunchWhenNotReady() {
-        let app = launch("mock-not-ready")
-        XCTAssertTrue(app.staticTexts["blockingTitle"].waitForExistence(timeout: 10))
-        XCTAssertTrue(app.buttons["blockingDownload"].exists)
-        shot("02_blocking_sheet")
+    /// v4 V1：打开即对话页；等对话页出现（替代旧的 startChat 首页按钮）
+    @discardableResult
+    func waitHome(_ app: XCUIApplication, timeout: TimeInterval = 10) -> Bool {
+        app.buttons["holdToTalk"].waitForExistence(timeout: timeout) || app.otherElements["holdToTalk"].waitForExistence(timeout: 2)
+            || chatInput(app).waitForExistence(timeout: 2)
+    }
+    func chatInput(_ app: XCUIApplication) -> XCUIElement {
+        app.textFields["chatInput"].exists ? app.textFields["chatInput"] : app.textViews["chatInput"]
+    }
+    func openPhraseBook(_ app: XCUIApplication, en: Bool) {
+        let menu = app.buttons["settingsMenu"]
+        XCTAssertTrue(menu.waitForExistence(timeout: 10)); menu.tap()
+        let item = app.buttons[en ? "Phrases" : "常用句"]
+        XCTAssertTrue(item.waitForExistence(timeout: 5)); item.tap()
     }
 
-    func testPhraseBookFromBlockingSheetAndPresent() {
+    /// v4 V1：没就绪时不再弹阻断 sheet，而是对话页 + 顶部状态条，输入框可用
+    func testStatusBarInsteadOfBlockingSheet() {
         let app = launch("mock-not-ready")
-        let link = app.buttons["blockingPhraseBook"]
-        XCTAssertTrue(link.waitForExistence(timeout: 10))
-        link.tap()
+        XCTAssertTrue(app.buttons["statusBar"].waitForExistence(timeout: 10), "应出现状态条")
+        XCTAssertFalse(app.staticTexts["blockingTitle"].exists, "不应再有阻断弹窗")
+        XCTAssertTrue(waitHome(app))
+        XCTAssertTrue(chatInput(app).isEnabled)
+        shot("02_status_bar_not_ready")
+    }
+
+    func testPhraseBookFromSettingsAndPresent() {
+        let app = launch("mock-not-ready")
+        openPhraseBook(app, en: isEn)
         let first = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'phrase_'")).firstMatch
         XCTAssertTrue(first.waitForExistence(timeout: 5))
         shot("03_phrasebook")
@@ -68,10 +85,8 @@ class TripUITests: XCTestCase {
     func testHomeAndChatWithMockEngine() {
         // 我方固定中文（英文界面跑时也一样），保证 zh→id 主路径无回归
         let app = launchLangs("zh-Hans,id", ui: uiLang, locale: isEn ? "en_US" : "zh_CN")
-        let start = app.buttons["startChat"]
-        XCTAssertTrue(start.waitForExistence(timeout: 10))
+        XCTAssertTrue(waitHome(app))
         shot("06_home")
-        start.tap()
         let input = app.textFields["chatInput"].exists ? app.textFields["chatInput"] : app.textViews["chatInput"]
         XCTAssertTrue(input.waitForExistence(timeout: 5))
         input.tap(); input.typeText("太贵了")
@@ -85,7 +100,7 @@ class TripUITests: XCTestCase {
         let app = XCUIApplication()
         app.launchArguments += ["-UITestMode", "mock-ready", "-UITestSeedAmount", "-AppleLanguages", "(zh-Hans)", "-AppleLocale", "zh_CN"]
         app.launch()
-        app.buttons["startChat"].tap()
+        XCTAssertTrue(waitHome(app))
         let conv = app.staticTexts.containing(NSPredicate(format: "label CONTAINS '约 ¥37'")).firstMatch
         XCTAssertTrue(conv.waitForExistence(timeout: 10), "应显示 约 ¥37（100.000 / 2677.5）")
         XCTAssertTrue(app.staticTexts["rateCaption"].exists)
@@ -98,7 +113,7 @@ class TripUITests: XCTestCase {
         let app = XCUIApplication()
         app.launchArguments += ["-UITestMode", "mock-ready", "-UITestSeedAmount", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
         app.launch()
-        app.buttons["startChat"].tap()
+        XCTAssertTrue(waitHome(app))
         let conv = app.staticTexts.containing(NSPredicate(format: "label CONTAINS '$5.6'")).firstMatch
         XCTAssertTrue(conv.waitForExistence(timeout: 10), "英文环境应显示 ≈ $5.6")
         shot("08_amount_conversion_en")
@@ -122,7 +137,7 @@ class TripUITests: XCTestCase {
 
     func testChineseMeEnglishPartner() {
         let app = launchLangs("zh-Hans,en")
-        app.buttons["startChat"].tap()
+        XCTAssertTrue(waitHome(app))
         XCTAssertTrue(app.buttons["theirLangPicker"].waitForExistence(timeout: 5))
         send(app, "太贵了")
         XCTAssertTrue(app.staticTexts["Too expensive"].waitForExistence(timeout: 10))
@@ -131,7 +146,7 @@ class TripUITests: XCTestCase {
 
     func testEnglishMeChinesePartnerAndFaceToFace() {
         let app = launchLangs("en,zh-Hans", ui: "en", locale: "en_US")
-        app.buttons["startChat"].tap()
+        XCTAssertTrue(waitHome(app))
         send(app, "Too expensive")
         XCTAssertTrue(app.staticTexts["太贵了"].waitForExistence(timeout: 10))
         app.buttons["faceToFaceToggle"].tap()
@@ -141,7 +156,7 @@ class TripUITests: XCTestCase {
 
     func testSwapLanguages() {
         let app = launchLangs("zh-Hans,id")
-        app.buttons["startChat"].tap()
+        XCTAssertTrue(waitHome(app))
         let swap = app.buttons["swapLangs"]
         XCTAssertTrue(swap.waitForExistence(timeout: 5))
         swap.tap()
@@ -167,9 +182,8 @@ class TripUITests: XCTestCase {
             app.terminate()
         }
         let app = launchLangs("en,id", ui: "en", locale: "en_US")
-        XCTAssertTrue(app.buttons["startChat"].waitForExistence(timeout: 10))
+        XCTAssertTrue(waitHome(app))
         assertNoHan(app, "home"); shot("12_no_han_home_en")
-        app.buttons["startChat"].tap()
         XCTAssertTrue(app.buttons["theirLangPicker"].waitForExistence(timeout: 5))
         assertNoHan(app, "conversation"); shot("12_no_han_conversation_en")
         // r5 #4：常用句页的分段控件曾显示「中文」
@@ -177,8 +191,7 @@ class TripUITests: XCTestCase {
         let nr = XCUIApplication()
         nr.launchArguments += ["-UITestMode", "mock-not-ready", "-UITestLangs", "en,id", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
         nr.launch()
-        let link = nr.buttons["blockingPhraseBook"]
-        XCTAssertTrue(link.waitForExistence(timeout: 10)); link.tap()
+        openPhraseBook(nr, en: true)
         XCTAssertTrue(nr.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'phrase_'")).firstMatch.waitForExistence(timeout: 5))
         assertNoHan(nr, "phrasebook"); shot("12_no_han_phrasebook_en")
     }
@@ -191,7 +204,7 @@ class TripUITests: XCTestCase {
             let o = XCTMeasureOptions(); o.iterationCount = 3; return o
         }()) {
             app.launch()
-            _ = app.buttons["startChat"].waitForExistence(timeout: 10)
+            _ = waitHome(app)
             app.terminate()
         }
     }

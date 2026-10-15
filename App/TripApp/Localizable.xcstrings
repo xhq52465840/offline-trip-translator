@@ -34,6 +34,17 @@
         }
       }
     },
+    "%@离线包未下载 · 去下载": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ offline pack not downloaded · Download"
+          }
+        }
+      }
+    },
     "%@翻译": {
       "extractionState": "manual",
       "localizations": {
@@ -518,17 +529,6 @@
         }
       }
     },
-    "在哪儿？选一个，会多一些常用句": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Where are you? Pick one for extra phrases"
-          }
-        }
-      }
-    },
     "场景": {
       "extractionState": "manual",
       "localizations": {
@@ -723,6 +723,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Lifetime unlocked"
+          }
+        }
+      }
+    },
+    "常用句": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Phrases"
           }
         }
       }
@@ -954,6 +965,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Show understood meaning"
+          }
+        }
+      }
+    },
+    "暂时不能翻译 · 可以先用快捷句": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Can't translate yet · Use quick phrases for now"
           }
         }
       }
@@ -1233,6 +1255,17 @@
         }
       }
     },
+    "理解能力准备中 %@%%": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Preparing understanding %@%%"
+          }
+        }
+      }
+    },
     "理解能力已就绪": {
       "extractionState": "manual",
       "localizations": {
@@ -1240,6 +1273,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Understanding ready"
+          }
+        }
+      }
+    },
+    "理解能力未下载 · 点这里下载": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Understanding not downloaded · Tap to download"
           }
         }
       }
@@ -1284,17 +1328,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Offline setup"
-          }
-        }
-      }
-    },
-    "离线行程理解": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Trip Translator"
           }
         }
       }
@@ -1640,13 +1673,13 @@
         }
       }
     },
-    "进入通用对话": {
+    "连上网后自动继续下载": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Open general conversation"
+            "value": "Download resumes when you're online"
           }
         }
       }

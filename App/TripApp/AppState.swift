@@ -75,6 +75,9 @@ final class AppState: ObservableObject {
         tick += 1
     }
 
+    /// v4 状态条（TripAppModel.StatusBar，有单测）
+    var statusBar: StatusBar? { StatusBar.compute(status: gate.status, partner: theirLanguage, online: env.network != .none) }
+
     var isBlocking: Bool { if case .block = decision { return !showPrepare } else { return false } }
     var missingText: String { if case .block(let m) = decision { return AppGate.missingText(m, myLanguage: myLanguage) } else { return "" } }
 
@@ -174,8 +177,13 @@ final class AppState: ObservableObject {
         decision = await gate.refresh(trigger)
         if trigger != .downloadFinished { Task { await refreshFX() } }
         rows = PrepareRows.rows(status: gate.status, theirLanguages: gate.partnerLanguages, myLanguage: myLanguage)
-        if decision == .open {
-            await loadModelIfNeeded()
+        // v4：老用户缺理解能力时，Wi‑Fi 下在后台自动续传（不再用阻断弹窗催）
+        if case .block(let m) = decision, m.contains(.understander), env.network == .wifi, gate.onboardingCompleted {
+            if case .needsDownload = downloader?.readiness { downloader?.start() }
+            if case .paused = downloader?.readiness { downloader?.resume() }
+        }
+        if decision == .open || gate.status.items[.understander] == .ready { await loadModelIfNeeded() }
+        if decision != .onboarding && decision != .unsupportedDevice {
             #if canImport(UIKit)
             clipboard.onForeground(hasStrings: UIPasteboard.general.hasStrings, changeCount: UIPasteboard.general.changeCount)
             #endif

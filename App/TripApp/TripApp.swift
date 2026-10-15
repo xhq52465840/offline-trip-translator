@@ -31,12 +31,9 @@ struct RootView: View {
             switch state.decision {
             case .unsupportedDevice: UnsupportedView()
             case .onboarding: OnboardingView()
-            default: HomeView()
+            // v4：打开即对话（首页 = 对话页）；不完整时不再弹阻断 sheet，改为对话页顶部状态条
+            default: NavigationStack { ConversationView() }
             }
-        }
-        // 不完整时的阻断 sheet：不可下滑关闭
-        .sheet(isPresented: Binding(get: { state.isBlocking }, set: { _ in })) {
-            NavigationStack { BlockingSheet() }.interactiveDismissDisabled(true)
         }
         .translationPrepareHost(state: state)
     }

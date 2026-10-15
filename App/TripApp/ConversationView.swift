@@ -19,79 +19,6 @@ enum Haptics {
     }
 }
 
-// MARK: - 首页：一个「直接开始」大按钮 + 可选场景卡片
-
-struct HomeView: View {
-    @EnvironmentObject var state: AppState
-    @State private var path: [Scenario?] = []
-    private let columns = [GridItem(.adaptive(minimum: 150), spacing: 12)]
-
-    var body: some View {
-        NavigationStack(path: $path) {
-            ScrollView {
-                VStack(alignment: .leading, spacing: 16) {
-                    Button { state.enter(scene: nil); path.append(nil) } label: {
-                        HStack(spacing: 14) {
-                            Image(systemName: "bubble.left.and.text.bubble.right.fill").font(.largeTitle)
-                            VStack(alignment: .leading, spacing: 4) {
-                                Text("开始对话").font(.title2.bold())
-                                Text(Copy.homeSubtitle).font(.subheadline).opacity(0.85)
-                            }
-                            Spacer()
-                            Image(systemName: "chevron.right")
-                        }
-                        .padding(20)
-                        .frame(maxWidth: .infinity)
-                        .foregroundStyle(.white)
-                        .background(Color.accentColor, in: RoundedRectangle(cornerRadius: 20))
-                    }
-                    .accessibilityHint("进入通用对话")
-                    .accessibilityIdentifier("startChat")
-
-                    Text("在哪儿？选一个，会多一些常用句").font(.headline).foregroundStyle(.secondary)
-                    LazyVGrid(columns: columns, spacing: 12) {
-                        ForEach(state.recentScenes.ordered()) { s in
-                            Button { state.enter(scene: s); path.append(s) } label: { ScenarioCard(scene: s) }
-                                .buttonStyle(.plain)
-                        }
-                    }
-                }
-                .padding()
-                .padding(.bottom, 48)   // 最后一行场景卡（含副标题）不被 Home 指示条压住（Mac run r1–r3）
-            }
-            .navigationTitle("离线行程理解")
-            .accessibilityIdentifier("home")
-            .navigationDestination(for: Scenario?.self) { _ in ConversationView() }
-            .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    Menu {
-                        NavigationLink("离线准备") { PrepareView() }
-                        NavigationLink("汇率设置") { RateSettingView() }
-                        NavigationLink("隐私") { PrivacyView() }
-                        NavigationLink("界面语言") { UILanguageView() }
-                        NavigationLink("购买") { PurchaseView() }
-                    } label: { Image(systemName: "gearshape").accessibilityLabel("设置") }
-                }
-            }
-        }
-    }
-}
-
-struct ScenarioCard: View {
-    let scene: Scenario
-    var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Image(systemName: scene.symbol).font(.title).foregroundStyle(Color.accentColor)
-            Text(scene.title).font(.headline).foregroundStyle(.primary)
-            Text(scene.subtitle).font(.footnote).foregroundStyle(.secondary).lineLimit(2)
-        }
-        .padding(14)
-        .frame(maxWidth: .infinity, minHeight: 120, alignment: .topLeading)
-        .background(Color(.secondarySystemBackground), in: RoundedRectangle(cornerRadius: 16))
-        .accessibilityElement(children: .combine)
-    }
-}
-
 /// 汇率说明（PRD v2 §7.9）：不再手动输入；内置 ECB 汇率，有网自动更新，旧于 30 天警告。
 struct RateSettingView: View {
     @EnvironmentObject var state: AppState
@@ -132,6 +59,7 @@ struct ConversationView: View {
 
     var body: some View {
         VStack(spacing: 0) {
+            statusBar
             if let banner = model.bannerText {
                 NavigationLink { PurchaseView() } label: {
                     Text(banner).font(.footnote).frame(maxWidth: .infinity).padding(8).background(Color.yellow.opacity(0.25))
@@ -167,6 +95,18 @@ struct ConversationView: View {
         .navigationTitle(model.scene?.title ?? L10n.t("对话"))
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
+            // v4：设置入口从旧首页移到对话页左上角
+            ToolbarItem(placement: .topBarLeading) {
+                Menu {
+                    NavigationLink("离线准备") { PrepareView() }
+                    NavigationLink("汇率设置") { RateSettingView() }
+                    NavigationLink("常用句") { PhraseBookView() }
+                    NavigationLink("隐私") { PrivacyView() }
+                    NavigationLink("界面语言") { UILanguageView() }
+                    NavigationLink("购买") { PurchaseView() }
+                } label: { Image(systemName: "gearshape").accessibilityLabel("设置") }
+                .accessibilityIdentifier("settingsMenu")
+            }
             ToolbarItem(placement: .principal) {
                 // P4：「我方语言 ⇄ 对方语言」；r5：英文「I speak … / They speak …」太宽被裁切 → 只显示语言名（我方加粗），完整说法放在无障碍标签
                 HStack(spacing: 6) {
@@ -215,7 +155,28 @@ struct ConversationView: View {
         }
         .navigationDestination(isPresented: $state.showPrepare) { PrepareView() }
         .fullScreenCover(item: $presenting) { m in PresentView(text: m.foreign ?? "", amountLine: PresentContent.amountLine(foreign: m.foreign ?? "", source: m.source)) }
-        .disabled(state.decision != .open)
+        .accessibilityIdentifier("conversationHome")
+    }
+
+    /// v4 状态条：替代阻断弹窗；非就绪时出现，点一下开始下载/去准备页。下载期间快捷句、金额、Apple 翻译照常可用。
+    @ViewBuilder private var statusBar: some View {
+        if let bar = state.statusBar {
+            Button {
+                if bar.tappable { state.prepareAll(); state.showPrepare = true }
+            } label: {
+                HStack(spacing: 6) {
+                    Image(systemName: bar.isWarning ? "exclamationmark.triangle.fill" : "arrow.down.circle")
+                    Text(bar.text).font(.footnote.weight(.semibold)).multilineTextAlignment(.leading)
+                    Spacer(minLength: 0)
+                }
+                .padding(.horizontal, 12).padding(.vertical, 8)
+                .frame(maxWidth: .infinity)
+                .background(bar.isWarning ? Color.orange.opacity(0.25) : Color(.secondarySystemBackground))
+            }
+            .buttonStyle(.plain)
+            .accessibilityLabel(bar.text)
+            .accessibilityIdentifier("statusBar")
+        }
     }
 
     /// 回前台只看 hasStrings；读取通过 PasteButton（用户主动粘贴，不额外弹授权）。
@@ -546,10 +507,6 @@ struct PresentView: View {
         .gesture(DragGesture().onEnded { if $0.translation.height > 60 { dismiss() } })
         .environment(\.colorScheme, .dark)
     }
-}
-
-#Preview("首页") {
-    HomeView().environmentObject(AppState.preview())
 }
 
 #Preview("对话（MockEngine）") {
